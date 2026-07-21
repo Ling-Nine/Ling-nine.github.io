@@ -35,7 +35,7 @@ greet('World');
 
 ## 结语
 
-感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 [GitHub Issues](https://github.com/yourusername/yourrepo/issues) 与我交流。
+感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 [GitHub Issues](https://github.com/Ling-Nine/Ling-nine.github.io/issues) 与我交流。
 
 ![演示图](../posts/images/test/hello.png)
 
