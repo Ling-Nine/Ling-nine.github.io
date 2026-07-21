@@ -1,12 +1,12 @@
 ---
-title: Hello World - 我的第一篇博客
+title: Cloudflare自建免费节点
 date: 2026-07-21
 tags: [随笔, 介绍]
 ---
 
-# 欢迎来到我的博客！
+# Cloudflare自建免费节点
 
-这是我的第一篇博客文章，使用 **Markdown** 编写，部署在 **GitHub Pages** 上。
+
 
 ## 为什么选择这个方案？
 
@@ -36,8 +36,6 @@ greet('World');
 ## 结语
 
 感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 [GitHub Issues](https://github.com/yourusername/yourrepo/issues) 与我交流。
-
-![演示图](../posts/images/test/hello.png)
 
 ---
 

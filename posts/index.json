@@ -5,5 +5,12 @@
         "date": "2026-07-21",
         "tags": ["随笔", "介绍"],
         "excerpt": "欢迎来到我的个人博客！这是我使用Markdown编写的第一篇文章..."
+    },
+    {
+        "filename": "Cloudflare_freenode.md",
+        "title": "Cloudflare自建免费节点",
+        "date": "2026-07-21",
+        "tags": ["网络","技术"],
+        "excerpt": ""
     }
 ]
