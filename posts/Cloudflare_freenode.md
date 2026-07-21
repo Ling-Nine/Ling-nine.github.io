@@ -1,39 +1,30 @@
 ---
 title: Cloudflare自建免费节点
 date: 2026-07-21
-tags: [随笔, 介绍]
+tags: [网络，技术]
 ---
 
-# Cloudflare自建免费节点
+# 通过Cloudflare pages来建立节点
 
+### GitHub项目Edgetunnel2.0
 
+Edgetunnel是一个基于 CF Workers/Pages 平台的边缘计算隧道解密方案。它能够高效地处理网络流量，并提供强大的管理面板和灵活的节点配置能力。
 
-## 为什么选择这个方案？
+项目地址：<https://github.com/cmliu/edgetunnel>
 
-1. **完全免费** - GitHub Pages 提供免费的静态网站托管
-2. **版本控制** - 所有文章都使用 Git 管理
-3. **Markdown 友好** - 专注于写作，无需关心排版
-4. **简单易维护** - 无需数据库，纯静态文件
+### 如何部署
 
-## 代码示例
+项目详细教程：[edgetunnel 部署指南](https://cmliussss.com/p/edt2/)
 
-下面是一个简单的 JavaScript 代码片段：
+### 注意事项
 
-```javascript
-function greet(name) {
-	console.log(Hello, ${name}!);
-}
-greet('World');
-```
+无需绑定域名也可使用，绑定域名连接更加稳定。
 
-## 下一步计划
+节点每日可请求数量100,000次，足够个人使用。
 
-- [ ] 添加更多文章
-- [ ] 优化移动端体验
-- [ ] 添加评论系统（使用 Giscus）
-- [ ] 自定义域名
+不要将节点随意分享给他人，否则存在被滥用封号的风险。
 
-## 结语
+### 结语
 
 感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 [GitHub Issues](https://github.com/yourusername/yourrepo/issues) 与我交流。
 
