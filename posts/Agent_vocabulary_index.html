@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>智能体相关词汇解读 - 我的博客</title>
+    <meta name="description" content="逐步深入解释智能体领域部分技术名词含义">
+    <meta property="og:title" content="智能体相关词汇解读">
+    <meta property="og:description" content="逐步深入解释智能体领域部分技术名词含义">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@11/styles/github.min.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    tags: 'none'
+  },
+  svg: { fontCache: 'global' },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo"><a href="../index.html">彾九平</a></div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../index.html#about">关于</a></li>
+                <li><a href="../index.html#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <article class="post-container">
+            <div class="post-header">
+                <h1 id="post-title">智能体相关词汇解读</h1>
+                <div class="post-meta">
+                    <span>📅 2026-07-21</span>
+                    <span>🏷️ 人工智能, 知识</span>
+                </div>
+            </div>
+            <div class="post-content" id="post-content">
+<h1>逐步深入解释智能体领域部分技术名词含义</h1>
+<h3>Agent = LLM + [上下文 + 工具+约束+验证+纠正]=Model+Harness</h3>
+<h4>上下文(context):</h4>
+<p>上下文是 Agent 在每个决策点能看到的全部信息。任务说明、参考手册、之前的沟通记录、最新的数据——Agent的上下文窗口就是它的“视野”。由以下五个部分构成：
+<strong>系统提示词（System Prompt）</strong>：系统提示词由开发者编写，在整个对话过程中保持不变，定义它的身份、权限和行为准则。
+<strong>工具定义（Tool Definitions）</strong>：声明 Agent 可用工具的名称、功能描述和参数格式。工具定义与系统提示词一起构成对话中保持不变的静态前缀。
+<strong>用户消息（User Messages）</strong>：来自用户的输入。
+<strong>模型回复（Assistant Messages）</strong>：模型之前生成的回复，最多包含三个部分——思考过程（reasoning）、文本内容（content）和工具调用请求（tool_calls）。
+<strong>工具执行结果（Tool Results）</strong>：Agent 框架执行工具后返回的结果。</p>
+<pre><code class="language-json">{
+    &quot;model&quot;: &quot;Qwen3-0.6B&quot;,
+    &quot;messages&quot;: [
+        {
+            &quot;role&quot;: &quot;system&quot;,    // ← Written by developer
+            &quot;content&quot;: &quot;You are a helpful assistant. Use the provided tools to get real-time
+                information when needed.&quot;
+        },
+        {
+            &quot;role&quot;: &quot;user&quot;,      // ← User input
+            &quot;content&quot;: &quot;What's the current time and weather in Vancouver?&quot;
+        }
+    ],
+    &quot;tools&quot;: [
+        {
+            &quot;type&quot;: &quot;function&quot;,
+            &quot;function&quot;:
+                {
+                    &quot;name&quot;: &quot;get_current_time&quot;,         // ← Tools defined by developer
+                    &quot;description&quot;: &quot;Get the current date and time in a specific timezone&quot;,
+                    &quot;parameters&quot;: {
+                        &quot;type&quot;: &quot;object&quot;,
+                        &quot;properties&quot;: {
+                            &quot;timezone&quot;: { &quot;type&quot;: &quot;string&quot;, 
+                                        &quot;description&quot;: &quot;Timezone name, e.g.}
+                            }
+                }
+        },
+        {
+            &quot;type&quot;: &quot;function&quot;,
+            &quot;function&quot;: {
+            &quot;name&quot;: &quot;get_weather&quot;,
+            &quot;description&quot;: &quot;Get the current weather for a specific city&quot;,
+            &quot;parameters&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                            &quot;city&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;City name&quot; },
+                           &quot;unit&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;celsius&quot;, &quot;fahrenheit&quot;] }
+                        }
+                }
+            }
+        }
+    ]
+}
+</code></pre>
+<h4>Harness 工程（Harness Engineering）：</h4>
+<p>模型提供基础的理解和推理能力，而Harness 将这些能力引导、约束和放大为可靠的任务执行。设计和优化这套模型之外的基础设施的工程实践，就是Harness 工程。包含以下机制：Context（上下文）Tools（工具）Constrain（约束）Verify（验证）Correct（纠正）。</p>
+<h4>KV Cache:</h4>
+<p>“键（Key）”与“值（Value）”是注意力机制的两类向量。</p>
+<p>模型每生成一个token，都要回头看一遍前文所有token的中间计算结果。如果每轮都从头算一次，开销会随上下文长度爆炸式增长。KV Cache的做法是：把前文的中间计算结果缓存下来，下一轮只需要计算新增token的部分。前提是前缀完全不变。跨请求的“缓存命中”时，在API服务商的语境下叫Prompt Cache。</p>
+<h4>提示注入（Prompt Injection）：</h4>
+<p>Agent 安全的核心威胁之一。其本质是：攻击者通过Agent 处理的外部内容（网页、邮件、文档等），将伪装成系统指令的文本混入上下文，从而劫持Agent的行为。</p>
+<h4>Skills ：</h4>
+<p>将 Agent 的能力模块化为独立的、可按需加载的知识包。采用了渐进式披露（Progressive Disclosure）的设计哲学——先给 Agent看一份目录摘要，需要时再加载完整内容。避免了<strong>浪费token</strong>和<strong>注意力被稀释</strong>的问题。</p>
+<h4>Agent状态栏（Agent Status Bar）：</h4>
+<p>大模型对于长上下文的计数能力消耗大，把分散在上下文各处的隐式状态提炼为可直接使用的显式知识，模型就可以以极低的额外token 成本，呈现出原本需要扫描数千个token才能获得的信息。</p>
+<h4>轨迹（Trajectory）：</h4>
+<p>一次 Agent 运行过程中的完整历史记录。</p>
+<h4>用户长期记忆：</h4>
+<p>跨会话、跨实例的持久化存储，通常以键值对形式与特定用户ID绑定。存储偏好设置、历史交互摘要、提取的知识点。Agent 通过特定工具调用显式读取和更新长期记忆，实现跨会话的个性化和连续性。</p>
+<h4>检索增强生成（Retrieval-Augmented Generation, RAG）：</h4>
+<p>构建共享知识库的核心技术。其核心思想是将大型语言模型的思考和生成能力，与外部知识库的广度和时效性相结合——模型本身的训练数据有截止日期，而知识库可以随时更新。典型的RAG系统由两部分构成：检索器负责从知识库里找出相关片段，生成器（通常是LLM）拿到这些片段作为上下文来生成答案。RAG的基础技术包括<strong>稠密嵌入</strong>、<strong>稀疏嵌入</strong>、<strong>混合检索</strong>，解决了“给定一个文本块，如何快速找到最相关的那几个”的问题，但其核心方法——用前文“文档分块”一节的标准工序，将文档切分为独立的、无关联的文本块——存在根本性限制。这种“扁平化”处理方式忽略了知识本身所固有的内在结构。</p>
+<h4>分块（Chunking）：</h4>
+<p>把长文档切成适合独立检索的片段（chunk）。嵌入模型对输入长度有限制，且一整篇文档只压缩成一个向量时，多个主题混在一起，向量无法精确表达任何一个。检索的目标是只把相关的那部分注入上下文，片段太大会连带大量无关内容，浪费窗口、稀释注意力。</p>
+<h4>嵌入（Embedding）：</h4>
+<p>计算机只能处理数字，不能直接理解“苹果”和“橙子”的含义。嵌入的思路是：把每个词或句子转化成一串数字（称为“向量”，比如[0.2,-0.5, 0.8, ⋯]），并且让语义相近的内容转化出来的数字串也“相近”。这些向量所在的数学空间称为“向量空间”，语义越接近的内容彼此就越靠近。</p>
+<h4>稠密嵌入：</h4>
+<p>用深度学习把文本映射到向量空间——语义相近的内容，向量距离也近。衡量两个向量有多“近”的常用方法是余弦相似度。</p>
+<p><strong>余弦相似度：</strong>它计算两个向量夹角的余弦值，值越接近1表示方向越一致、语义越相似。</p>
+<h4>稀疏嵌入（Sparse Embedding）：</h4>
+<p>根植于传统信息检索，核心是精确的关键词匹配。它将文档表示为极高维度的向量，绝大多数维度为零，只有与文档中出现的词汇对应的维度具有非零值。理论基石是经典的词袋模型（Bag of Words, BoW）——它把一段文本看作一个“装满词的袋子”，只关心哪些词出现了、出现了几次，完全忽略词序。例如“猫追狗”和“狗追猫”在词袋模型中是完全相同的。在此基础上，逐步演进出更复杂的概率排序算法。</p>
+<h4>TF-IDF：</h4>
+<p>基于一个简单的直觉：一个词在文档中出现的频率（TF，词频，Term Frequency）越高、在整个文档集合中出现的频率（IDF，逆文档频率，Inverse Document Frequency）越低，这个词就越重要。</p>
+<h4>BM25：</h4>
+<p>TF-IDF 没有考虑文档长度（长文档天然具有更高词频），且词频增长是线性的（一个词出现10次的重要性真的是5次的2倍吗？）BM25引入两个关键参数来修正这些问题。k1控制词频“饱和度”：直觉上说，一篇文章提到“蒸馏”20 次和 10 次，它与“蒸馏”的相关程度并不真的差一倍。k1让词频的贡献随着增加而逐渐趋于平缓，避免长文档因词频堆砌而不公平地占优；b则控制文档长度归一化，使算法能更公平地处理不同长度的文档。这使BM25成为更加鲁棒有效的排序函数，至今仍是各大搜索引擎中不可或缺的核心组件。</p>
+<h4>混合检索：</h4>
+<p>两种方法各有盲区：稠密检索懂语义但可能漏掉关键词（搜“HTTP-403”可能返回“服务器错误”的泛泛讨论），稀疏检索精确匹配但读不懂同义词（搜“kitty”找不到只写了“cat”的文档）。混合检索的思路很简单——两个引擎都跑，结果合并——难点在于如何把分布迥异的两组得分整合成一个有意义的排序。</p>
+<h4>原生多模态处理：</h4>
+<p>通过专门的编码器将不同类型的数据全部映射到统一的高维语义空间。具体来说，将图像分割为固定大小的图像块（Patches），像处理句子中的单词一样将每个块序列化为向量，与文本词向量共存于共享的多模态嵌入空间。Transformer 的自注意力机制能同等对待文本和图像 Tokens，计算任意跨模态关联。这种端到端联合处理提供了无与伦比的上下文保真度——模型直接“看到”PDF的页面布局、图表和文字时，能理解图文之间的空间和语义关系，尤其适合版式复杂、信息密度高的文档。</p>
+<h4>智能体化RAG（Agentic RAG）：</h4>
+<p>须将RAG从一个固定的数据处理流程，升级为一个由Agent主导的、动态的、
+迭代的探索过程。这便是“智能体化RAG（Agentic RAG）”的核心思想。</p>
+<h4>Model Context Protocol（MCP）：</h4>
+<p>Anthropic 于 2024 年底发布的开放标准，旨在统一 AI 模型与外部工具、数据源之间的通信协议——相当于为AI工具生态制定一个通用的“插座标准”。MCP 采用客户端-服务器架构：MCP服务器暴露一组工具，MCP客户端（通常是Agent框架或IDE）通过标准化协议与服务器通信。</p>
+<h4>预训练（Pre-training）：</h4>
+<p>在海量互联网文本上做“预测下一个词”的训练。这一步让模型学会语言规律、世
+界知识和基本推理，就像一个人读完了图书馆里的所有书——博学，但还不会好好回答问题。这是最贵的
+一步（动辄数千万美元），也是能力的地基。</p>
+<h4>监督微调（SFT，Supervised Fine-Tuning）：</h4>
+<p>用标注好的“输入—输出”对来训练模型，类似老师给出标准答案让学生照着学。</p>
+<p>SFT在数学上和预训练是同一个任务——都是预测下一个词、最小化同一个损失函数。SFT与预训练的差别只有两点：</p>
+<ol>
+<li>数据不同。预训练用原始互联网文本（无结构、什么都有）；SFT用人工精心准备的“输入—输出”对，格式
+统一为“用户提问→理想回答”。模型在这些示范上继续做“预测下一个词”，于是把“被提问时该怎么组织回
+答”这个协议学了进去。</li>
+<li>损失只算在“回答”上（loss masking，损失屏蔽）。一条 SFT 样本包含问题和标注回答两部分。我们不
+  希望模型学“怎么提问”，只希望它学“怎么回答”，所以计算损失时把问题部分的token屏蔽掉，只对回答部
+  分回传梯度。这是SFT在工程上与预训练唯一实质性的区别。</li>
+</ol>
+<p>用极高的样本效率，把一套稳定的“输入→输出”映射与协议固化进参数。它固化的是“格式、风格、流程”这类协议性知识（该怎么说、怎么做），而非大量事实性知识（知道什么）。</p>
+<h4>强化学习（RL，Reinforcement Learning）：</h4>
+<p>让模型反复尝试、根据结果好坏给奖惩来改进行为，类似训练小狗：做对了给零食，做错了不给。</p>
+<p>优化的是“结果好不好”。目标是最大化期望奖励。给定问题，任何能拿到高奖励的输出都是好的——不止一条。模型自己探索多条路径，哪条结果好就强化哪条，学到的是“怎样的过程能得到正确结果”这一更通用的策略：J变成11时，它用同一套策略重算一遍，而不是套用记忆里的答案。这就是泛化。</p>
+<p><strong>SFT是在别人画好的地图上临摹，最多和地图一样好；RL是自己拿着指南针（奖励）探路，有机会走出地图。</strong></p>
+<h4>RLHF（Reinforcement Learning from Human Feedback，基于人类反馈的强化学习。）</h4>
+<h4>RLVR（Reinforcement Learning with Verifiable Rewards，可验证奖励强化学习）</h4>
+<h4>过程奖励模型（Process Reward Model, PRM）：</h4>
+<p>对推理或执行的每个中间步骤打分，代表工作是OpenAI的《Let’s Verify Step by Step》——在数学推理任务上，用逐步骤人工标注训练的PRM显著优于只看最终答案的监督。</p>
+<h4>结果奖励模型（Outcome Reward Model,ORM）：</h4>
+<p>则只评估最终结果。前文RLVR中的规则验证器可以看作ORM的特例——把“学习到的打分模型”换成了确定性规则。</p>
+<h2>结语</h2>
+<p>名词参考均来自<a href="https://github.com/bojieli/ai-agent-book">《深入理解 AI Agent：设计原理与工程实践》（李博杰 著）开源主仓库：全书正文、编译版 PDF 与按章配套代码</a>  非常推荐一读。</p>
+<p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
+<hr />
+<p><em>本文使用 Markdown 编写，最后更新于 2026年7月26日</em></p>
+            </div>
+            <div class="post-navigation">
+                <a href="../posts/Cloudflare_freenode.html">← Cloudflare自建免费节点</a>
+                <a href="../index.html">返回首页</a>
+                <a href="../posts/About_deep_learning.html">深度学习基础 →</a>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 我的个人博客 | <a href="../index.html">返回首页</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/highlight.js@11/lib/highlight.min.js"></script>
+    <script>hljs.highlightAll();</script>
+</body>
+</html>

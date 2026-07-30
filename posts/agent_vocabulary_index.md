@@ -2,6 +2,7 @@
 title: 智能体相关词汇解读
 date: 2026-07-21
 tags: [人工智能, 知识]
+excerpt: 逐步深入解释智能体领域部分技术名词含义
 ---
 
 # 逐步深入解释智能体领域部分技术名词含义
@@ -186,10 +187,10 @@ SFT在数学上和预训练是同一个任务——都是预测下一个词、�
 
 ## 结语
 
-名词参考均来自《深入理解-AI-Agent-李博杰-v1.1》
+名词参考均来自[《深入理解 AI Agent：设计原理与工程实践》（李博杰 著）开源主仓库：全书正文、编译版 PDF 与按章配套代码](https://github.com/bojieli/ai-agent-book)  非常推荐一读。
 
 感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 [GitHub Issues](https://github.com/Ling-Nine/Ling-nine.github.io/issues) 与我交流。
 
 ------
 
-*本文使用 Markdown 编写，最后更新于 2026年7月21日*
+*本文使用 Markdown 编写，最后更新于 2026年7月26日*

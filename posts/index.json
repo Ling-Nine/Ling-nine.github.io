@@ -1,23 +1,42 @@
 [
     {
-        "filename": "agent_vocabulary_index.md",
+        "filename": "About_deep_learning.md",
+        "title": "深度学习基础",
+        "date": "2026-07-26",
+        "tags": [
+            "人工智能",
+            "知识"
+        ],
+        "excerpt": "关于深度学习的一些基础知识"
+    },
+    {
+        "filename": "Agent_vocabulary_index.md",
         "title": "智能体相关词汇解读",
         "date": "2026-07-21",
-        "tags": ["人工智能","知识"],
+        "tags": [
+            "人工智能",
+            "知识"
+        ],
         "excerpt": "逐步深入解释智能体领域部分技术名词含义"
     },
     {
         "filename": "Cloudflare_freenode.md",
         "title": "Cloudflare自建免费节点",
         "date": "2026-07-21",
-        "tags": ["网络","技术"],
-        "excerpt": "通过Cloudflare pages实现"
+        "tags": [
+            "网络",
+            "技术"
+        ],
+        "excerpt": "通过Cloudflare pages来建立节点"
     },
     {
         "filename": "test.md",
         "title": "Hello World - 我的第一篇博客",
         "date": "2026-07-21",
-        "tags": ["随笔", "介绍"],
-        "excerpt": "欢迎来到我的个人博客！这是我使用Markdown编写的第一篇文章..."
+        "tags": [
+            "随笔",
+            "介绍"
+        ],
+        "excerpt": "欢迎来到我的博客！"
     }
 ]

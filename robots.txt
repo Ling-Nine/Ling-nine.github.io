@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://ling-nine.github.io/sitemap.xml

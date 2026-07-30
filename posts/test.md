@@ -2,6 +2,7 @@
 title: Hello World - 我的第一篇博客
 date: 2026-07-21
 tags: [随笔, 介绍]
+excerpt: 欢迎来到我的博客！
 ---
 
 # 欢迎来到我的博客！
