@@ -12,7 +12,8 @@
     --text-color: #1e293b;
     --light-bg: #f8fafc;
     --border-color: #e2e8f0;
-    --code-bg: #1e293b;
+    --code-bg: #f5f5f5;
+    --code-text: #24292e;
 }
 
 body {
@@ -45,14 +46,48 @@ nav {
 }
 
 .logo {
-    font-size: 1.5rem;
-    font-weight: bold;
-    color: var(--primary-color);
+    display: flex;
+    align-items: center;
 }
 
-.logo a {
+.logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
     text-decoration: none;
     color: inherit;
+}
+
+/* 圆形头像 */
+.logo-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    box-shadow: 0 2px 6px rgba(37, 99, 235, 0.25);
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.logo-avatar:hover {
+    transform: scale(1.08);
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.4);
+}
+
+/* Logo 文字：手写风 + 渐变 + 微倾斜 */
+.logo-text {
+    font-family: 'STKaiti', serif;
+    font-size: 1.55rem;
+    font-weight: 700;
+    letter-spacing: 2px;
+    background: var(--primary-color);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+}
+
+.logo-text:hover {
+    transform: rotate(0deg) scale(1.05);
 }
 
 .nav-links {
@@ -73,22 +108,25 @@ nav {
 
 /* 主要内容区 */
 .hero {
-    text-align: center;
-    padding: 4rem 0;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    padding: 6rem 4rem;
+    padding-top: 0rem;
+    background: url('../posts/images/test/hello.png') center/cover no-repeat;
     color: white;
-    border-radius: 0 0 20px 20px;
-    margin-bottom: 3rem;
+    border-radius: 20px 20px 20px 20px;
+    position: relative;
+    overflow: hidden;
+    min-height: 400px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
 }
 
-.hero h1 {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-}
-
+.hero h1,
 .hero p {
-    font-size: 1.2rem;
-    opacity: 0.9;
+    position: relative;
+    z-index: 1;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
 }
 
 /* 文章列表 */
@@ -194,16 +232,25 @@ nav {
 
 .post-content pre {
     background: var(--code-bg);
-    color: #e2e8f0;
+    color: var(--code-text);
     padding: 1.5rem;
     border-radius: 8px;
     overflow-x: auto;
     margin: 1.5rem 0;
+    border: 1px solid var(--border-color);
 }
 
 .post-content code {
     font-family: 'Fira Code', Consolas, Monaco, monospace;
     font-size: 0.9rem;
+}
+
+/* 让 highlight.js (vs 主题) 完全接管代码颜色 */
+.post-content pre .hljs,
+.post-content pre code.hljs {
+    background: transparent;
+    color: inherit;
+    padding: 0;
 }
 
 .post-content blockquote {
@@ -342,7 +389,12 @@ footer a {
     color: var(--secondary-color);
 }
 
-/* 代码高亮增强 */
-.hljs {
-    background: transparent !important;
+/* 行内代码（不在 pre 里的 code） */
+.post-content p code,
+.post-content li code {
+    background: #eef1f4;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: #c7254e;
 }
