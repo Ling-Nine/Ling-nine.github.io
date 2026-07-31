@@ -127,8 +127,6 @@ def _extract_excerpt_from_markdown(body, max_len=80):
     text = re.sub(r'<[^>]+>', ' ', text)
 
     # 6) 去掉 Markdown 标记符号
-    # 标题 #、粗体/斜体 ** __ * _、链接 [text](url)、图片 ![alt](url)
-    # 水平线 ---、列表 - *、引用 >、括号转义等
     text = re.sub(r'^#{1,6}\s*', '', text, flags=re.MULTILINE)
     text = re.sub(r'!\[.*?\]\(.*?\)', ' ', text)   # 图片
     text = re.sub(r'\[([^\]]+)\]\([^)]+\)', r'\1', text)  # 链接 → 保留文字
@@ -141,7 +139,6 @@ def _extract_excerpt_from_markdown(body, max_len=80):
     if len(text) > max_len:
         text = text[:max_len].rstrip() + '...'
     return text
-
 
 # ═══════════════════════════════════════════════════
 #  格式校验
@@ -206,13 +203,7 @@ def validate_meta(meta, filename, body):
 
 # ═══════════════════════════════════════════════════
 #  LaTeX 公式保护 / 还原
-#  在 Markdown 渲染前把 $...$ / $$...$$ 公式替换为
-#  唯一占位符，渲染完再还原，避免 \\ & 等被 Markdown
-#  或 HTML 转义破坏，确保 MathJax 能正确渲染
 # ═══════════════════════════════════════════════════
-
-# 匹配 $$...$$（块级，优先）和 $...$（行内）
-# 注意：用非贪婪匹配，且 $$ 必须在 $ 前面先匹配
 _MATH_PATTERN = re.compile(r'(\$\$.*?\$\$|\$.*?\$|\\[\(\[].*?\\\)[\])])', re.DOTALL)
 
 def protect_math(text):
@@ -220,7 +211,6 @@ def protect_math(text):
     store = []
     def repl(match):
         formula = match.group(0)
-        # 生成唯一占位符，确保不会和正文冲突
         token = f"\x00MATH{uuid.uuid4().hex}\x00"
         store.append((token, formula))
         return token
@@ -235,7 +225,6 @@ def restore_math(text, store):
 
 # ═══════════════════════════════════════════════════
 #  Markdown → HTML
-#  先保护 LaTeX 公式，渲染后再还原
 # ═══════════════════════════════════════════════════
 def md_to_html(body):
     protected, math_store = protect_math(body)
@@ -316,6 +305,7 @@ def build_post_html(post_html, meta, prev_post=None, next_post=None):
             <ul class="nav-links">
                 <li><a href="../index.html">首页</a></li>
                 <li><a href="../index.html#about">关于</a></li>
+                <li><a href="../links/index.html">友链</a></li>
                 <li><a href="../index.html#contact">联系</a></li>
             </ul>
         </nav>
@@ -391,13 +381,13 @@ def build_sitemap(posts_sorted):
         return None
     lines = ['<?xml version="1.0" encoding="UTF-8"?>',
              '<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">']
-    # 首页
     today = datetime.now(timezone.utc).strftime("%Y-%m-%d")
     lines.append(f"  <url><loc>{SITE_URL}/</loc><lastmod>{today}</lastmod></url>")
+    # 友链页面也加入 sitemap
+    lines.append(f"  <url><loc>{SITE_URL}/links/index.html</loc><lastmod>{today}</lastmod></url>")
     for p in posts_sorted:
         slug = slugify(p["filename"])
         url = f"{SITE_URL}/posts/{slug}.html"
-        # 优先用文章 date，缺失则回退到今天
         lastmod = p.get("date") or today
         lines.append(f"  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod></url>")
     lines.append("</urlset>")
@@ -484,7 +474,6 @@ def main():
         fname = post["filename"]
         md_path = POSTS_DIR / fname
         text = md_path.read_text(encoding="utf-8")
-        # 复用前面已解析好的 body（不再重复 parse_front_matter）
         _, body = parse_front_matter(text, fname)
         if not body:
             body = text
@@ -536,4 +525,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-    input()

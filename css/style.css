@@ -398,3 +398,95 @@ footer a {
     font-size: 0.88em;
     color: #c7254e;
 }
+
+/* ═══════════════════════════════════════
+   友链页面
+   ═══════════════════════════════════════ */
+.links-section {
+    margin: 3rem 0;
+}
+
+.links-section h2 {
+    margin-bottom: 0.5rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 2px solid var(--primary-color);
+}
+
+.links-desc {
+    color: var(--secondary-color);
+    margin-bottom: 2rem;
+}
+
+/* 网格布局：宽屏 3 列，窄屏自适应 */
+.links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.2rem;
+}
+
+/* 单个友链卡片 */
+.link-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.2rem;
+    background: var(--light-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    text-decoration: none;
+    color: var(--text-color);
+    transition: transform 0.3s, box-shadow 0.3s, border-color 0.3s;
+}
+
+.link-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+    border-color: var(--primary-color);
+}
+
+/* 友链头像 */
+.link-avatar {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-color);
+    flex-shrink: 0;
+    transition: transform 0.3s;
+}
+
+.link-card:hover .link-avatar {
+    transform: scale(1.1);
+}
+
+/* 友链文字 */
+.link-info {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+}
+
+.link-name {
+    font-weight: 700;
+    font-size: 1.05rem;
+    margin-bottom: 0.2rem;
+    transition: color 0.3s;
+}
+
+.link-card:hover .link-name {
+    color: var(--primary-color);
+}
+
+.link-desc {
+    font-size: 0.85rem;
+    color: var(--secondary-color);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 导航高亮当前页 */
+.nav-links a.active {
+    color: var(--primary-color);
+    font-weight: 600;
+}
