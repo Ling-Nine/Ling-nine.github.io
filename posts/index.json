@@ -1,5 +1,15 @@
 [
     {
+        "filename": "How_to_use_pytorch.md",
+        "title": "如何使用PyTorch",
+        "date": "2026-08-01",
+        "tags": [
+            "随笔",
+            "介绍"
+        ],
+        "excerpt": "入门学习PyTorch框架基础"
+    },
+    {
         "filename": "About_deep_learning.md",
         "title": "深度学习基础",
         "date": "2026-07-26",
