@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Claude Code 安装与配置 - 我的博客</title>
+    <meta name="description" content="一份Claude Code教程，涵盖从环境准备、安装、项目配置，到高级命令与最佳实践的完整流程。">
+    <meta property="og:title" content="Claude Code 安装与配置">
+    <meta property="og:description" content="一份Claude Code教程，涵盖从环境准备、安装、项目配置，到高级命令与最佳实践的完整流程。">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap">
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs.min.css">
+    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    tags: 'none'
+  },
+  svg: { fontCache: 'global' },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="../index.html" class="logo-link">
+                    <img class="logo-avatar" src="../posts/images/test/头像.png" alt="avatar">
+                    <span class="logo-text">彾九平</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../index.html">首页</a></li>
+                <li><a href="../index.html#about">关于</a></li>
+                <li><a href="../links/index.html">友链</a></li>
+                <li><a href="../index.html#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main class="container">
+        <article class="post-container">
+            <div class="post-header">
+                <h1 id="post-title">Claude Code 安装与配置</h1>
+                <div class="post-meta">
+                    <span>📅 2026-08-02</span>
+                    <span>🏷️ 技术, 介绍</span>
+                </div>
+            </div>
+            <div class="post-content" id="post-content">
+<h1>Claude Code 安装与配置</h1>
+<p>产品官网：<a href="https://claude.com/product/claude-code">https://claude.com/product/claude-code</a></p>
+<p>中文文档：<a href="https://code.claude.com/docs/zh-CN/quickstart">https://code.claude.com/docs/zh-CN/quickstart</a></p>
+<h2>系统支持</h2>
+<ul>
+<li>macOS: 10.14+</li>
+<li>Linux: Ubuntu 18.04+, CentOS 7+, 以及其他主流发行版</li>
+<li>Windows: Windows 10/11 (推荐使用 PowerShell 或 Git Bash)</li>
+</ul>
+<h2>前置依赖</h2>
+<p><code>Claude Code</code> 主要通过 <code>npm</code> 包分发，因此 <code>Node.js</code> 是必需项。</p>
+<p>检查 <code>Node.js</code> 是否安装：<code>win + R 输入 cmd</code> 打开终端输入以下命令，确保版本在 <code>16.0</code> 以上（推荐 <code>18+</code>）。</p>
+<pre><code class="language-bash">node --version
+npm --version
+</code></pre>
+<p>安装 <code>Node.js</code>：前往 <a href="https://nodejs.org/zh-cn">nodejs.org</a>下载安装长期支持版（<code>LTS</code>）。</p>
+<p>检查 <code>Git</code> 是否安装</p>
+<pre><code class="language-bash">git --version
+</code></pre>
+<p>安装 <code>Git</code>：<a href="https://git-scm.com/install/windows">Git - Install for Windows</a></p>
+<h2>Claude Code 的安装</h2>
+<h4>官网安装方式</h4>
+<p><strong>macOS, Linux, WSL:</strong></p>
+<pre><code class="language-bash">curl -fsSL https://claude.ai/install.sh | bash
+</code></pre>
+<p><strong>Windows PowerShell:</strong></p>
+<pre><code class="language-bash">irm https://claude.ai/install.ps1 | iex
+</code></pre>
+<p><strong>Windows CMD:</strong></p>
+<pre><code class="language-bash">curl -fsSL https://claude.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd
+</code></pre>
+<p>但是国内无法访问Claude，“Claude is only available in certain regions right now. ”因此上面的方法可能行不通。</p>
+<h4>npm 安装</h4>
+<p><code>Linux/macOS</code> 安装：</p>
+<pre><code class="language-bash"># 全局安装 Claude Code
+sudo npm install -g @anthropic-ai/claude-code
+
+# 验证安装
+claude --version
+</code></pre>
+<p><code>Windows</code> 安装：</p>
+<pre><code class="language-bash"># 以管理员身份打开 Powershell 或命令提示符
+
+# 全局安装
+npm install -g @anthropic-ai/claude-code
+
+# 验证安装
+claude --version
+</code></pre>
+<p>当我们安装完 Claude Code 时通过 claude 命令便可以启动</p>
+<pre><code class="language-bash">claude
+</code></pre>
+<p>如果你的电脑能够直接访问外网，那么运行之后它 Claude Code 就能直接正常启动让你选择一个主题。</p>
+<p>但在国内更多情况下我们是不能直接访问外网的，就会出现以下情况</p>
+<pre><code class="language-bash"> Unable to connect to Anthropic services
+
+ Failed to connect to api.anthropic.com: ERR_BAD_REQUEST
+
+ Please check your internet connection and network settings.
+
+ Note: Claude Code might not be available in your country. Check supported countries at
+ https://anthropic.com/supported-countries
+</code></pre>
+<h4>方式一：配置代理网络</h4>
+<p>在当前项目目录下创建 <code>.claude/settings.json</code></p>
+<pre><code class="language-json">{
+    &quot;evn&quot;: {
+        &quot;HTTP_PROXY&quot;: &quot;http://127.0.0.1:7890&quot;,
+        &quot;HTTPS_PROXY&quot;: &quot;http://127.0.0.1:7890&quot;
+    }
+}
+</code></pre>
+<p>这样做是为了给 Claude Code 配置网络代理，让它在运行时通过你指定的代理服务器（这里是 127.0.0.1:7890）来访问外部网络。</p>
+<h4>方式二：修改配置绕过IP校验</h4>
+<p>在 <code>C</code> 盘下 <code>C:\User\{username}</code>，找到 <code>claude</code> 的 <code>json</code> 配置文件 <code>.claude.json</code>，添加以下配置：</p>
+<pre><code class="language-json">&quot;hasCompletedOnboarding&quot;: true,
+</code></pre>
+<p>推荐使用方式二</p>
+<p>做完以上配置我们再次启动 <code>Claude Code</code></p>
+<p>就能发现 <code>Claude Code</code> 是启动成功的，它会问你是否需要去读取这个目录文件</p>
+<p>如果我们选择 <code>Yes</code>，它会出现一个报错，提示：<code>not login</code></p>
+<p>这是因为正常你启动的话，它会用到 <code>Claude Code</code> 自带的一个模型 <code>Sonnet 4.6</code> 模型，但这个模型是要收费的，一个月最低也要 <code>17$</code></p>
+<p>这里我们可以使用 <code>API</code> 的方式，就不需要去登录 <code>Claude Code</code> 的账户</p>
+<h2>接入DeepSeek API</h2>
+<p>首先创建一个 <code>API KEY</code></p>
+<p>访问文档可知它的 <code>Anthropic BaseURL</code> 和 <code>模型</code> </p>
+<table>
+<thead>
+<tr>
+<th>PARAM</th>
+<th>VALUE</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>base_url (OpenAI)</td>
+<td><code>https://api.deepseek.com</code></td>
+</tr>
+<tr>
+<td>base_url (Anthropic)</td>
+<td><code>https://api.deepseek.com/anthropic</code></td>
+</tr>
+<tr>
+<td>api_key</td>
+<td>apply for an <a href="https://platform.deepseek.com/api_keys">API key</a></td>
+</tr>
+<tr>
+<td>model(1)</td>
+<td><code>deepseek-v4-flash``deepseek-v4-pro</code></td>
+</tr>
+</tbody>
+</table>
+<p>可以在命令行中设置</p>
+<pre><code class="language-bash"># 临时设置
+set ANTHROPIC_API_KEY &quot;sk-c6159***********************783a&quot;
+set ANTHROPIC_BASE_URL &quot;https://api.qnaigc.com&quot;
+# 模型不设置默认使用 claude-4.6-sonnet
+set ANTHROPIC_MODEL &quot;qwen3-coder-480b-a35b-instruct&quot; 
+
+# 永久设置
+setx ANTHROPIC_API_KEY &quot;sk-c6159***********************783a&quot;
+setx ANTHROPIC_BASE_URL &quot;https://api.qnaigc.com&quot;
+# 模型不设置默认使用 claude-4.6-sonnet
+setx ANTHROPIC_MODEL &quot;qwen3-coder-480b-a35b-instruct&quot; 
+</code></pre>
+<p>也可以在 <code>C:\Users\{uername}\.claude\settings.json</code> 添加以下配置：</p>
+<pre><code class="language-json">{
+  &quot;env&quot;: {
+    &quot;ANTHROPIC_API_KEY&quot;: &quot;sk-c6159***********************783a&quot;,
+    &quot;ANTHROPIC_BASE_URL&quot;: &quot;https://api.deepseek.com/anthropic&quot;,
+    &quot;ANTHROPIC_MODEL&quot;: &quot;deepseek-v4-flash&quot; ,
+    &quot;CLAUDE CODE ATTRIBUTION HEADER&quot;: &quot;0&quot;
+  }
+}
+</code></pre>
+<h2>接入NVIDIA API</h2>
+<p>其实许多价值不菲的模型 API 接口，在 NVIDIA 的服务器里早已明码标价“免费试用”。</p>
+<ol>
+<li>注册：点击链接<a href="https://build.nvidia.com/settings/api-keys">Try NVIDIA NIM APIs</a>，没有登陆过就提示创建账户。</li>
+<li>创建云账户：如下图提示，输入一个云账户名，一个用户下面可以创建多个云账户。</li>
+<li>初始化账户：然后你就会收到一个邮件，点邮件里面的 Login 完成身份初始化</li>
+<li>完成身份验证，还是点击上面的链接，然后点击右侧的“verify”</li>
+<li>接下来输入手机号码，输入短信验证码，中国手机也可以。</li>
+<li>先创建API：点击<a href="https://build.nvidia.com/settings/api-keys">Try NVIDIA NIM APIs</a>，点击 generate apikey</li>
+<li>复制 APIKEY：按提示完成操作，你就获得一个以 nvapi 开头的 apikey</li>
+<li>测试使用 APIKEY：现在 apikey 有了，外面怎么调用呢？先在 shell 里面测试一下最新的 deepseek-v4-pro</li>
+</ol>
+<pre><code class="language-shell">curl -X POST &quot;https://integrate.api.nvidia.com/v1/chat/completions&quot; 
+    -H &quot;Authorization: Bearer nvapi-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot; 
+    -H &quot;Content-Type: application/json&quot; 
+    -d &quot;{ \&quot;model\&quot;: \&quot;deepseek-ai/deepseek-v4-pro\&quot;,\&quot;messages\&quot;: [{\&quot;role\&quot;: \&quot;user\&quot;, \&quot;content\&quot;: \&quot;你好, 介绍一下自己!\&quot;}],\&quot;temperature\&quot;: 0.5,\&quot;top_p\&quot;: 1,\&quot;max_tokens\&quot;: 1024}&quot;
+</code></pre>
+<pre><code class="language-json">{&quot;id&quot;:&quot;chatcmpl-b3de684c-fcfb-4b3b-9306-6e1040798e63&quot;,
+ &quot;choices&quot;:[{&quot;index&quot;:0,
+             &quot;message&quot;:{
+                 &quot;content&quot;:&quot;你好呀！很高兴认识你！👋\n\n我是 **DeepSeek**，一个由深度求索公司创造的AI助手。简单来说，我就是你的智能小伙伴，随时准备帮你解决问题、聊天交流！\n\n**关于我的几个特点：**\n\n✨ **知识储备**：我的知识截止到2025年5月，对世界有着比较新鲜的了解\n\n📚 **超强记忆力**：上下文长度达到1M，可以一次性处理像《三体》三部曲那么大体量的书籍！\n\n📎 **文件处理能力**：支持上传图片、PDF、Word、Excel、PPT等文件，我能从中提取文字信息帮你分析\n\n🌐 **联网搜索**：需要最新信息时，你可以在Web/App上手动开启联网搜索功能\n\n🗣️ **多端使用**：App端支持语音输入，随时随地和我聊天\n\n🎨 **纯文本模型**：虽然不能识别图片内容，但可以读取图片中的文字哦\n\n**我的风格嘛**——热情、细腻、力求给你最贴心的帮助！无论是学习、工作还是日常闲聊，我都很乐意陪伴你。\n\n有什么我可以帮你的吗？尽管说！😊&quot;,
+                 &quot;role&quot;:&quot;assistant&quot;,&quot;reasoning_content&quot;:null},
+             &quot;finish_reason&quot;:&quot;stop&quot;,&quot;logprobs&quot;:null}],
+ &quot;created&quot;:1785671499,
+ &quot;model&quot;:&quot;deepseek-ai/deepseek-v4-pro&quot;,
+ &quot;service_tier&quot;:null,
+ &quot;system_fingerprint&quot;:null,
+ &quot;object&quot;:&quot;chat.completion&quot;,
+ &quot;usage&quot;:{&quot;prompt_tokens&quot;:10,&quot;completion_tokens&quot;:240,&quot;total_tokens&quot;:250}}
+</code></pre>
+<h4>Claude Code使用这个Nvidia API</h4>
+<p>下载cc-switch：<a href="https://www.ccswitch.io/zh/download">CC Switch 下载 - macOS / Windows / Linux 官方安装包</a>。</p>
+<ol>
+<li>
+<p>打开 ccswitch，在右侧点击“+”</p>
+</li>
+<li>
+<p>相关配置如下</p>
+</li>
+</ol>
+<p><img alt="" src="..\posts\images\Install_Claude_code\英伟达配置.webp" /></p>
+<ul>
+<li>
+<p>请求地址：<a href="https://link.juejin.cn/?target=https%3A%2F%2Fintegrate.api.nvidia.com%2Fv1">integrate.api.nvidia.com/v1</a></p>
+</li>
+<li>
+<p>API 格式：选择OpenAI Chat Completions</p>
+</li>
+<li>
+<p>需要开始本地路由：然后选择 Claude</p>
+</li>
+</ul>
+<p><img alt="" src="..\posts\images\Install_Claude_code\路由选择.webp" /></p>
+<ol>
+<li>测试，能够正常调用模型</li>
+</ol>
+<h2>疑问</h2>
+<ul>
+<li>
+<p>为什么会有免费的额度？NVIDIA 提供免费 API 额度（Credits）并不是单纯的“慈善”，而是一套非常精明的商业与生态策略。NVIDIA 的目标不仅仅是卖显卡，而是要通过 <strong>NVIDIA NIM</strong>（微服务架构）统一 AI 部署标准。说白了，就是先培训用户习惯，习惯了他们的接口，后面就可以卖算力、服务等。</p>
+</li>
+<li>
+<p>有哪些限制？目前NVIDIA 采取的是积分制 + 速率限制（Rate Limit）的策略。对于免费评估账户，通常限制在 <strong>40 RPM</strong> (每分钟请求数)，这对于个人开发和测试来说已经非常慷慨</p>
+</li>
+<li>
+<p>现在有哪些模型可调用？目前 NVIDIA API Catalog (<a href="https://link.juejin.cn?target=http%3A%2F%2Fbuild.nvidia.com%2F">build.nvidia.com</a>) 托管了超过 100 个模型，涵盖了文本生成、多模态、图像生成及医疗/工业专用模型</p>
+</li>
+</ul>
+<h2>结语</h2>
+<p>本文摘编自<a href="https://blog.csdn.net/xhmico/article/details/159132449">Claude Code 安装与配置（详细教程）_claude code安装-CSDN博客</a>、<a href="https://juejin.cn/post/7639296826124632073">不用付费，不用中转站：NVIDIA 官方免费 API 完整教程</a>。</p>
+<p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
+<hr />
+<p><em>本文使用 Markdown 编写，最后更新于 2026年8月2日</em></p>
+            </div>
+            <div class="post-navigation">
+                <a href="../posts/How_to_use_pytorch.html">← 如何使用PyTorch</a>
+                <a href="../index.html">返回首页</a>
+                <a href="../posts/About_Git.html">Git快速使用 →</a>
+            </div>
+        </article>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 我的个人博客 | <a href="../index.html">返回首页</a></p>
+        </div>
+    </footer>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/plaintext.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
+</body>
+</html>

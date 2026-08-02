@@ -1,7 +1,7 @@
 ---
 title: 如何使用PyTorch
 date: 2026-08-01
-tags: [随笔, 介绍]
+tags: [人工智能, 技术]
 excerpt: 入门学习PyTorch框架基础
 ---
 

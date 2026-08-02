@@ -1,11 +1,31 @@
 [
     {
+        "filename": "About_Git.md",
+        "title": "Git快速使用",
+        "date": "2026-08-02",
+        "tags": [
+            "技术",
+            "介绍"
+        ],
+        "excerpt": "Git的使用与常用命令"
+    },
+    {
+        "filename": "Install_Claude_code.md",
+        "title": "Claude Code 安装与配置",
+        "date": "2026-08-02",
+        "tags": [
+            "技术",
+            "介绍"
+        ],
+        "excerpt": "一份Claude Code教程，涵盖从环境准备、安装、项目配置，到高级命令与最佳实践的完整流程。"
+    },
+    {
         "filename": "How_to_use_pytorch.md",
         "title": "如何使用PyTorch",
         "date": "2026-08-01",
         "tags": [
-            "随笔",
-            "介绍"
+            "人工智能",
+            "技术"
         ],
         "excerpt": "入门学习PyTorch框架基础"
     },
