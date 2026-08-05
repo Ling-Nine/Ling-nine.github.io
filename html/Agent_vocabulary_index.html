@@ -3,15 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>智能体相关词汇解读 - 我的博客</title>
+    <title>智能体相关词汇解读 - 彾九平</title>
     <meta name="description" content="逐步深入解释智能体领域部分技术名词含义">
     <meta property="og:title" content="智能体相关词汇解读">
     <meta property="og:description" content="逐步深入解释智能体领域部分技术名词含义">
     <meta property="og:type" content="article">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs.min.css">
-    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/plaintext.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
+
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     
 <script>
 window.MathJax = {
@@ -32,30 +52,38 @@ window.MathJax = {
     <header>
         <nav class="container">
             <div class="logo">
-                <a href="../index.html" class="logo-link">
-                    <img class="logo-avatar" src="../posts/images/test/头像.png" alt="avatar">
+                <a href="../../index.html" class="logo-link">
+                    <img class="logo-avatar" src="../../posts/images/test/头像.png" alt="avatar">
                     <span class="logo-text">彾九平</span>
                 </a>
             </div>
             <ul class="nav-links">
-                <li><a href="../index.html">首页</a></li>
-                <li><a href="../index.html#about">关于</a></li>
-                <li><a href="../links/index.html">友链</a></li>
-                <li><a href="../index.html#contact">联系</a></li>
+                <li><a href="../../index.html">首页</a></li>
+                <li><a href="../../index.html#about">关于</a></li>
+                <li><a href="../../links/index.html">友链</a></li>
+                <li><a href="../../index.html#contact">联系</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="container">
-        <article class="post-container">
-            <div class="post-header">
-                <h1 id="post-title">智能体相关词汇解读</h1>
-                <div class="post-meta">
-                    <span>📅 2026-07-21</span>
-                    <span>🏷️ 人工智能, 知识</span>
+    <div class="container post-layout">
+    <aside class="toc-sidebar">
+        <div class="toc-title">📑 目录</div>
+        <ul class="toc-list">
+        <li><a href="#结语">结语</a></li>
+        </ul>
+    </aside>
+
+        <main class="post-main">
+            <article class="post-container">
+                <div class="post-header">
+                    <h1 id="post-title">智能体相关词汇解读</h1>
+                    <div class="post-meta">
+                        <span>📅 2026-07-21</span>
+                        <span>🏷️ 人工智能, 知识</span>
+                    </div>
                 </div>
-            </div>
-            <div class="post-content" id="post-content">
+                <div class="post-content" id="post-content">
 <h1>逐步深入解释智能体领域部分技术名词含义</h1>
 <h3>Agent = LLM + [上下文 + 工具+约束+验证+纠正]=Model+Harness</h3>
 <h4>上下文(context):</h4>
@@ -66,45 +94,45 @@ window.MathJax = {
 <strong>模型回复（Assistant Messages）</strong>：模型之前生成的回复，最多包含三个部分——思考过程（reasoning）、文本内容（content）和工具调用请求（tool_calls）。
 <strong>工具执行结果（Tool Results）</strong>：Agent 框架执行工具后返回的结果。</p>
 <pre><code class="language-json">{
-    &quot;model&quot;: &quot;Qwen3-0.6B&quot;,
-    &quot;messages&quot;: [
-        {
-            &quot;role&quot;: &quot;system&quot;,    // ← Written by developer
-            &quot;content&quot;: &quot;You are a helpful assistant. Use the provided tools to get real-time
-                information when needed.&quot;
+    "model": "Qwen3-0.6B",
+    "messages": [
+    	{
+        	"role": "system",    // ← Written by developer
+            "content": "You are a helpful assistant. Use the provided tools to get real-time
+                information when needed."
         },
         {
-            &quot;role&quot;: &quot;user&quot;,      // ← User input
-            &quot;content&quot;: &quot;What's the current time and weather in Vancouver?&quot;
+            "role": "user",      // ← User input
+            "content": "What's the current time and weather in Vancouver?"
         }
     ],
-    &quot;tools&quot;: [
+    "tools": [
         {
-            &quot;type&quot;: &quot;function&quot;,
-            &quot;function&quot;:
+            "type": "function",
+            "function":
                 {
-                    &quot;name&quot;: &quot;get_current_time&quot;,         // ← Tools defined by developer
-                    &quot;description&quot;: &quot;Get the current date and time in a specific timezone&quot;,
-                    &quot;parameters&quot;: {
-                        &quot;type&quot;: &quot;object&quot;,
-                        &quot;properties&quot;: {
-                            &quot;timezone&quot;: { &quot;type&quot;: &quot;string&quot;, 
-                                        &quot;description&quot;: &quot;Timezone name, e.g.}
-                            }
-                }
+                    "name": "get_current_time",			// ← Tools defined by developer
+                    "description": "Get the current date and time in a specific timezone",
+                    "parameters": {
+                    	"type": "object",
+                    	"properties": {
+                    		"timezone": { "type": "string", 
+                    					"description": "Timezone name, e.g.}
+        					}
+        		}
         },
         {
-            &quot;type&quot;: &quot;function&quot;,
-            &quot;function&quot;: {
-            &quot;name&quot;: &quot;get_weather&quot;,
-            &quot;description&quot;: &quot;Get the current weather for a specific city&quot;,
-            &quot;parameters&quot;: {
-                    &quot;type&quot;: &quot;object&quot;,
-                    &quot;properties&quot;: {
-                            &quot;city&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;City name&quot; },
-                           &quot;unit&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;celsius&quot;, &quot;fahrenheit&quot;] }
+            "type": "function",
+            "function": {
+            "name": "get_weather",
+            "description": "Get the current weather for a specific city",
+            "parameters": {
+                    "type": "object",
+                    "properties": {
+                            "city": { "type": "string", "description": "City name" },
+                           "unit": { "type": "string", "enum": ["celsius", "fahrenheit"] }
                         }
-                }
+            	}
             }
         }
     ]
@@ -175,43 +203,25 @@ window.MathJax = {
 <p>对推理或执行的每个中间步骤打分，代表工作是OpenAI的《Let’s Verify Step by Step》——在数学推理任务上，用逐步骤人工标注训练的PRM显著优于只看最终答案的监督。</p>
 <h4>结果奖励模型（Outcome Reward Model,ORM）：</h4>
 <p>则只评估最终结果。前文RLVR中的规则验证器可以看作ORM的特例——把“学习到的打分模型”换成了确定性规则。</p>
-<h2>结语</h2>
+<h2 id="结语">结语</h2>
 <p>名词参考均来自<a href="https://github.com/bojieli/ai-agent-book">《深入理解 AI Agent：设计原理与工程实践》（李博杰 著）开源主仓库：全书正文、编译版 PDF 与按章配套代码</a>  非常推荐一读。</p>
 <p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
 <hr />
 <p><em>本文使用 Markdown 编写，最后更新于 2026年7月26日</em></p>
-            </div>
-            <div class="post-navigation">
-                <a href="../posts/Cloudflare_freenode.html">← Cloudflare自建免费节点</a>
-                <a href="../index.html">返回首页</a>
-                <a href="../posts/About_deep_learning.html">深度学习基础 →</a>
-            </div>
-        </article>
-    </main>
+                </div>
+                <div class="post-navigation">
+                    <a href="html/Cloudflare_freenode.html">← Cloudflare自建免费节点</a>
+                    <a href="../../index.html">返回首页</a>
+                    <a href="html/About_deep_learning.html">深度学习基础 →</a>
+                </div>
+            </article>
+        </main>
+    </div>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 我的个人博客 | <a href="../index.html">返回首页</a></p>
+            <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
         </div>
     </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/xml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/markdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/typescript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/plaintext.min.js"></script>
-    <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
 </body>
 </html>

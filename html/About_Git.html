@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Git快速使用 - 彾九平</title>
+    <meta name="description" content="Git的使用与常用命令">
+    <meta property="og:title" content="Git快速使用">
+    <meta property="og:description" content="Git的使用与常用命令">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap">
+    <link rel="stylesheet" href="../../css/style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/plaintext.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
+
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    tags: 'none'
+  },
+  svg: { fontCache: 'global' },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="../../index.html" class="logo-link">
+                    <img class="logo-avatar" src="../../posts/images/test/头像.png" alt="avatar">
+                    <span class="logo-text">彾九平</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../../index.html">首页</a></li>
+                <li><a href="../../index.html#about">关于</a></li>
+                <li><a href="../../links/index.html">友链</a></li>
+                <li><a href="../../index.html#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container post-layout">
+    <aside class="toc-sidebar">
+        <div class="toc-title">📑 目录</div>
+        <ul class="toc-list">
+        <li><a href="#下载">下载</a></li>
+        <li><a href="#初始配置">初始配置</a></li>
+        <li><a href="#本地仓库的基本用法">本地仓库的基本用法</a></li>
+        <li><a href="#结语">结语</a></li>
+        </ul>
+    </aside>
+
+        <main class="post-main">
+            <article class="post-container">
+                <div class="post-header">
+                    <h1 id="post-title">Git快速使用</h1>
+                    <div class="post-meta">
+                        <span>📅 2026-08-02</span>
+                        <span>🏷️ 技术, 介绍</span>
+                    </div>
+                </div>
+                <div class="post-content" id="post-content">
+<h1>Git的使用与常用命令</h1>
+<p>对于软件开发人员而言 Git 是日常工作中很重要的工具，不仅提高了开发的质量和效率，并且使得软件开发变得更加灵活、开放与协作。Git 不仅对软件开发人员有用，它的核心功能 — 版本控制 ，对于任何需要管理文档、项目或者创意作品的非开发人员也同样受益。</p>
+<h2 id="下载">下载</h2>
+<p>官网下载地址：<a href="https://git-scm.com/downloads">https://git-scm.com/downloads</a></p>
+<h2 id="初始配置">初始配置</h2>
+<pre><code class="language-bash">git config --global user.name "你的名字"
+git config --global user.email "你的邮箱"
+</code></pre>
+<p>Git 的底层逻辑是文件在三个区域之间流转。</p>
+<pre><code>工作区(Working Directory) → 暂存区(Staging Area) → 本地仓库(Repository)
+        你编辑文件               git add                git commit
+</code></pre>
+<h2 id="本地仓库的基本用法">本地仓库的基本用法</h2>
+<p>在已有项目目录里初始化</p>
+<pre><code class="language-bash">mkdir my-project && cd my-project
+git init
+</code></pre>
+<p>或者直接克隆远程仓库到本地</p>
+<pre><code class="language-bash">git clone https://github.com/user/repo.git
+</code></pre>
+<p>本地仓库</p>
+<pre><code class="language-bash"># 查看状态
+git status
+
+# 关联远程仓库（clone 下来的仓库会自动关联 origin）
+git remote add origin https://github.com/username/repo.git
+
+# 暂存改动
+git add 文件名      # 添加单个文件
+git add .          # 添加当前目录所有修改
+
+# 提交
+git commit -m "清晰描述这次做了什么"
+
+# 首次推送，-u 会把本地分支和远程分支绑定，下次直接 git push 就行
+git push -u origin main
+</code></pre>
+<p>分支管理</p>
+<pre><code class="language-bash">git branch                # 查看本地分支（*表示当前分支）
+git branch -v             # 查看本地分支及最新提交
+git branch -r             # 查看远程分支
+git branch -a             # 查看所有分支（本地 + 远程）
+
+git branch dev            # 创建 dev 分支
+git checkout dev          # 切换到 dev 分支（传统方式）
+git switch dev            # 切换到 dev 分支（推荐，Git 2.23+）
+
+git checkout -b dev       # 创建并切换（旧）
+git switch -c dev         # 创建并切换（新，推荐）
+
+git merge dev             # 将 dev 分支合并到当前分支
+git merge --no-ff dev     # 禁用快进合并（保留分支历史，推荐）
+
+git branch -d dev         # 删除已合并的本地分支
+git branch -D dev         # 强制删除本地分支（未合并）
+
+git push origin --delete dev   # 删除远程分支
+git branch -dr origin/dev      # 删除远程分支（简写）
+</code></pre>
+<h2 id="结语">结语</h2>
+<p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
+<hr />
+<p><em>本文使用 Markdown 编写，最后更新于 2026年8月2日</em></p>
+                </div>
+                <div class="post-navigation">
+                    <a href="html/Install_Claude_code.html">← Claude Code 安装与配置</a>
+                    <a href="../../index.html">返回首页</a>
+                    <a href="html/计算机网络是如何实现的.html">计算机网络是如何实现的 →</a>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
+        </div>
+    </footer>
+</body>
+</html>

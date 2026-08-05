@@ -3,15 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>计算机网络是如何实现的 - 我的博客</title>
+    <title>计算机网络是如何实现的 - 彾九平</title>
     <meta name="description" content="网络基础，网络协议汇总">
     <meta property="og:title" content="计算机网络是如何实现的">
     <meta property="og:description" content="网络基础，网络协议汇总">
     <meta property="og:type" content="article">
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap">
-    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../../css/style.css">
+    
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs.min.css">
-    <link rel="icon" type="image/x-icon" href="../favicon.ico">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/plaintext.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
+
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
     
 <script>
 window.MathJax = {
@@ -32,35 +52,52 @@ window.MathJax = {
     <header>
         <nav class="container">
             <div class="logo">
-                <a href="../index.html" class="logo-link">
-                    <img class="logo-avatar" src="../posts/images/test/头像.png" alt="avatar">
+                <a href="../../index.html" class="logo-link">
+                    <img class="logo-avatar" src="../../posts/images/test/头像.png" alt="avatar">
                     <span class="logo-text">彾九平</span>
                 </a>
             </div>
             <ul class="nav-links">
-                <li><a href="../index.html">首页</a></li>
-                <li><a href="../index.html#about">关于</a></li>
-                <li><a href="../links/index.html">友链</a></li>
-                <li><a href="../index.html#contact">联系</a></li>
+                <li><a href="../../index.html">首页</a></li>
+                <li><a href="../../index.html#about">关于</a></li>
+                <li><a href="../../links/index.html">友链</a></li>
+                <li><a href="../../index.html#contact">联系</a></li>
             </ul>
         </nav>
     </header>
 
-    <main class="container">
-        <article class="post-container">
-            <div class="post-header">
-                <h1 id="post-title">计算机网络是如何实现的</h1>
-                <div class="post-meta">
-                    <span>📅 2026-08-04</span>
-                    <span>🏷️ 知识, 介绍</span>
+    <div class="container post-layout">
+    <aside class="toc-sidebar">
+        <div class="toc-title">📑 目录</div>
+        <ul class="toc-list">
+        <li><a href="#计算机网络五层模型">计算机网络五层模型</a></li>
+        <li><a href="#ip-协议-网际协议-internet-protocol">IP 协议（网际协议，Internet Protocol）</a></li>
+        <li><a href="#tcp-协议-传输控制协议-transmission-control-protocol">TCP 协议（传输控制协议，Transmission Control Protocol）</a></li>
+        <li><a href="#udp-协议-用户数据报协议-user-datagram-protocol">UDP 协议（用户数据报协议，User Datagram Protocol）</a></li>
+        <li><a href="#dns-协议-域名系统-domain-name-system">DNS 协议（域名系统，Domain Name System）</a></li>
+        <li><a href="#http-协议-超文本传输协议-hypertext-transfer-protocol">HTTP 协议（超文本传输协议，Hypertext Transfer Protocol）</a></li>
+        <li><a href="#ftp-协议-文件传输协议-file-transfer-protocol">FTP 协议（文件传输协议，File Transfer Protocol）</a></li>
+        <li><a href="#tls-transport-layer-security-传输层安全协议">TLS（Transport Layer Security，传输层安全协议）</a></li>
+        <li><a href="#ssh-协议-安全外壳协议-secure-shell-protocol">SSH 协议（安全外壳协议，Secure Shell Protocol）</a></li>
+        <li><a href="#结语">结语</a></li>
+        </ul>
+    </aside>
+
+        <main class="post-main">
+            <article class="post-container">
+                <div class="post-header">
+                    <h1 id="post-title">计算机网络是如何实现的</h1>
+                    <div class="post-meta">
+                        <span>📅 2026-08-04</span>
+                        <span>🏷️ 知识, 介绍</span>
+                    </div>
                 </div>
-            </div>
-            <div class="post-content" id="post-content">
-<h2>计算机网络五层模型</h2>
-<p><img alt="计算机网络体系结构" src="..\posts\images\计算机网络是如何实现的\计算机网络体系结构.png" /></p>
+                <div class="post-content" id="post-content">
+<h2 id="计算机网络五层模型">计算机网络五层模型</h2>
+<p><img alt="计算机网络体系结构" src="../posts/images/计算机网络是如何实现的/计算机网络体系结构.png" /></p>
 <p>为了简化网络设计的复杂性，通信协议采用分层结构，各层之间既相互独立又相互协调工作，如此以来便达到的高效的目的。如同设计模式中对于设计一个复杂的程序时，尽量使程序各功能之间是解耦合的一样，对于复杂的网络设计，分层设计也是很明智的一种做法。</p>
 <hr />
-<h2>IP 协议（网际协议，Internet Protocol）</h2>
+<h2 id="ip-协议-网际协议-internet-protocol">IP 协议（网际协议，Internet Protocol）</h2>
 <h4>寻址（Addressing）</h4>
 <p>每台接入网络的设备都会被分配一个唯一的IP地址，作为它的"网络身份证"。</p>
 <ul>
@@ -73,14 +110,14 @@ window.MathJax = {
 <h4>其他</h4>
 <p>全球IP地址由国际互联网号码分配机构（<strong>IANA</strong>，<a href="https://www.iana.org/">Internet Assigned Numbers Authority</a>）统一管理，并通过区域性互联网注册管理机构（RIR）分配给运营商和组织，再由这些机构分配给个人或企业使用。</p>
 <hr />
-<h2>TCP 协议（传输控制协议，Transmission Control Protocol）</h2>
+<h2 id="tcp-协议-传输控制协议-transmission-control-protocol">TCP 协议（传输控制协议，Transmission Control Protocol）</h2>
 <p>TCP是面向连接的传输层协议，通过三次握手建立可靠连接，确保数据按序、无差错传输。它支持信息分段、重组、错误检测和重传。TCP用于需要高可靠性的场景，如HTTP/HTTPS、FTP和SMTP。网页加载、档案下载等都依赖TCP。</p>
 <h4>三次握手：建立连接</h4>
 <p>分别站在客户端和服务端的角度，确认连接无非就是确认两件事：我能收到对方的消息；对方能收到我的消息。</p>
 <pre><code>客户端                     服务器
-  |---- 1. SYN -----------&gt; |  客户端：我想建立连接，我的seq=x。此时服务端确认了自己的接收能力。
-  |&lt;--- 2. SYN + ACK -----  |  服务器：收到！seq=y，ack=x+1。客户端收到消息后确认了自己的收发能力。
-  |---- 3. ACK -----------&gt; |  客户端：收到你的确认，ack=y+1。此时服务端确认了自己的发送能力。
+  |---- 1. SYN -----------> |  客户端：我想建立连接，我的seq=x。此时服务端确认了自己的接收能力。
+  |<--- 2. SYN + ACK -----  |  服务器：收到！seq=y，ack=x+1。客户端收到消息后确认了自己的收发能力。
+  |---- 3. ACK -----------> |  客户端：收到你的确认，ack=y+1。此时服务端确认了自己的发送能力。
   |====== 连接建立完成 ======|
 </code></pre>
 <h4>TCP 报文段格式</h4>
@@ -111,15 +148,15 @@ window.MathJax = {
 后面 12 字节是选项（MSS、窗口缩放、SACK 许可等）
 数据部分为空（握手报文不带应用数据）
 </code></pre>
-<p><img alt="TCP报文格式" src="..\posts\images\计算机网络是如何实现的\TCP报文格式.png" /></p>
+<p><img alt="TCP报文格式" src="../posts/images/计算机网络是如何实现的/TCP报文格式.png" /></p>
 <h4>四次挥手：关闭连接</h4>
 <p>TCP 是<strong>全双工</strong>(能同时收、发)的，因此关闭连接时<strong>每个方向都必须单独关闭</strong>——这就是需要"四次"的原因。</p>
 <pre><code>客户端                              服务器
-  |---- 1. FIN --------------------&gt;  |  客户端：我没数据要发了，准备关闭
-  |&lt;--- 2. ACK --------------------   |  服务器：收到你的 FIN
+  |---- 1. FIN -------------------->  |  客户端：我没数据要发了，准备关闭
+  |<--- 2. ACK --------------------   |  服务器：收到你的 FIN
   |       （服务器继续发送剩余数据）    |
-  |&lt;--- 3. FIN --------------------   |  服务器：我也没数据要发了
-  |---- 4. ACK --------------------&gt;  |  客户端：收到，连接关闭
+  |<--- 3. FIN --------------------   |  服务器：我也没数据要发了
+  |---- 4. ACK -------------------->  |  客户端：收到，连接关闭
   |   客户端进入 TIME_WAIT，等待 2MSL   |
 </code></pre>
 <p><strong>MSL</strong>（Maximum Segment Lifetime）= 报文段在网络中最大生存时间</p>
@@ -139,7 +176,7 @@ curl http://localhost:8080
 <pre><code class="language-bash">tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
 listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 # 这里系统先尝试解析 localhost 的 IPv6 地址，算是第一次握手
-04:11:19.048558 IP6 localhost.33254 &gt; localhost.http-alt: Flags [S], seq 51546928, win 65476, options [mss 65476,sackOK,TS val 2062165144 ecr 0,nop,wscale 8], length 0
+04:11:19.048558 IP6 localhost.33254 > localhost.http-alt: Flags [S], seq 51546928, win 65476, options [mss 65476,sackOK,TS val 2062165144 ecr 0,nop,wscale 8], length 0
         0x0000:  6009 c7c7 0028 0640 0000 0000 0000 0000  `....(.@........
         0x0010:  0000 0000 0000 0001 0000 0000 0000 0000  ................
         0x0020:  0000 0000 0000 0001 81e6 1f90 0312 8b30  ...............0
@@ -260,62 +297,47 @@ listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
         0x0010:  7f00 0001 1f90 e232 92b2 7606 2a28 05ef  .......2..v.*(..
         0x0020:  8010 0100 fe28 0000 0101 080a f713 c0a4  .....(..........
         0x0030:  f713 c0a4                                ....
-```
-
-#### 可靠传输机制
-
-IP 网络本身就是不可靠的——数据包可能丢失、乱序、重复、损坏。TCP 通过以下四大机制来"兜底"：
-
-1. 序列号与确认应答（ACK）
-
-每个字节都有序号，接收方收到后回送 ACK 告知"我期待下一个字节是 N"。
-
-2. 超时重传（RTO）
-
-发送方发出数据后会启动定时器，**若在 RTO（Retransmission Timeout）内未收到 ACK，就重传该数据**。RTO 是动态计算的，基于 RTT（往返时延）的平滑值及方差
-
-3. 滑动窗口（Sliding Window）
-
-为了提高效率，TCP 允许**连续发送多个报文段而无需逐个等待 ACK**。
-
-```txt
-发送方视角：
+</code></pre>
+<h4>可靠传输机制</h4>
+<p>IP 网络本身就是不可靠的——数据包可能丢失、乱序、重复、损坏。TCP 通过以下四大机制来"兜底"：</p>
+<ol>
+<li>序列号与确认应答（ACK）</li>
+</ol>
+<p>每个字节都有序号，接收方收到后回送 ACK 告知"我期待下一个字节是 N"。</p>
+<ol>
+<li>超时重传（RTO）</li>
+</ol>
+<p>发送方发出数据后会启动定时器，<strong>若在 RTO（Retransmission Timeout）内未收到 ACK，就重传该数据</strong>。RTO 是动态计算的，基于 RTT（往返时延）的平滑值及方差</p>
+<ol>
+<li>滑动窗口（Sliding Window）</li>
+</ol>
+<p>为了提高效率，TCP 允许<strong>连续发送多个报文段而无需逐个等待 ACK</strong>。</p>
+<pre><code class="language-txt">发送方视角：
         [已发送且已确认][已发送待确认][可发送但未发送][不可发送]
                         ↑            ↑
                       窗口内        窗口右沿
-```
-
-接收方通过 ACK 报文中的"窗口大小"字段告诉发送方："我目前的接收缓冲区还剩 X 字节"。发送方据此调整发送速率——这就是**流量控制**。
-
-4. 快速重传
-
-当发送方**连续收到 3 个相同的 ACK**（即接收方反复说"我想要 N 号字节"），就推断 N 号字节丢失，**不等超时立即重传**——大幅降低丢包恢复延迟。
-
-------
-
-## UDP 协议（用户数据报协议，User Datagram Protocol）
-
-UDP直接发送数据报，无需建立连接，不提供重传或顺序保证。数据报具备简单的头部，减少开销。UDP用于视频会议（如Zoom）、在线游戏和DNS查询，数据丢失可容忍但延迟敏感。
-
-UDP 的头部极其精简，**固定只有 8 字节**。一共**四个字段，各 2 字节**：
-
-- **源端口**：发送方端口（可选，不需回复时可填 0）
-- **目的端口**：接收方端口
-- **长度**：整个 UDP 报文的长度（首部 + 数据），单位字节
-- **校验和**：可选的错误检测（IPv4 中可置 0 关闭，IPv6 中强制）
-
-![UDP报文格式](..\posts\images\计算机网络是如何实现的\UDP报文格式.png)
-
-#### 实践尝试
-
-```bash
-sudo tcpdump -n -X -i eth0 udp
-```
-
-过一会儿就能收到很多内容
-
-```bash
-tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
+</code></pre>
+<p>接收方通过 ACK 报文中的"窗口大小"字段告诉发送方："我目前的接收缓冲区还剩 X 字节"。发送方据此调整发送速率——这就是<strong>流量控制</strong>。</p>
+<ol>
+<li>快速重传</li>
+</ol>
+<p>当发送方<strong>连续收到 3 个相同的 ACK</strong>（即接收方反复说"我想要 N 号字节"），就推断 N 号字节丢失，<strong>不等超时立即重传</strong>——大幅降低丢包恢复延迟。</p>
+<hr />
+<h2 id="udp-协议-用户数据报协议-user-datagram-protocol">UDP 协议（用户数据报协议，User Datagram Protocol）</h2>
+<p>UDP直接发送数据报，无需建立连接，不提供重传或顺序保证。数据报具备简单的头部，减少开销。UDP用于视频会议（如Zoom）、在线游戏和DNS查询，数据丢失可容忍但延迟敏感。</p>
+<p>UDP 的头部极其精简，<strong>固定只有 8 字节</strong>。一共<strong>四个字段，各 2 字节</strong>：</p>
+<ul>
+<li><strong>源端口</strong>：发送方端口（可选，不需回复时可填 0）</li>
+<li><strong>目的端口</strong>：接收方端口</li>
+<li><strong>长度</strong>：整个 UDP 报文的长度（首部 + 数据），单位字节</li>
+<li><strong>校验和</strong>：可选的错误检测（IPv4 中可置 0 关闭，IPv6 中强制）</li>
+</ul>
+<p><img alt="UDP报文格式" src="../posts/images/计算机网络是如何实现的/UDP报文格式.png" /></p>
+<h4>实践尝试</h4>
+<pre><code class="language-bash">sudo tcpdump -n -X -i eth0 udp
+</code></pre>
+<p>过一会儿就能收到很多内容</p>
+<pre><code class="language-bash">tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
 listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 # 查询
 07:18:59.456963 IP 192.168.28.132.44557 > 193.182.111.142.123: NTPv4, Client, length 48
@@ -334,7 +356,7 @@ listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
         0x0030:  0000 0000 0000 0000 0000 0000 0000 0000  ................
         0x0040:  0000 0000 fc2e 67ba 9972 3524            ......g..r5$
 # 响应
-07:18:59.633846 IP 193.182.111.142.123 &gt; 192.168.28.132.44557: NTPv4, Server, length 48
+07:18:59.633846 IP 193.182.111.142.123 > 192.168.28.132.44557: NTPv4, Server, length 48
         0x0000:  4500 004c 37ec 0000 8011 f443 c1b6 6f8e  E..L7......C..o.
         0x0010:  c0a8 1c84 007b ae0d 0038 aacb 2402 00e7  .....{...8..$...
         0x0020:  0000 0023 0000 0005 c23a ca14 ee1c 4912  ...#.....:....I.
@@ -342,7 +364,7 @@ listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
         0x0040:  8b83 dd9a ee1c 4923 8b83 fc12            ......I#....
 </code></pre>
 <hr />
-<h2>DNS 协议（域名系统，Domain Name System）</h2>
+<h2 id="dns-协议-域名系统-domain-name-system">DNS 协议（域名系统，Domain Name System）</h2>
 <p>DNS是一种分布式服务协议，将人类可读的域名（如www.example.com）解析为IP地址（如192.0.2.1）。它通过分层域名服务器体系（根服务器、顶级域名服务器、权威服务器）完成解析。</p>
 <p><strong>技术原理</strong>：DNS通常基于UDP协议（端口53），通过查询和响应机制工作。客户端发送域名查询，DNS服务器返回对应的IP地址。DNS支持缓存以减少查询延迟，并利用递归和迭代查询实现高效解析。</p>
 <p>DNS 是一个<strong>树状分布式数据库</strong>，树根是"根域名服务器"：</p>
@@ -423,7 +445,7 @@ listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 <pre><code class="language-bash"># 查看 DNS 解析过程（Linux/Mac）
 dig +trace www.example.com
 </code></pre>
-<pre><code class="language-bash">; &lt;&lt;&gt;&gt; DiG 9.20.15-2-Debian &lt;&lt;&gt;&gt; +trace www.example.com
+<pre><code class="language-bash">; <<>> DiG 9.20.15-2-Debian <<>> +trace www.example.com
 # 从根域名出发
 ;; global options: +cmd
 .                       5       IN      NS      k.root-servers.net.
@@ -486,7 +508,7 @@ www.example.com.        300     IN      RRSIG   A 13 3 300 20260805131308 202608
 ;; Received 183 bytes from 173.245.58.162#53(hera.ns.cloudflare.com) in 211 ms
 </code></pre>
 <hr />
-<h2>HTTP 协议（超文本传输协议，Hypertext Transfer Protocol）</h2>
+<h2 id="http-协议-超文本传输协议-hypertext-transfer-protocol">HTTP 协议（超文本传输协议，Hypertext Transfer Protocol）</h2>
 <h4>HTTP 的本质与定位</h4>
 <p>简单来说，当你在浏览器输入一个网址并回车时，浏览器和服务器之间就是通过 HTTP 协议来"对话"的。</p>
 <p>HTTP 建立在 TCP/IP 协议栈之上，默认使用 <strong>80 端口</strong>（HTTPS 用 443 端口）。它采用了经典的<strong>客户端-服务器模型</strong>：</p>
@@ -527,17 +549,17 @@ www.example.com.        300     IN      RRSIG   A 13 3 300 20260805131308 202608
 <p>HTTPS是基于SSL/TLS加密的HTTP协议，通过加密保护数据传输安全，防止窃听和篡改。</p>
 <p><strong>技术原理</strong>：HTTPS使用SSL/TLS在客户端和服务器间建立加密通道，结合非对称加密（用于密钥交换）和对称加密（用于数据传输）。服务器需提供数字证书以验证身份。</p>
 <hr />
-<h2>FTP 协议（文件传输协议，File Transfer Protocol）</h2>
+<h2 id="ftp-协议-文件传输协议-file-transfer-protocol">FTP 协议（文件传输协议，File Transfer Protocol）</h2>
 <p>FTP是应用层协议，用于在客户端和服务器间上传和下载文件，支持匿名和认证访问。</p>
 <p>FTP使用TCP，分为控制连接（端口21）和数据连接（端口20或动态端口），承受主动和被动模式。</p>
 <p>FTP用于网站档案更新、软件分发，但因明文传输逐渐被SFTP或FTPS替代。</p>
 <h4>FTP 的双通道架构（核心设计）</h4>
 <p>FTP 最与众不同的地方：<strong>它用两条独立的 TCP 连接</strong>。</p>
 <pre><code>客户端                              服务器
-  |------- 控制连接 (Port 21) --------&gt;|
+  |------- 控制连接 (Port 21) -------->|
   |       持久连接，传输命令和响应      |
   |                                   |
-  |------- 数据连接 (Port 20 或动态)---&gt;|
+  |------- 数据连接 (Port 20 或动态)--->|
   |        临时连接，传输文件/目录列表   |
 </code></pre>
 <p><strong>1. 控制连接（Control Connection）</strong></p>
@@ -558,9 +580,9 @@ www.example.com.        300     IN      RRSIG   A 13 3 300 20260805131308 202608
 <p><strong>1. 主动模式（PORT / Active）</strong></p>
 <pre><code>客户端                                服务器
   |                                     |
-  |---- PORT 命令（告知客户端IP:端口）---&gt;|
+  |---- PORT 命令（告知客户端IP:端口）--->|
   |                                     |
-  |&lt;--- 服务器从 Port 20 主动连接客户端 --|
+  |<--- 服务器从 Port 20 主动连接客户端 --|
   |                                     |
   |========== 数据传输 ==================|
 </code></pre>
@@ -575,10 +597,10 @@ www.example.com.        300     IN      RRSIG   A 13 3 300 20260805131308 202608
 <p><strong>2. 被动模式（PASV / Passive）</strong></p>
 <pre><code>客户端                                 服务器
   |                                      |
-  |-------------- PASV 命令 ------------&gt;|
-  |&lt;--- 服务器回复（IP:端口，如 1027）-----|
+  |-------------- PASV 命令 ------------>|
+  |<--- 服务器回复（IP:端口，如 1027）-----|
   |                                      |
-  |--- 客户端主动连接服务器的 1027 端口 --&gt;|
+  |--- 客户端主动连接服务器的 1027 端口 -->|
   |                                      |
   |=========== 数据传输 ==================|
 </code></pre>
@@ -600,14 +622,14 @@ ftp ftp.example.com
 ftp anonymous@ftp.kernel.org
 
 # 常用操作
-ftp&gt; ls                  # 列目录
-ftp&gt; cd pub              # 切换目录
-ftp&gt; binary              # 切换到二进制模式（重要！）
-ftp&gt; get file.zip        # 下载
-ftp&gt; put local.txt       # 上传
-ftp&gt; mget *.txt          # 批量下载
-ftp&gt; passive             # 切换被动模式
-ftp&gt; quit                # 退出
+ftp> ls                  # 列目录
+ftp> cd pub              # 切换目录
+ftp> binary              # 切换到二进制模式（重要！）
+ftp> get file.zip        # 下载
+ftp> put local.txt       # 上传
+ftp> mget *.txt          # 批量下载
+ftp> passive             # 切换被动模式
+ftp> quit                # 退出
 </code></pre>
 <h4>常用 FTP 命令</h4>
 <table>
@@ -689,7 +711,7 @@ ftp&gt; quit                # 退出
 </tbody>
 </table>
 <hr />
-<h2>TLS（Transport Layer Security，传输层安全协议）</h2>
+<h2 id="tls-transport-layer-security-传输层安全协议">TLS（Transport Layer Security，传输层安全协议）</h2>
 <p>为 HTTP、SMTP、FTP 等应用层协议提供<strong>加密、身份认证和完整性保护</strong>。我们每天访问的 HTTPS 网站，本质上就是 "HTTP over TLS"。</p>
 <p>TLS 工作在<strong>传输层（TCP）和应用层之间</strong>，对应用层协议透明——应用层只需把数据交给 TLS，TLS 负责加密后通过 TCP 发送。</p>
 <pre><code>┌──────────────────────────────────────────┐
@@ -704,7 +726,7 @@ ftp&gt; quit                # 退出
 └──────────────────────────────────────────┘
 </code></pre>
 <hr />
-<h2>SSH 协议（安全外壳协议，Secure Shell Protocol）</h2>
+<h2 id="ssh-协议-安全外壳协议-secure-shell-protocol">SSH 协议（安全外壳协议，Secure Shell Protocol）</h2>
 <p>一种<strong>加密的网络传输协议</strong>，用于在不安全的网络上安全地远程登录和管理服务器。它替代了早期明文传输的 Telnet、rlogin 等协议，现已成为运维和开发领域的标准工具。</p>
 <p>SSH-1 因存在设计缺陷已被弃用，目前广泛使用的是 <strong>SSH-2</strong>（RFC 4250–4254）。SSH-2 采用分层架构，从上到下分为三个协议层：</p>
 <pre><code>┌─────────────────────────────────────┐
@@ -788,7 +810,7 @@ ssh -p 2222 user@192.168.1.100
 </code></pre>
 <p>公钥认证配置</p>
 <pre><code class="language-bash"># 本地生成 ED25519 密钥对
-ssh-keygen -t ed25519 -C &quot;your_email@example.com&quot;
+ssh-keygen -t ed25519 -C "your_email@example.com"
 
 # 将公钥复制到服务端
 ssh-copy-id user@hostname
@@ -801,42 +823,24 @@ ssh user@hostname
 sftp user@host
 </code></pre>
 <hr />
-<h2>结语</h2>
+<h2 id="结语">结语</h2>
 <p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
 <hr />
 <p><em>本文使用 Markdown 编写，最后更新于 2026年8月5日</em></p>
-            </div>
-            <div class="post-navigation">
-                <a href="../posts/About_Git.html">← Git快速使用</a>
-                <a href="../index.html">返回首页</a>
-                <a href="../posts/动漫寻图网站.html">寻图网站推荐 →</a>
-            </div>
-        </article>
-    </main>
+                </div>
+                <div class="post-navigation">
+                    <a href="html/About_Git.html">← Git快速使用</a>
+                    <a href="../../index.html">返回首页</a>
+                    <a href="html/动漫寻图网站.html">寻图网站推荐 →</a>
+                </div>
+            </article>
+        </main>
+    </div>
 
     <footer>
         <div class="container">
-            <p>&copy; 2026 我的个人博客 | <a href="../index.html">返回首页</a></p>
+            <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
         </div>
     </footer>
-
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/xml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/markdown.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/typescript.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/plaintext.min.js"></script>
-    <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
 </body>
 </html>

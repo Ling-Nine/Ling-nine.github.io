@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cloudflare自建免费节点 - 彾九平</title>
+    <meta name="description" content="通过Cloudflare pages来建立节点">
+    <meta property="og:title" content="Cloudflare自建免费节点">
+    <meta property="og:description" content="通过Cloudflare pages来建立节点">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap">
+    <link rel="stylesheet" href="../../css/style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/plaintext.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
+
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    tags: 'none'
+  },
+  svg: { fontCache: 'global' },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+</head>
+<body>
+    <header>
+        <nav class="container">
+            <div class="logo">
+                <a href="../../index.html" class="logo-link">
+                    <img class="logo-avatar" src="../../posts/images/test/头像.png" alt="avatar">
+                    <span class="logo-text">彾九平</span>
+                </a>
+            </div>
+            <ul class="nav-links">
+                <li><a href="../../index.html">首页</a></li>
+                <li><a href="../../index.html#about">关于</a></li>
+                <li><a href="../../links/index.html">友链</a></li>
+                <li><a href="../../index.html#contact">联系</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="container post-layout">
+
+        <main class="post-main">
+            <article class="post-container">
+                <div class="post-header">
+                    <h1 id="post-title">Cloudflare自建免费节点</h1>
+                    <div class="post-meta">
+                        <span>📅 2026-07-21</span>
+                        <span>🏷️ 网络, 技术</span>
+                    </div>
+                </div>
+                <div class="post-content" id="post-content">
+<h1>通过Cloudflare pages来建立节点</h1>
+<h3>GitHub项目Edgetunnel2.0</h3>
+<p>Edgetunnel是一个基于 CF Workers/Pages 平台的边缘计算隧道解密方案。它能够高效地处理网络流量，并提供强大的管理面板和灵活的节点配置能力。</p>
+<p>项目地址：<a href="https://github.com/cmliu/edgetunnel">https://github.com/cmliu/edgetunnel</a></p>
+<h3>如何部署</h3>
+<p>项目详细教程：<a href="https://cmliussss.com/p/edt2/">edgetunnel 部署指南</a></p>
+<h3>注意事项</h3>
+<p>无需绑定域名也可使用，绑定域名连接更加稳定。</p>
+<p>节点每日可请求数量100,000次，足够个人使用。</p>
+<p>不要将节点随意分享给他人，否则存在被滥用封号的风险。</p>
+<h3>结语</h3>
+<p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a>与我交流。</p>
+<hr />
+<p><em>本文使用 Markdown 编写，最后更新于 2026年7月21日</em></p>
+                </div>
+                <div class="post-navigation">
+                    <a href="html/test.html">← Hello World - 我的第一篇博客</a>
+                    <a href="../../index.html">返回首页</a>
+                    <a href="html/Agent_vocabulary_index.html">智能体相关词汇解读 →</a>
+                </div>
+            </article>
+        </main>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
+        </div>
+    </footer>
+</body>
+</html>

@@ -14,6 +14,7 @@
     --border-color: #e2e8f0;
     --code-bg: #f5f5f5;
     --code-text: #24292e;
+    --toc-width: 240px;
 }
 
 body {
@@ -76,14 +77,16 @@ nav {
 
 /* Logo 文字：手写风 + 渐变 + 微倾斜 */
 .logo-text {
-    font-family: 'STKaiti', serif;
+    font-family: 'STKaiti', 'Ma Shan Zheng', 'ZCOOL XiaoWei', serif;
     font-size: 1.55rem;
     font-weight: 700;
     letter-spacing: 2px;
-    background: var(--primary-color);
+    background: linear-gradient(135deg, #2563eb 0%, #7c3aed 50%, #ec4899 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
+    transform: rotate(-2deg);
+    transition: transform 0.3s;
 }
 
 .logo-text:hover {
@@ -102,8 +105,10 @@ nav {
     transition: color 0.3s;
 }
 
-.nav-links a:hover {
+.nav-links a:hover,
+.nav-links a.active {
     color: var(--primary-color);
+    font-weight: 600;
 }
 
 /* 主要内容区 */
@@ -122,11 +127,23 @@ nav {
     align-items: center;
 }
 
+
+
 .hero h1,
 .hero p {
     position: relative;
     z-index: 1;
     text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.hero h1 {
+    font-size: 2rem;
+    font-weight: 800;
+    margin-bottom: 0.5rem;
+}
+
+.hero p {
+    font-size: 1.3rem;
 }
 
 /* 文章列表 */
@@ -185,7 +202,22 @@ nav {
     font-weight: 500;
 }
 
-/* 文章页面 */
+/* ═══════════════════════════════════════
+   文章页面 + TOC 双栏布局
+   ═══════════════════════════════════════ */
+.post-layout {
+    display: flex;
+    gap: 2rem;
+    align-items: flex-start;
+    max-width: 1200px;
+}
+
+.post-main {
+    flex: 1;
+    min-width: 0; /* 防止内容撑破 flex */
+}
+
+/* 文章容器 */
 .post-container {
     background: var(--bg-color);
     border-radius: 10px;
@@ -226,10 +258,18 @@ nav {
     color: var(--text-color);
 }
 
+.post-content h2 {
+    border-bottom: 1px solid var(--border-color);
+    padding-bottom: 0.5rem;
+    /* 锚点跳转时留出 header 的高度，避免标题被遮挡 */
+    scroll-margin-top: 100px;
+}
+
 .post-content p {
     margin-bottom: 1.5rem;
 }
 
+/* 代码块 */
 .post-content pre {
     background: var(--code-bg);
     color: var(--code-text);
@@ -238,6 +278,8 @@ nav {
     overflow-x: auto;
     margin: 1.5rem 0;
     border: 1px solid var(--border-color);
+    line-height: 1.5;
+    font-size: 0.85rem;
 }
 
 .post-content code {
@@ -245,12 +287,22 @@ nav {
     font-size: 0.9rem;
 }
 
-/* 让 highlight.js (vs 主题) 完全接管代码颜色 */
+/* highlight.js (vs 主题) 完全接管代码颜色 */
 .post-content pre .hljs,
 .post-content pre code.hljs {
     background: transparent;
     color: inherit;
     padding: 0;
+}
+
+/* 行内代码 */
+.post-content p code,
+.post-content li code {
+    background: #eef1f4;
+    padding: 0.15em 0.4em;
+    border-radius: 3px;
+    font-size: 0.88em;
+    color: #c7254e;
 }
 
 .post-content blockquote {
@@ -280,6 +332,32 @@ nav {
     margin-bottom: 0.5rem;
 }
 
+.post-content table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+}
+
+.post-content th,
+.post-content td {
+    border: 1px solid var(--border-color);
+    padding: 0.6rem 0.8rem;
+    text-align: left;
+}
+
+.post-content th {
+    background: var(--light-bg);
+    font-weight: 600;
+}
+
+.post-content hr {
+    border: none;
+    border-top: 1px solid var(--border-color);
+    margin: 2rem 0;
+}
+
+/* 文章导航 */
 .post-navigation {
     display: flex;
     justify-content: space-between;
@@ -300,6 +378,58 @@ nav {
 .post-navigation a:hover {
     background: var(--primary-color);
     color: white;
+}
+
+/* ═══════════════════════════════════════
+   右侧 TOC 目录
+   ═══════════════════════════════════════ */
+.toc-sidebar {
+    width: var(--toc-width);
+    flex-shrink: 0;
+    position: sticky;
+    top: 80px; /* 在 header 下方 */
+    max-height: calc(100vh - 100px);
+    overflow-y: auto;
+    padding: 1.2rem 1rem;
+    background: var(--light-bg);
+    border-radius: 10px;
+    border: 1px solid var(--border-color);
+    font-size: 0.88rem;
+    align-self: flex-start; /* 防止被拉伸到和文章同高 */
+}
+
+.toc-title {
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.8rem;
+    color: var(--primary-color);
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.toc-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.toc-list li {
+    margin-bottom: 0.4rem;
+}
+
+.toc-list a {
+    display: block;
+    padding: 0.35rem 0.6rem;
+    color: var(--secondary-color);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: all 0.2s;
+    line-height: 1.4;
+}
+
+.toc-list a:hover {
+    background: rgba(37, 99, 235, 0.08);
+    color: var(--primary-color);
 }
 
 /* 关于和联系部分 */
@@ -356,49 +486,6 @@ footer a {
     text-decoration: none;
 }
 
-/* 响应式设计 */
-@media (max-width: 768px) {
-    .nav-links {
-        gap: 1rem;
-    }
-
-    .hero h1 {
-        font-size: 2rem;
-    }
-
-    .post-header h1 {
-        font-size: 1.8rem;
-    }
-
-    .post-navigation {
-        flex-direction: column;
-        gap: 1rem;
-    }
-
-    footer .container {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-    }
-}
-
-/* 加载状态 */
-.loading {
-    text-align: center;
-    padding: 2rem;
-    color: var(--secondary-color);
-}
-
-/* 行内代码（不在 pre 里的 code） */
-.post-content p code,
-.post-content li code {
-    background: #eef1f4;
-    padding: 0.15em 0.4em;
-    border-radius: 3px;
-    font-size: 0.88em;
-    color: #c7254e;
-}
-
 /* ═══════════════════════════════════════
    友链页面
    ═══════════════════════════════════════ */
@@ -417,14 +504,12 @@ footer a {
     margin-bottom: 2rem;
 }
 
-/* 网格布局：宽屏 3 列，窄屏自适应 */
 .links-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 1.2rem;
 }
 
-/* 单个友链卡片 */
 .link-card {
     display: flex;
     align-items: center;
@@ -444,7 +529,6 @@ footer a {
     border-color: var(--primary-color);
 }
 
-/* 友链头像 */
 .link-avatar {
     width: 52px;
     height: 52px;
@@ -459,7 +543,6 @@ footer a {
     transform: scale(1.1);
 }
 
-/* 友链文字 */
 .link-info {
     display: flex;
     flex-direction: column;
@@ -485,8 +568,50 @@ footer a {
     text-overflow: ellipsis;
 }
 
-/* 导航高亮当前页 */
-.nav-links a.active {
-    color: var(--primary-color);
-    font-weight: 600;
+/* 响应式设计 */
+@media (max-width: 1024px) {
+    .post-layout {
+        flex-direction: column;
+    }
+
+    .toc-sidebar {
+        width: 100%;
+        position: static;
+        max-height: 250px; /* 限制高度，带滚动，不占满页面 */
+        order: -1; /* TOC 移到文章上方 */
+    }
+}
+
+@media (max-width: 768px) {
+    .nav-links {
+        gap: 1rem;
+    }
+
+    .hero {
+        padding: 4rem 1.5rem;
+        min-height: 250px;
+    }
+
+    .hero h1 {
+        font-size: 2rem;
+    }
+
+    .post-header h1 {
+        font-size: 1.8rem;
+    }
+
+    .post-navigation {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    footer .container {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+    }
+
+    .toc-sidebar {
+        font-size: 0.82rem;
+    }
 }
