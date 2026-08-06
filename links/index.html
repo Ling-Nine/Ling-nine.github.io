@@ -9,81 +9,85 @@
     <link rel="icon" type="image/x-icon" href="../favicon.ico">
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <a href="../index.html" class="logo-link">
-                    <img class="logo-avatar" src="../posts/images/test/头像.png" alt="avatar">
-                    <span class="logo-text">彾九平</span>
-                </a>
+    <div class="main-layout">
+
+        <!-- 左侧：留空保持三栏一致 -->
+        <aside class="toc-sidebar" style="visibility:hidden;min-height:1px;padding:0;border:none;background:transparent;"></aside>
+
+        <!-- 中间：友链内容 -->
+        <main class="content-area">
+            <section class="links-section">
+                <h2>友情链接</h2>
+                <p class="links-desc">这里收录了一些我觉得不错的博客和网站，欢迎互访 ☕</p>
+
+                <div class="links-grid">
+                    <!--
+                        友链卡片模板，复制下面的 <a> 块即可新增一条：
+                        avatar : 头像图片路径（建议 100x100 正方形）
+                        name   : 站点名称
+                        href   : 跳转链接（加 target="_blank" 新窗口打开）
+                        desc   : 一句话描述
+
+                    <a class="link-card" href="https://example.com" target="_blank" rel="noopener">
+                        <img class="link-avatar" src="../posts/images/test/头像.png" alt="示例博客">
+                        <div class="link-info">
+                            <div class="link-name">示例博客</div>
+                            <div class="link-desc">这是一个示例友链卡片，替换 href/src/文字即可</div>
+                        </div>
+                    </a>
+                    -->
+                    <a class="link-card" href="https://www.gmaxh.site/" target="_blank" rel="noopener">
+                        <img class="link-avatar" src="https://www.gmaxh.site/favicon/avatar.jpeg" alt="雨停之后">
+                        <div class="link-info">
+                            <div class="link-name">雨停之后</div>
+                            <div class="link-desc">想把我唱给你听,趁现在年少如花。</div>
+                        </div>
+                    </a>
+                    <a class="link-card" href="https://www.latexlive.com/" target="_blank" rel="noopener">
+                        <img class="link-avatar" src="https://www.latexlive.com/img/header_logo.png" alt="LaTeX公式编辑器">
+                        <div class="link-info">
+                            <div class="link-name">LaTeX公式编辑器</div>
+                            <div class="link-desc">非常好用的公式编辑器</div>
+                        </div>
+                    </a>
+                    <a class="link-card" href="https://www.figma.com/" target="_blank" rel="noopener">
+                        <img class="link-avatar" src="https://ts3.tc.mm.bing.net/th/id/ODF.MazXGA7GqlBu1-EzZxysmA?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" alt="Figma">
+                        <div class="link-info">
+                            <div class="link-name">Figma</div>
+                            <div class="link-desc">矢量图绘图软件</div>
+                        </div>
+                    </a>
+                    <a class="link-card" href="https://pixso.cn/" target="_blank" rel="noopener">
+                        <img class="link-avatar" src="https://ts2.tc.mm.bing.net/th/id/ODF.ZQxKixnCvXOnZTE9puaHdg?w=32&h=32&o=6&pid=AdsPlus" alt="Pixso">
+                        <div class="link-info">
+                            <div class="link-name">Pixso</div>
+                            <div class="link-desc">国产Figma</div>
+                        </div>
+                    </a>
+                    <!-- 在这里继续添加更多友链卡片... -->
+                </div>
+            </section>
+        </main>
+
+        <!-- 右侧边栏 -->
+        <aside class="right-sidebar">
+            <div class="profile-section">
+                <img class="profile-avatar" src="../posts/images/test/头像.png" alt="彾九平">
+                <div class="profile-name">彾九平</div>
+                <div class="profile-desc">记录学习心得、技术笔记与生活感悟</div>
             </div>
-            <ul class="nav-links">
-                <li><a href="../index.html">首页</a></li>
-                <li><a href="../index.html#about">关于</a></li>
-                <li><a href="index.html" class="active">友链</a></li>
-                <li><a href="../index.html#contact">联系</a></li>
-            </ul>
-        </nav>
-    </header>
+            <nav class="sidebar-nav">
+                <a href="../index.html">🏠 首页</a>
+                <a href="../index.html#about">📖 关于</a>
+                <a href="index.html" class="active">🔗 友链</a>
+                <a href="../index.html#contact">✉️ 联系</a>
+            </nav>
+        </aside>
 
-    <main class="container">
-        <section class="links-section">
-            <h2>友情链接</h2>
-            <p class="links-desc">这里收录了一些我觉得不错的博客和网站，欢迎互访 ☕</p>
-
-            <div class="links-grid">
-                <!--
-                    友链卡片模板，复制下面的 <a> 块即可新增一条：
-                    avatar : 头像图片路径（建议 100x100 正方形）
-                    name   : 站点名称
-                    href   : 跳转链接（加 target="_blank" 新窗口打开）
-                    desc   : 一句话描述
-
-                <a class="link-card" href="https://example.com" target="_blank" rel="noopener">
-                    <img class="link-avatar" src="../posts/images/test/头像.png" alt="示例博客">
-                    <div class="link-info">
-                        <div class="link-name">示例博客</div>
-                        <div class="link-desc">这是一个示例友链卡片，替换 href/src/文字即可</div>
-                    </div>
-                </a>
-                -->
-                <a class="link-card" href="https://www.gmaxh.site/" target="_blank" rel="noopener">
-                    <img class="link-avatar" src="https://www.gmaxh.site/favicon/avatar.jpeg" alt="雨停之后">
-                    <div class="link-info">
-                        <div class="link-name">雨停之后</div>
-                        <div class="link-desc">想把我唱给你听,趁现在年少如花。</div>
-                    </div>
-                </a>
-                <a class="link-card" href="https://www.latexlive.com/" target="_blank" rel="noopener">
-                    <img class="link-avatar" src="https://www.latexlive.com/img/header_logo.png" alt="LaTeX公式编辑器">
-                    <div class="link-info">
-                        <div class="link-name">LaTeX公式编辑器</div>
-                        <div class="link-desc">非常好用的公式编辑器</div>
-                    </div>
-                </a>
-                <a class="link-card" href="https://www.figma.com/" target="_blank" rel="noopener">
-                    <img class="link-avatar" src="https://ts3.tc.mm.bing.net/th/id/ODF.MazXGA7GqlBu1-EzZxysmA?w=32&h=32&qlt=90&pcl=fffffa&o=6&pid=1.2" alt="Figma">
-                    <div class="link-info">
-                        <div class="link-name">Figma</div>
-                        <div class="link-desc">矢量图绘图软件</div>
-                    </div>
-                </a>
-                <a class="link-card" href="https://pixso.cn/" target="_blank" rel="noopener">
-                    <img class="link-avatar" src="https://ts2.tc.mm.bing.net/th/id/ODF.ZQxKixnCvXOnZTE9puaHdg?w=32&h=32&o=6&pid=AdsPlus" alt="Pixso">
-                    <div class="link-info">
-                        <div class="link-name">Pixso</div>
-                        <div class="link-desc">国产Figma</div>
-                    </div>
-                </a>
-                <!-- 在这里继续添加更多友链卡片... -->
-            </div>
-        </section>
-    </main>
+    </div>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 彾九平 | <a href="../index.html">返回首页</a></p>
-        </div>
+        <p>&copy; 2026 彾九平 | <a href="../index.html">返回首页</a></p>
     </footer>
 </body>
 </html>

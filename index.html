@@ -13,36 +13,25 @@
     <link rel="icon" type="image/x-icon" href="favicon.ico">
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <a href="index.html" class="logo-link">
-                    <img class="logo-avatar" src="posts/images/test/头像.png" alt="avatar">
-                    <span class="logo-text">彾九平</span>
-                </a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="index.html" class="active">首页</a></li>
-                <li><a href="#about">关于</a></li>
-                <li><a href="links/index.html">友链</a></li>
-                <li><a href="#contact">联系</a></li>
-            </ul>
-        </nav>
-    </header>
+    <div class="main-layout">
 
-    <main class="container">
-        <section class="hero" style="background-image: url('posts/images/test/hello.png');">
-            <h1>胜日寻芳泗水滨，无边光景一时新。</h1>
-            <p>很高兴遇见你</p>
-        </section>
+        <!-- 左侧：留空或放全局目录（首页不需要TOC，但保留结构一致性） -->
+        <aside class="toc-sidebar" style="visibility:hidden;min-height:1px;padding:0;border:none;background:transparent;"></aside>
 
-        <section class="posts-section">
-            <h2>最新文章</h2>
-            <div id="posts-container">
+        <!-- 中间：主要内容 -->
+        <main class="content-area">
+            <section class="hero" style="background-image: url('posts/images/test/hello.png');">
+                <h1>胜日寻芳泗水滨，无边光景一时新。</h1>
+                <p>很高兴遇见你</p>
+            </section>
+
+            <section class="posts-section">
+                <h2>最新文章</h2>
+                <div id="posts-container">
             <article class="post-item">
                 <h3><a href="html/动漫寻图网站.html">寻图网站推荐</a></h3>
                 <div class="post-meta">
-                    <span>📅 2026-08-04</span>
+                    <span>📅 2026年8月4日</span>
                     <span>🏷️ <span class='tag'>生活</span> <span class='tag'>介绍</span></span>
                 </div>
                 <div class="post-excerpt">找了一些寻图网站</div>
@@ -52,7 +41,7 @@
             <article class="post-item">
                 <h3><a href="html/计算机网络是如何实现的.html">计算机网络是如何实现的</a></h3>
                 <div class="post-meta">
-                    <span>📅 2026-08-04</span>
+                    <span>📅 2026年8月4日</span>
                     <span>🏷️ <span class='tag'>知识</span> <span class='tag'>介绍</span></span>
                 </div>
                 <div class="post-excerpt">网络基础，网络协议汇总</div>
@@ -62,7 +51,7 @@
             <article class="post-item">
                 <h3><a href="html/About_Git.html">Git快速使用</a></h3>
                 <div class="post-meta">
-                    <span>📅 2026-08-02</span>
+                    <span>📅 2026年8月2日</span>
                     <span>🏷️ <span class='tag'>技术</span> <span class='tag'>介绍</span></span>
                 </div>
                 <div class="post-excerpt">Git的使用与常用命令</div>
@@ -72,7 +61,7 @@
             <article class="post-item">
                 <h3><a href="html/Install_Claude_code.html">Claude Code 安装与配置</a></h3>
                 <div class="post-meta">
-                    <span>📅 2026-08-02</span>
+                    <span>📅 2026年8月2日</span>
                     <span>🏷️ <span class='tag'>技术</span> <span class='tag'>介绍</span></span>
                 </div>
                 <div class="post-excerpt">一份Claude Code教程，涵盖从环境准备、安装、项目配置，到高级命令与最佳实践的完整流程。</div>
@@ -82,7 +71,7 @@
             <article class="post-item">
                 <h3><a href="html/How_to_use_pytorch.html">如何使用PyTorch</a></h3>
                 <div class="post-meta">
-                    <span>📅 2026-08-01</span>
+                    <span>📅 2026年8月1日</span>
                     <span>🏷️ <span class='tag'>人工智能</span> <span class='tag'>技术</span></span>
                 </div>
                 <div class="post-excerpt">入门学习PyTorch框架基础</div>
@@ -92,7 +81,7 @@
             <article class="post-item">
                 <h3><a href="html/About_deep_learning.html">深度学习基础</a></h3>
                 <div class="post-meta">
-                    <span>📅 2026-07-26</span>
+                    <span>📅 2026年7月26日</span>
                     <span>🏷️ <span class='tag'>人工智能</span> <span class='tag'>知识</span></span>
                 </div>
                 <div class="post-excerpt">关于深度学习的一些基础知识</div>
@@ -102,7 +91,7 @@
             <article class="post-item">
                 <h3><a href="html/Agent_vocabulary_index.html">智能体相关词汇解读</a></h3>
                 <div class="post-meta">
-                    <span>📅 2026-07-21</span>
+                    <span>📅 2026年7月21日</span>
                     <span>🏷️ <span class='tag'>人工智能</span> <span class='tag'>知识</span></span>
                 </div>
                 <div class="post-excerpt">逐步深入解释智能体领域部分技术名词含义</div>
@@ -112,7 +101,7 @@
             <article class="post-item">
                 <h3><a href="html/Cloudflare_freenode.html">Cloudflare自建免费节点</a></h3>
                 <div class="post-meta">
-                    <span>📅 2026-07-21</span>
+                    <span>📅 2026年7月21日</span>
                     <span>🏷️ <span class='tag'>网络</span> <span class='tag'>技术</span></span>
                 </div>
                 <div class="post-excerpt">通过Cloudflare pages来建立节点</div>
@@ -122,34 +111,59 @@
             <article class="post-item">
                 <h3><a href="html/test.html">Hello World - 我的第一篇博客</a></h3>
                 <div class="post-meta">
-                    <span>📅 2026-07-21</span>
+                    <span>📅 2026年7月21日</span>
                     <span>🏷️ <span class='tag'>随笔</span> <span class='tag'>介绍</span></span>
                 </div>
                 <div class="post-excerpt">欢迎来到我的博客！</div>
                 <a href="html/test.html" class="read-more">阅读全文 →</a>
             </article></div>
-        </section>
+            </section>
 
-        <section id="about" class="about-section">
-            <h2>关于我</h2>
-            <div class="about-content">
-                <p>一名热爱技术的开发者，喜欢探索新技术并记录学习过程。</p>
-            </div>
-        </section>
+            <section class="about-section" id="about">
+                <h2>关于我</h2>
+                <div class="about-content">
+                    <p>一名热爱技术的开发者，喜欢探索新技术并记录学习过程。</p>
+                </div>
+            </section>
 
-        <section id="contact" class="contact-section">
-            <h2>联系我</h2>
-            <div class="contact-links">
-                <a href="https://github.com/Ling-Nine" target="_blank">GitHub</a>
-                <a href="mailto:gvd45@qq.com">Email</a>
+            <section class="contact-section" id="contact">
+                <h2>联系我</h2>
+                <div class="contact-links">
+                    <a href="https://github.com/Ling-Nine" target="_blank">GitHub</a>
+                    <a href="mailto:gvd45@qq.com">Email</a>
+                </div>
+            </section>
+        </main>
+
+        <!-- 右侧边栏：头像 + 导航 + 最新文章 -->
+        <aside class="right-sidebar">
+            <div class="profile-section">
+                <img class="profile-avatar" src="posts/images/test/头像.png" alt="彾九平">
+                <div class="profile-name">彾九平</div>
+                <div class="profile-desc">记录学习心得、技术笔记与生活感悟</div>
             </div>
-        </section>
-    </main>
+            <nav class="sidebar-nav">
+                <a href="index.html" class="active">🏠 首页</a>
+                <a href="index.html#about">📖 关于</a>
+                <a href="links/index.html">🔗 友链</a>
+                <a href="index.html#contact">✉️ 联系</a>
+            </nav>
+            <div class="recommend-section">
+                <div class="recommend-title">📌 最新文章</div>
+                <ul class="recommend-list">
+                    <li><a href="html/动漫寻图网站.html">寻图网站推荐<span class="recommend-date">2026-08-04</span></a></li>
+                    <li><a href="html/计算机网络是如何实现的.html">计算机网络是如何实现的<span class="recommend-date">2026-08-04</span></a></li>
+                    <li><a href="html/About_Git.html">Git快速使用<span class="recommend-date">2026-08-02</span></a></li>
+                    <li><a href="html/Install_Claude_code.html">Claude Code 安装与配置<span class="recommend-date">2026-08-02</span></a></li>
+                    <li><a href="html/How_to_use_pytorch.html">如何使用PyTorch<span class="recommend-date">2026-08-01</span></a></li>
+                </ul>
+            </div>
+        </aside>
+
+    </div>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 我的个人博客 | 使用Markdown驱动</p>
-        </div>
+        <p>&copy; 2026 彾九平 | 使用 Markdown 驱动</p>
     </footer>
 
 </body>

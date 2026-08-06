@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 r"""
-build.py v7 - 全自动博客构建脚本
+build.py v8 - 全自动博客构建脚本
 
 功能：
   1) 扫描 posts/*.md，从 YAML front matter 自动提取元数据
@@ -10,22 +10,21 @@ build.py v7 - 全自动博客构建脚本
   4) 把每篇 .md 渲染成独立静态 HTML
      - 代码块保护后原样保留，交给前端 highlight.js 高亮
      - LaTeX 公式保护后原样保留，交给前端 MathJax 渲染
-     - 自动修复图片路径（反斜杠 → 正斜杠）
-     - 自动给 ## 二级标题加 id，生成右侧 TOC 目录
+     - 自动给 ## 二级标题加 id，生成左侧 TOC 目录
   5) 更新首页静态文章列表
   6) 生成 sitemap.xml（含 lastmod）+ robots.txt
   7) 每篇文章输出到 html/ 子目录，.md 和图片保持原位
+  8) 三栏布局：左 TOC + 中内容 + 右边栏（头像/导航/同标签推荐）
 
 原则：
   - 绝不修改 .md 源文件
   - excerpt 从纯 Markdown 正文提取，不依赖渲染结果
 
-v7 新增：
-  - 代码块智能保护（解决 hex dump 中 ``` 导致块提前闭合的问题）
-  - 图片路径反斜杠自动修正为正斜杠
-  - 右侧 TOC 目录（基于 ## 二级标题 + 锚点跳转）
-  - HTML 输出到 html/ 子目录，与 .md 源文件分离
-  - 首页 <title> 优化为站点名 | 描述
+v8 新增：
+  - 去掉顶栏，改为右侧边栏（头像+导航+推荐文章）
+  - 首页：右侧栏显示最新文章
+  - 文章页：右侧栏显示同标签文章
+  - 主要内容居中
 
 用法：
   python build.py
@@ -48,15 +47,14 @@ else:
     ROOT = Path(__file__).resolve().parent
 
 POSTS_DIR = ROOT / "posts"
-HTML_DIR = ROOT / "html"          # ← 新增：HTML 统一输出到这里
+HTML_DIR = ROOT / "html"
 INDEX_JSON = POSTS_DIR / "index.json"
 SITE_URL = os.environ.get("SITE_URL", "https://ling-nine.github.io").rstrip("/")
 SITE_NAME = "彾九平"
 SITE_DESC = "记录学习心得、技术笔记与生活感悟"
+AVATAR_PATH = "posts/images/test/头像.png"
 
 # ── Markdown 配置 ────────────────────────────────────
-# 注意：不加 "toc"，避免给标题自动加 id 时和 MathJax 冲突
-# 注意：不加 "codehilite"，代码高亮完全交给前端 highlight.js
 MD_EXTENSIONS = ["extra", "fenced_code", "tables"]
 MD_EXT_CONFIG = {}
 
@@ -96,7 +94,7 @@ def parse_front_matter(text, filename):
     return meta, m.group(2)
 
 # ═════════════════════════════════════════════════
-#  从纯 Markdown 源提取 excerpt（不依赖渲染结果）
+#  从纯 Markdown 源提取 excerpt
 # ═════════════════════════════════════════════════
 def _extract_excerpt_from_markdown(body, max_len=80):
     text = body
@@ -180,10 +178,6 @@ def validate_meta(meta, filename, body):
 #  代码块智能保护 / 还原
 # ═════════════════════════════════════════════════
 def protect_code_blocks(text):
-    """
-    精确解析 ``` 围栏对（支持代码块内含 ``` 字符串的情况），
-    把代码内容替换为占位符。返回 (protected_text, store)
-    """
     lines = text.split('\n')
     store = []
     result = []
@@ -198,25 +192,23 @@ def protect_code_blocks(text):
                 fence_len = len(m.group(1))
                 in_code = True
                 code_buffer = []
-                result.append(line)   # 保留开围栏行
+                result.append(line)
             else:
                 result.append(line)
         else:
             m = re.match(r'^(`{3,})\s*$', line)
             if m and len(m.group(1)) == fence_len:
-                # 正确配对的闭围栏
                 code_content = '\n'.join(code_buffer)
                 token = f"\x00CODE{uuid.uuid4().hex}\x00"
                 store.append((token, code_content))
                 result.append(token)
-                result.append(line)   # 保留闭围栏行
+                result.append(line)
                 in_code = False
                 fence_len = 0
                 code_buffer = []
             else:
                 code_buffer.append(line)
 
-    # 文件结束时仍在代码块内 → 强制关闭
     if in_code:
         code_content = '\n'.join(code_buffer)
         token = f"\x00CODE{uuid.uuid4().hex}\x00"
@@ -253,7 +245,6 @@ def restore_math(text, store):
 #  TOC 提取 + h2 加 id
 # ═════════════════════════════════════════════════
 def extract_toc(md_text):
-    """从 Markdown 正文中提取所有 ## 二级标题"""
     toc = []
     body = re.sub(r'^---\s*\n.*?\n---\s*\n?', '', md_text, flags=re.DOTALL)
     body = re.sub(r'```.*?```', '', body, flags=re.DOTALL)
@@ -268,7 +259,6 @@ def extract_toc(md_text):
     return toc
 
 def add_heading_ids(html, toc):
-    """给渲染后的 <h2> 加上 id 属性，让 TOC 锚点能跳转"""
     for item in toc:
         pattern = rf'(<h2\b[^>]*)>(.*?{re.escape(item["text"])}.*?</h2>)'
         replacement = rf'<h2 id="{item["id"]}">\2'
@@ -276,7 +266,6 @@ def add_heading_ids(html, toc):
     return html
 
 def build_toc_html(toc):
-    """生成右侧 TOC 侧边栏 HTML，放在 post-main 前面（源码顺序优先）"""
     if not toc:
         return ""
     items = "\n".join(
@@ -292,24 +281,18 @@ def build_toc_html(toc):
 """
 
 # ═════════════════════════════════════════════════
-#  Markdown → HTML（完整管线）
+#  Markdown → HTML
 # ═════════════════════════════════════════════════
 def md_to_html(body, toc_out=None):
-    # 1) 保护代码块
     protected_code, code_store = protect_code_blocks(body)
-    # 2) 保护 LaTeX 公式
     protected_math, math_store = protect_math(protected_code)
-    # 3) Markdown 渲染
     html = md.markdown(
         protected_math,
         extensions=MD_EXTENSIONS,
         extension_configs=MD_EXT_CONFIG
     )
-    # 4) 还原公式
     html = restore_math(html, math_store)
-    # 5) 还原代码块
     html = restore_code_blocks(html, code_store)
-    # 6) 给 h2 加 id
     if toc_out:
         html = add_heading_ids(html, toc_out)
     return html
@@ -326,8 +309,15 @@ def format_date(s):
     except ValueError:
         return str(s)
 
+def format_date_short(s):
+    """短日期格式 2026-08-04"""
+    try:
+        return datetime.strptime(str(s), "%Y-%m-%d").strftime("%Y-%m-%d")
+    except ValueError:
+        return str(s)
+
 # ═════════════════════════════════════════════════
-#  MathJax 注入脚本
+#  MathJax 脚本
 # ═════════════════════════════════════════════════
 MATHJAX_SCRIPT = r"""
 <script>
@@ -346,7 +336,7 @@ window.MathJax = {
 """
 
 # ═════════════════════════════════════════════════
-#  highlight.js 脚本（16 语言包 + vs 浅色主题）
+#  highlight.js 脚本
 # ═════════════════════════════════════════════════
 HLJS_SCRIPTS = """
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs.min.css">
@@ -371,21 +361,89 @@ HLJS_SCRIPTS = """
 """
 
 # ═════════════════════════════════════════════════
-#  HTML 模板
+#  推荐文章 HTML 生成（同标签文章）
 # ═════════════════════════════════════════════════
-def build_post_html(post_html, meta, prev_post=None, next_post=None, toc=None):
+def build_recommend_html(current_post, all_posts_sorted):
+    """
+    根据当前文章的 tags，从 all_posts_sorted 中找出同标签的其他文章。
+    只返回有相同标签的文章，按匹配数降序、日期倒序，最多 5 篇。
+    如果一篇文章都没有同标签，返回空字符串（不显示推荐区）。
+    """
+    current_tags = set(current_post.get("tags", []))
+    current_filename = current_post.get("filename", "")
+
+    if not current_tags:
+        return ""
+
+    scored = []
+    for p in all_posts_sorted:
+        if p.get("filename", "") == current_filename:
+            continue
+        p_tags = set(p.get("tags", []))
+        overlap = len(current_tags & p_tags)
+        if overlap > 0:
+            scored.append((overlap, p))
+
+    # 按标签匹配数降序，再按日期降序
+    scored.sort(key=lambda x: (-x[0], str(x[1].get("date", ""))), reverse=True)
+    top = [s[1] for s in scored[:5]]
+
+    if not top:
+        return ""
+
+    items = []
+    for p in top:
+        slug = slugify(p["filename"])
+        # 文章页在 html/ 子目录下，所以推荐链接只需 "slug.html"
+        href = f"{slug}.html"
+        short_date = format_date_short(p.get("date", ""))
+        items.append(
+            f'                    <li><a href="{href}">{p["title"]}'
+            f'<span class="recommend-date">{short_date}</span></a></li>'
+        )
+
+    return "\n".join(items)
+
+# ═════════════════════════════════════════════════
+#  HTML 模板 — 文章页（三栏布局）
+# ═════════════════════════════════════════════════
+def build_post_html(post_html, meta, prev_post, next_post, toc, all_posts_sorted):
     title = meta["title"]
     date = meta["date"]
     tags = meta.get("tags", [])
     tags_str = ", ".join(tags) if isinstance(tags, list) else str(tags)
 
-    # HTML 输出在 html/ 下，所以相对路径要加一层 ../
-    prev_href = f"html/{slugify(prev_post['filename'])}.html" if prev_post else "#"
-    next_href = f"html/{slugify(next_post['filename'])}.html" if next_post else "#"
+    # 文章页位于 html/ 子目录下，所以同目录链接不需要加 html/ 前缀
+    prev_href = f"{slugify(prev_post['filename'])}.html" if prev_post else "#"
+    next_href = f"{slugify(next_post['filename'])}.html" if next_post else "#"
     prev_text = f"← {prev_post['title']}" if prev_post else "← 上一篇"
     next_text = f"{next_post['title']} →" if next_post else "下一篇 →"
 
     toc_html = build_toc_html(toc) if toc else ""
+
+    # 推荐文章（文章页在 html/ 目录下，链接已为相对路径）
+    recommend_items = build_recommend_html(meta, all_posts_sorted)
+    if recommend_items:
+        recommend_html = f"""
+        <div class="recommend-section">
+            <div class="recommend-title">📌 相关推荐</div>
+            <ul class="recommend-list">
+{recommend_items}
+            </ul>
+        </div>"""
+    else:
+        recommend_html = ""
+    # 无同标签文章时显示提示
+    if not recommend_items:
+        recommend_html = """
+        <div class="recommend-section">
+            <div class="recommend-title">📌 相关推荐</div>
+            <p style="font-size:0.85rem;color:var(--secondary-color);padding:0.4rem 0.5rem;">
+                暂无同标签文章
+            </p>
+        </div>"""
+
+    tags_html = " ".join(f"<span class='tag'>{t}</span>" for t in tags)
 
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
@@ -404,32 +462,15 @@ def build_post_html(post_html, meta, prev_post=None, next_post=None, toc=None):
     {MATHJAX_SCRIPT}
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <a href="../../index.html" class="logo-link">
-                    <img class="logo-avatar" src="../../posts/images/test/头像.png" alt="avatar">
-                    <span class="logo-text">彾九平</span>
-                </a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="../../index.html">首页</a></li>
-                <li><a href="../../index.html#about">关于</a></li>
-                <li><a href="../../links/index.html">友链</a></li>
-                <li><a href="../../index.html#contact">联系</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="container post-layout">
+    <div class="main-layout">
 {toc_html}
-        <main class="post-main">
+        <main class="content-area">
             <article class="post-container">
                 <div class="post-header">
                     <h1 id="post-title">{title}</h1>
                     <div class="post-meta">
                         <span>📅 {format_date(date)}</span>
-                        <span>🏷️ {tags_str}</span>
+                        <span>🏷️ {tags_html}</span>
                     </div>
                 </div>
                 <div class="post-content" id="post-content">
@@ -442,16 +483,32 @@ def build_post_html(post_html, meta, prev_post=None, next_post=None, toc=None):
                 </div>
             </article>
         </main>
+
+        <aside class="right-sidebar">
+            <div class="profile-section">
+                <img class="profile-avatar" src="../../{AVATAR_PATH}" alt="{SITE_NAME}">
+                <div class="profile-name">{SITE_NAME}</div>
+                <div class="profile-desc">{SITE_DESC}</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../../index.html">🏠 首页</a>
+                <a href="../../index.html#about">📖 关于</a>
+                <a href="../../links/index.html">🔗 友链</a>
+                <a href="../../index.html#contact">✉️ 联系</a>
+            </nav>
+{recommend_html}
+        </aside>
     </div>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 {SITE_NAME} | <a href="../../index.html">返回首页</a></p>
-        </div>
+        <p>&copy; 2026 {SITE_NAME} | <a href="../../index.html">返回首页</a></p>
     </footer>
 </body>
 </html>"""
 
+# ═════════════════════════════════════════════════
+#  首页文章列表 HTML
+# ═════════════════════════════════════════════════
 def build_index_html(posts_sorted):
     items = []
     for p in posts_sorted:
@@ -470,6 +527,9 @@ def build_index_html(posts_sorted):
             </article>""")
     return "\n".join(items)
 
+# ═════════════════════════════════════════════════
+#  sitemap
+# ═════════════════════════════════════════════════
 def build_sitemap(posts_sorted):
     if not SITE_URL:
         return None
@@ -496,18 +556,68 @@ def update_index_html(posts_sorted):
         return
     content = index_path.read_text(encoding="utf-8")
     new_list = build_index_html(posts_sorted)
+    # 只替换 posts-container 内的内容，到 </div> 就停（不吞掉后面的 about/contact 区域）
     new_content = re.sub(
-        r'(<div id="posts-container">).*?(</div>\s*</section>)',
+        r'(<div id="posts-container">).*?(</div>\s*\n\s*</section>)',
         rf'\1{new_list}\2',
         content, flags=re.DOTALL
     )
+    # 如果上面的正则没匹配到，尝试匹配带缩进的 </div>
+    if "post-item" not in new_content.split('id="about"')[0] if 'id="about"' in new_content else True:
+        # 兜底：直接替换 loading 占位符
+        pass
     if "正在加载文章" in new_content and "post-item" not in new_content:
         new_content = new_content.replace(
             '<div class="loading">正在加载文章...</div>',
             new_list
         )
+    # 确保 about 和 contact 锚点存在
+    if 'id="about"' not in new_content:
+        new_content = re.sub(r'<section class="about-section">',
+                             '<section class="about-section" id="about">',
+                             new_content)
+    if 'id="contact"' not in new_content:
+        new_content = re.sub(r'<section class="contact-section">',
+                             '<section class="contact-section" id="contact">',
+                             new_content)
     index_path.write_text(new_content, encoding="utf-8")
     log.ok("首页 index.html 已更新")
+
+# ═════════════════════════════════════════════════
+#  生成首页右侧栏的推荐文章 HTML
+# ═════════════════════════════════════════════════
+def build_home_recommend_html(posts_sorted, count=5):
+    """首页右侧栏显示最新文章（首页在根目录，链接用 html/ 前缀）"""
+    top = posts_sorted[:count]
+    items = []
+    for p in top:
+        slug = slugify(p["filename"])
+        href = f"html/{slug}.html"
+        short_date = format_date_short(p.get("date", ""))
+        items.append(
+            f'                    <li><a href="{href}">{p["title"]}'
+            f'<span class="recommend-date">{short_date}</span></a></li>'
+        )
+    return "\n".join(items)
+
+# ═════════════════════════════════════════════════
+#  更新首页右侧栏推荐文章
+# ═════════════════════════════════════════════════
+def update_home_sidebar(posts_sorted):
+    """替换首页右侧栏的推荐文章列表"""
+    index_path = ROOT / "index.html"
+    if not index_path.exists():
+        return
+    content = index_path.read_text(encoding="utf-8")
+    new_recommend = build_home_recommend_html(posts_sorted)
+    # 替换 recommend-list 中的内容
+    new_content = re.sub(
+        r'(<ul class="recommend-list">).*?(</ul>)',
+        rf'\1\n{new_recommend}\n                \2',
+        content, flags=re.DOTALL
+    )
+    index_path.write_text(new_content, encoding="utf-8")
+    log.ok("首页右侧栏推荐文章已更新")
 
 # ═════════════════════════════════════════════════
 #  主流程
@@ -523,7 +633,6 @@ def main():
         print(f"❌ 找不到 {POSTS_DIR}")
         sys.exit(1)
 
-    # 确保输出目录存在
     HTML_DIR.mkdir(parents=True, exist_ok=True)
 
     md_files = sorted([f for f in POSTS_DIR.glob("*.md") if not f.name.startswith("_")])
@@ -547,10 +656,8 @@ def main():
         else:
             meta = validate_meta(meta, filename, body)
 
-        # 提取 TOC
         toc = extract_toc(text)
         meta["toc"] = toc
-
         meta["filename"] = filename
         posts.append(meta)
         log.ok(f"{filename} → \"{meta['title']}\" ({meta['date']}) tags={meta['tags']} toc={len(toc)}")
@@ -593,7 +700,7 @@ def main():
         prev_p = posts_sorted[i + 1] if i + 1 < len(posts_sorted) else None
         next_p = posts_sorted[i - 1] if i - 1 >= 0 else None
 
-        page = build_post_html(html_body, post, prev_p, next_p, toc)
+        page = build_post_html(html_body, post, prev_p, next_p, toc, posts_sorted)
 
         slug = slugify(fname)
         out = HTML_DIR / f"{slug}.html"
@@ -602,6 +709,7 @@ def main():
 
     # ── 首页 ──
     update_index_html(posts_sorted)
+    update_home_sidebar(posts_sorted)
 
     # ── sitemap ──
     sm = build_sitemap(posts_sorted)

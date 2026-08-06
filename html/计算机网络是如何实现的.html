@@ -49,24 +49,7 @@ window.MathJax = {
 
 </head>
 <body>
-    <header>
-        <nav class="container">
-            <div class="logo">
-                <a href="../../index.html" class="logo-link">
-                    <img class="logo-avatar" src="../../posts/images/test/头像.png" alt="avatar">
-                    <span class="logo-text">彾九平</span>
-                </a>
-            </div>
-            <ul class="nav-links">
-                <li><a href="../../index.html">首页</a></li>
-                <li><a href="../../index.html#about">关于</a></li>
-                <li><a href="../../links/index.html">友链</a></li>
-                <li><a href="../../index.html#contact">联系</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <div class="container post-layout">
+    <div class="main-layout">
     <aside class="toc-sidebar">
         <div class="toc-title">📑 目录</div>
         <ul class="toc-list">
@@ -83,13 +66,13 @@ window.MathJax = {
         </ul>
     </aside>
 
-        <main class="post-main">
+        <main class="content-area">
             <article class="post-container">
                 <div class="post-header">
                     <h1 id="post-title">计算机网络是如何实现的</h1>
                     <div class="post-meta">
-                        <span>📅 2026-08-04</span>
-                        <span>🏷️ 知识, 介绍</span>
+                        <span>📅 2026年8月4日</span>
+                        <span>🏷️ <span class='tag'>知识</span> <span class='tag'>介绍</span></span>
                     </div>
                 </div>
                 <div class="post-content" id="post-content">
@@ -829,18 +812,41 @@ sftp user@host
 <p><em>本文使用 Markdown 编写，最后更新于 2026年8月5日</em></p>
                 </div>
                 <div class="post-navigation">
-                    <a href="html/About_Git.html">← Git快速使用</a>
+                    <a href="About_Git.html">← Git快速使用</a>
                     <a href="../../index.html">返回首页</a>
-                    <a href="html/动漫寻图网站.html">寻图网站推荐 →</a>
+                    <a href="动漫寻图网站.html">寻图网站推荐 →</a>
                 </div>
             </article>
         </main>
+
+        <aside class="right-sidebar">
+            <div class="profile-section">
+                <img class="profile-avatar" src="../../posts/images/test/头像.png" alt="彾九平">
+                <div class="profile-name">彾九平</div>
+                <div class="profile-desc">记录学习心得、技术笔记与生活感悟</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../../index.html">🏠 首页</a>
+                <a href="../../index.html#about">📖 关于</a>
+                <a href="../../links/index.html">🔗 友链</a>
+                <a href="../../index.html#contact">✉️ 联系</a>
+            </nav>
+
+        <div class="recommend-section">
+            <div class="recommend-title">📌 相关推荐</div>
+            <ul class="recommend-list">
+                    <li><a href="动漫寻图网站.html">寻图网站推荐<span class="recommend-date">2026-08-04</span></a></li>
+                    <li><a href="About_Git.html">Git快速使用<span class="recommend-date">2026-08-02</span></a></li>
+                    <li><a href="Install_Claude_code.html">Claude Code 安装与配置<span class="recommend-date">2026-08-02</span></a></li>
+                    <li><a href="About_deep_learning.html">深度学习基础<span class="recommend-date">2026-07-26</span></a></li>
+                    <li><a href="Agent_vocabulary_index.html">智能体相关词汇解读<span class="recommend-date">2026-07-21</span></a></li>
+            </ul>
+        </div>
+        </aside>
     </div>
 
     <footer>
-        <div class="container">
-            <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
-        </div>
+        <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
     </footer>
 </body>
 </html>
