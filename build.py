@@ -1,43 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 r"""
-build.py v8 - 全自动博客构建脚本
+build.py v10 - 全自动博客构建脚本
 
-功能：
-  1) 扫描 posts/*.md，从 YAML front matter 自动提取元数据
-  2) 校验格式（title/date/tags/excerpt），出错明明白白提醒
-  3) 自动生成 index.json（再也不用手写）
-  4) 把每篇 .md 渲染成独立静态 HTML
-     - 代码块保护后原样保留，交给前端 highlight.js 高亮
-     - LaTeX 公式保护后原样保留，交给前端 MathJax 渲染
-     - 自动给 ## 二级标题加 id，生成左侧 TOC 目录
-  5) 更新首页静态文章列表
-  6) 生成 sitemap.xml（含 lastmod）+ robots.txt
-  7) 每篇文章输出到 html/ 子目录，.md 和图片保持原位
-  8) 三栏布局：左 TOC + 中内容 + 右边栏（头像/导航/同标签推荐）
-
-原则：
-  - 绝不修改 .md 源文件
-  - excerpt 从纯 Markdown 正文提取，不依赖渲染结果
-
-v8 新增：
-  - 去掉顶栏，改为右侧边栏（头像+导航+推荐文章）
-  - 首页：右侧栏显示最新文章
-  - 文章页：右侧栏显示同标签文章
-  - 主要内容居中
-
-用法：
-  python build.py
-  python build.py D:/我的/Python程序/网站/我的博客
-  set SITE_URL=https://ling-nine.github.io  (Windows CMD)
-  $env:SITE_URL="https://ling-nine.github.io"  (PowerShell)
+核心渲染器：markdown-it-py（严格 CommonMark）
+TOC 和 HTML id 统一从同一份 Token 流生成，彻底解决数量不一致问题。
 """
 
 import sys, os, re, json, uuid
 from datetime import datetime, timezone
 from pathlib import Path
 
-import markdown as md
+from markdown_it import MarkdownIt
 import yaml
 
 # ── 路径配置 ───────────────────────────────────────
@@ -54,14 +28,13 @@ SITE_NAME = "彾九平"
 SITE_DESC = "记录学习心得、技术笔记与生活感悟"
 AVATAR_PATH = "posts/images/test/头像.png"
 
-# ── Markdown 配置 ────────────────────────────────────
-MD_EXTENSIONS = ["extra", "fenced_code", "tables"]
-MD_EXT_CONFIG = {}
+# ── Markdown-it-py 配置 ────────────────────────────
+MDIT = MarkdownIt("commonmark", {"html": False}) \
+    .enable("table") \
+    .enable("strikethrough")
 
 DATE_PATTERN = re.compile(r"^\d{4}-\d{2}-\d{2}$")
 
-# ═════════════════════════════════════════════════
-#  日志
 # ═════════════════════════════════════════════════
 class Log:
     def __init__(self):
@@ -80,11 +53,11 @@ log = Log()
 # ═════════════════════════════════════════════════
 def parse_front_matter(text, filename):
     if not text.lstrip().startswith("---"):
-        log.err(f"[{filename}] 缺少 front matter（文件开头必须是 ---）")
+        log.err(f"[{filename}] 缺少 front matter")
         return None, text
     m = re.match(r"^---\s*\r?\n(.*?)\r?\n---\s*\r?\n?(.*)$", text, re.DOTALL)
     if not m:
-        log.err(f"[{filename}] front matter 格式错误（缺少结束的 ---）")
+        log.err(f"[{filename}] front matter 格式错误")
         return None, text
     try:
         meta = yaml.safe_load(m.group(1)) or {}
@@ -137,7 +110,7 @@ def validate_meta(meta, filename, body):
         if hasattr(c["date"], "strftime"):
             dv = c["date"].strftime("%Y-%m-%d")
         if not DATE_PATTERN.match(dv):
-            log.err(f"[{filename}] date 格式错误: {dv}，应为 YYYY-MM-DD")
+            log.err(f"[{filename}] date 格式错误: {dv}")
             fixed = re.sub(r"[年/]", "-", dv).replace("月", "-").replace("日", "").strip("-")
             dv = fixed if DATE_PATTERN.match(fixed) else datetime.now().strftime("%Y-%m-%d")
         c["date"] = dv
@@ -148,26 +121,21 @@ def validate_meta(meta, filename, body):
     else:
         t = c["tags"]
         if isinstance(t, str):
-            if "，" in t:
-                log.warn(f"[{filename}] tags 中文逗号已自动拆分")
             c["tags"] = [x.strip() for x in re.split(r"[,，]", t) if x.strip()]
         elif isinstance(t, list):
             out = []
             for x in t:
                 x = str(x).strip()
                 if "，" in x:
-                    log.warn(f"[{filename}] 标签「{x}」含中文逗号，已拆分")
                     out.extend([y.strip() for y in x.split("，") if y.strip()])
                 else:
                     out.append(x)
             c["tags"] = out
         else:
-            log.warn(f"[{filename}] tags 类型异常（{type(t).__name__}），重置为空数组")
             c["tags"] = []
 
     if "excerpt" not in c or not str(c["excerpt"]).strip():
         exc = _extract_excerpt_from_markdown(body)
-        log.info(f"[{filename}] 自动 excerpt: {exc[:50]}...")
         c["excerpt"] = exc
     else:
         c["excerpt"] = str(c["excerpt"]).strip()
@@ -175,66 +143,77 @@ def validate_meta(meta, filename, body):
     return c
 
 # ═════════════════════════════════════════════════
-#  代码块智能保护 / 还原
-# ═════════════════════════════════════════════════
-def protect_code_blocks(text):
-    lines = text.split('\n')
-    store = []
-    result = []
-    in_code = False
-    code_buffer = []
-    fence_len = 0
-
-    for line in lines:
-        if not in_code:
-            m = re.match(r'^(`{3,})\s*([\w-]*)\s*$', line)
-            if m:
-                fence_len = len(m.group(1))
-                in_code = True
-                code_buffer = []
-                result.append(line)
-            else:
-                result.append(line)
-        else:
-            m = re.match(r'^(`{3,})\s*$', line)
-            if m and len(m.group(1)) == fence_len:
-                code_content = '\n'.join(code_buffer)
-                token = f"\x00CODE{uuid.uuid4().hex}\x00"
-                store.append((token, code_content))
-                result.append(token)
-                result.append(line)
-                in_code = False
-                fence_len = 0
-                code_buffer = []
-            else:
-                code_buffer.append(line)
-
-    if in_code:
-        code_content = '\n'.join(code_buffer)
-        token = f"\x00CODE{uuid.uuid4().hex}\x00"
-        store.append((token, code_content))
-        result.append(token)
-        result.append('`' * fence_len)
-
-    return '\n'.join(result), store
-
-def restore_code_blocks(text, store):
-    for token, code in store:
-        text = text.replace(token, code)
-    return text
-
-# ═════════════════════════════════════════════════
 #  LaTeX 公式保护 / 还原
 # ═════════════════════════════════════════════════
-_MATH_PATTERN = re.compile(r'(\$\$.*?\$\$|\$.*?\$|\\[\(\[].*?\\\)[\])])', re.DOTALL)
+# 分两阶段保护，避免 `$...$` 与 `$$...$$` 互相误配对：
+#   阶段1：块级 `$$...$$`（要求 $$ 前后不是 $，避免 $$$$ 被拆成空公式）
+#   阶段2：行内 `$...$`（要求 $ 前后不是 $，且不含换行）
+# 若混成一条 `\$\$.*?\$\$` 非贪婪正则，`$$` 会被当成"空公式"瞬间闭合，
+# 导致整块公式(含 cases/矩阵)完全暴露给 markdown-it → & 被转成 &amp;、
+# \\ 被当转义吞掉，公式渲染全部报错。
+_MATH_BLOCK = re.compile(r'(?<!\$)\$\$(?!\$)(.*?)(?<!\$)\$\$(?!\$)', re.DOTALL)
+_MATH_INLINE = re.compile(r'(?<!\$)\$(?!\$)([^$\n]+?)(?<!\$)\$(?!\$)')
+_MATH_PAREN = re.compile(r'(\\[\(\[].*?\\\)[\])])')
+
+def _make_math_token():
+    return f"MATHMARKER_{uuid.uuid4().hex}_END"
+
+def _split_fences(text):
+    """
+    按 Markdown 代码块（``` 或 ~~~ 围栏）切分文本。
+    返回 [("code", 内容), ("text", 内容), ...]，保证相邻片段交替。
+    围栏行本身归入 "text"，避免把 ``` 吃掉。
+    """
+    lines = text.split("\n")
+    parts = []
+    buf = []
+    in_fence = False
+    for ln in lines:
+        is_fence = ln.strip().startswith("```") or ln.strip().startswith("~~~")
+        if is_fence:
+            if in_fence:      # 结束围栏
+                in_fence = False
+                parts.append(("code", "\n".join(buf)))
+                buf = []
+                parts.append(("text", ln))   # 围栏行作为普通文本（不参与公式匹配）
+                continue
+            else:             # 开始围栏
+                in_fence = True
+                if buf:
+                    parts.append(("text", "\n".join(buf)))
+                    buf = []
+                buf.append(ln)
+                continue
+        if in_fence:
+            buf.append(ln)
+        else:
+            buf.append(ln)
+    if buf:
+        parts.append(("code" if in_fence else "text", "\n".join(buf)))
+    return parts
 
 def protect_math(text):
     store = []
-    def repl(match):
-        token = f"\x00MATH{uuid.uuid4().hex}\x00"
-        store.append((token, match.group(0)))
+    def register(formula):
+        token = _make_math_token()
+        store.append((token, formula))
         return token
-    return _MATH_PATTERN.sub(repl, text), store
+    def repl_block(m):
+        return register("$$" + m.group(1) + "$$")
+    def repl_inline(m):
+        return register("$" + m.group(1) + "$")
+    def repl_paren(m):
+        return register(m.group(0))
+    # 只对非代码块区域做数学保护，防止公式匹配吞掉 fence 内容
+    out_parts = []
+    for kind, content in _split_fences(text):
+        if kind == "text":
+            # 顺序很重要：先块级 $$，再行内 $，最后 \( \) \[ \]
+            content = _MATH_BLOCK.sub(repl_block, content)
+            content = _MATH_INLINE.sub(repl_inline, content)
+            content = _MATH_PAREN.sub(repl_paren, content)
+        out_parts.append(content)
+    return "\n".join(out_parts), store
 
 def restore_math(text, store):
     for token, formula in store:
@@ -242,28 +221,34 @@ def restore_math(text, store):
     return text
 
 # ═════════════════════════════════════════════════
-#  TOC 提取 + h2 加 id
+#  TOC 提取（从 Token 流）
 # ═════════════════════════════════════════════════
-def extract_toc(md_text):
-    toc = []
-    body = re.sub(r'^---\s*\n.*?\n---\s*\n?', '', md_text, flags=re.DOTALL)
-    body = re.sub(r'```.*?```', '', body, flags=re.DOTALL)
-    for line in body.split('\n'):
-        m = re.match(r'^##\s+(.+?)\s*$', line)
-        if m:
-            text = m.group(1).strip()
-            anchor = text.lower()
-            anchor = re.sub(r'[^\w\u4e00-\u9fff-]', '-', anchor)
-            anchor = re.sub(r'-+', '-', anchor).strip('-')
-            toc.append({"id": anchor, "text": text})
-    return toc
+def _make_slug(text):
+    text = re.sub(r'<[^>]+>', '', text)
+    slug = re.sub(r'[^a-zA-Z0-9\u4e00-\u9fff]+', '-', text.lower())
+    slug = re.sub(r'-+', '-', slug).strip('-')
+    return slug or 'section'
 
-def add_heading_ids(html, toc):
-    for item in toc:
-        pattern = rf'(<h2\b[^>]*)>(.*?{re.escape(item["text"])}.*?</h2>)'
-        replacement = rf'<h2 id="{item["id"]}">\2'
-        html = re.sub(pattern, replacement, html)
-    return html
+def extract_toc_from_tokens(tokens):
+    """从 Token 流提取 h2 标题，返回 [{"id": slug, "text": title}, ...]"""
+    result = []
+    slug_counts = {}
+    for i, token in enumerate(tokens):
+        if token.type == 'heading_open' and token.tag == 'h2':
+            title = ''
+            for j in range(i + 1, min(i + 4, len(tokens))):
+                if tokens[j].type == 'inline':
+                    title = tokens[j].content
+                    break
+            base_slug = _make_slug(title)
+            if base_slug in slug_counts:
+                slug_counts[base_slug] += 1
+                final_id = f'{base_slug}-{slug_counts[base_slug]}'
+            else:
+                slug_counts[base_slug] = 0
+                final_id = base_slug
+            result.append({"id": final_id, "text": title})
+    return result
 
 def build_toc_html(toc):
     if not toc:
@@ -281,21 +266,45 @@ def build_toc_html(toc):
 """
 
 # ═════════════════════════════════════════════════
-#  Markdown → HTML
+#  Markdown → HTML + TOC（统一从同一份 Token 流生成）
 # ═════════════════════════════════════════════════
-def md_to_html(body, toc_out=None):
-    protected_code, code_store = protect_code_blocks(body)
-    protected_math, math_store = protect_math(protected_code)
-    html = md.markdown(
-        protected_math,
-        extensions=MD_EXTENSIONS,
-        extension_configs=MD_EXT_CONFIG
-    )
+def md_to_html(body, filename="<unknown>"):
+    """
+    解析 Markdown，提取 TOC，给 h2 加 id，渲染 HTML。
+    返回 (html, toc)，两者永远一致。
+    """
+    # 1) 保护 LaTeX
+    protected, math_store = protect_math(body)
+    # 2) 解析 Token 流（只解析一次）
+    tokens = MDIT.parse(protected)
+    # 3) 提取 TOC 并给 h2 加 id
+    toc = []
+    slug_counts = {}
+    for i, token in enumerate(tokens):
+        if token.type == 'heading_open' and token.tag == 'h2':
+            title = ''
+            for j in range(i + 1, min(i + 4, len(tokens))):
+                if tokens[j].type == 'inline':
+                    title = tokens[j].content
+                    break
+            base_slug = _make_slug(title)
+            if base_slug in slug_counts:
+                slug_counts[base_slug] += 1
+                final_id = f'{base_slug}-{slug_counts[base_slug]}'
+            else:
+                slug_counts[base_slug] = 0
+                final_id = base_slug
+            toc.append({"id": final_id, "text": title})
+            token.attrs['id'] = final_id
+    # 4) 渲染
+    html = MDIT.renderer.render(tokens, MDIT.options, {})
+    # 5) 还原 LaTeX
     html = restore_math(html, math_store)
-    html = restore_code_blocks(html, code_store)
-    if toc_out:
-        html = add_heading_ids(html, toc_out)
-    return html
+    # 6) 自检
+    leftover = re.findall(r'MATHMARKER_[0-9a-f]+_END', html)
+    if leftover:
+        log.err(f"[{filename}] LaTeX 占位符还原失败，残留 {len(leftover)} 个")
+    return html, toc
 
 # ═════════════════════════════════════════════════
 #  工具
@@ -310,14 +319,13 @@ def format_date(s):
         return str(s)
 
 def format_date_short(s):
-    """短日期格式 2026-08-04"""
     try:
         return datetime.strptime(str(s), "%Y-%m-%d").strftime("%Y-%m-%d")
     except ValueError:
         return str(s)
 
 # ═════════════════════════════════════════════════
-#  MathJax 脚本
+#  MathJax / highlight.js 脚本
 # ═════════════════════════════════════════════════
 MATHJAX_SCRIPT = r"""
 <script>
@@ -335,9 +343,6 @@ window.MathJax = {
 <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
 """
 
-# ═════════════════════════════════════════════════
-#  highlight.js 脚本
-# ═════════════════════════════════════════════════
 HLJS_SCRIPTS = """
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs.min.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
@@ -349,7 +354,7 @@ HLJS_SCRIPTS = """
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libiv.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
@@ -361,20 +366,13 @@ HLJS_SCRIPTS = """
 """
 
 # ═════════════════════════════════════════════════
-#  推荐文章 HTML 生成（同标签文章）
+#  推荐文章 / HTML 模板
 # ═════════════════════════════════════════════════
 def build_recommend_html(current_post, all_posts_sorted):
-    """
-    根据当前文章的 tags，从 all_posts_sorted 中找出同标签的其他文章。
-    只返回有相同标签的文章，按匹配数降序、日期倒序，最多 5 篇。
-    如果一篇文章都没有同标签，返回空字符串（不显示推荐区）。
-    """
     current_tags = set(current_post.get("tags", []))
     current_filename = current_post.get("filename", "")
-
     if not current_tags:
         return ""
-
     scored = []
     for p in all_posts_sorted:
         if p.get("filename", "") == current_filename:
@@ -383,68 +381,40 @@ def build_recommend_html(current_post, all_posts_sorted):
         overlap = len(current_tags & p_tags)
         if overlap > 0:
             scored.append((overlap, p))
-
-    # 按标签匹配数降序，再按日期降序
     scored.sort(key=lambda x: (-x[0], str(x[1].get("date", ""))), reverse=True)
     top = [s[1] for s in scored[:5]]
-
     if not top:
         return ""
-
     items = []
     for p in top:
         slug = slugify(p["filename"])
-        # 文章页在 html/ 子目录下，所以推荐链接只需 "slug.html"
         href = f"{slug}.html"
         short_date = format_date_short(p.get("date", ""))
-        items.append(
-            f'                    <li><a href="{href}">{p["title"]}'
-            f'<span class="recommend-date">{short_date}</span></a></li>'
-        )
-
+        items.append(f'                    <li><a href="{href}">{p["title"]}<span class="recommend-date">{short_date}</span></a></li>')
     return "\n".join(items)
 
-# ═════════════════════════════════════════════════
-#  HTML 模板 — 文章页（三栏布局）
-# ═════════════════════════════════════════════════
 def build_post_html(post_html, meta, prev_post, next_post, toc, all_posts_sorted):
     title = meta["title"]
     date = meta["date"]
     tags = meta.get("tags", [])
-    tags_str = ", ".join(tags) if isinstance(tags, list) else str(tags)
-
-    # 文章页位于 html/ 子目录下，所以同目录链接不需要加 html/ 前缀
     prev_href = f"{slugify(prev_post['filename'])}.html" if prev_post else "#"
     next_href = f"{slugify(next_post['filename'])}.html" if next_post else "#"
     prev_text = f"← {prev_post['title']}" if prev_post else "← 上一篇"
     next_text = f"{next_post['title']} →" if next_post else "下一篇 →"
-
     toc_html = build_toc_html(toc) if toc else ""
-
-    # 推荐文章（文章页在 html/ 目录下，链接已为相对路径）
     recommend_items = build_recommend_html(meta, all_posts_sorted)
     if recommend_items:
-        recommend_html = f"""
-        <div class="recommend-section">
+        recommend_html = f"""        <div class="recommend-section">
             <div class="recommend-title">📌 相关推荐</div>
             <ul class="recommend-list">
 {recommend_items}
             </ul>
         </div>"""
     else:
-        recommend_html = ""
-    # 无同标签文章时显示提示
-    if not recommend_items:
-        recommend_html = """
-        <div class="recommend-section">
+        recommend_html = """        <div class="recommend-section">
             <div class="recommend-title">📌 相关推荐</div>
-            <p style="font-size:0.85rem;color:var(--secondary-color);padding:0.4rem 0.5rem;">
-                暂无同标签文章
-            </p>
+            <p style="font-size:0.85rem;color:var(--secondary-color);padding:0.4rem 0.5rem;">暂无同标签文章</p>
         </div>"""
-
-    tags_html = " ".join(f"<span class='tag'>{t}</span>" for t in tags)
-
     return f"""<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -470,7 +440,7 @@ def build_post_html(post_html, meta, prev_post, next_post, toc, all_posts_sorted
                     <h1 id="post-title">{title}</h1>
                     <div class="post-meta">
                         <span>📅 {format_date(date)}</span>
-                        <span>🏷️ {tags_html}</span>
+                        <span>🏷️ {" ".join(f"<span class='tag'>{t}</span>" for t in tags)}</span>
                     </div>
                 </div>
                 <div class="post-content" id="post-content">
@@ -483,7 +453,6 @@ def build_post_html(post_html, meta, prev_post, next_post, toc, all_posts_sorted
                 </div>
             </article>
         </main>
-
         <aside class="right-sidebar">
             <div class="profile-section">
                 <img class="profile-avatar" src="../../{AVATAR_PATH}" alt="{SITE_NAME}">
@@ -499,24 +468,19 @@ def build_post_html(post_html, meta, prev_post, next_post, toc, all_posts_sorted
 {recommend_html}
         </aside>
     </div>
-
     <footer>
         <p>&copy; 2026 {SITE_NAME} | <a href="../../index.html">返回首页</a></p>
     </footer>
 </body>
 </html>"""
 
-# ═════════════════════════════════════════════════
-#  首页文章列表 HTML
-# ═════════════════════════════════════════════════
 def build_index_html(posts_sorted):
     items = []
     for p in posts_sorted:
         slug = slugify(p["filename"])
         href = f"html/{slug}.html"
         tags_html = " ".join(f"<span class='tag'>{t}</span>" for t in p.get("tags", []))
-        items.append(f"""
-            <article class="post-item">
+        items.append(f"""            <article class="post-item">
                 <h3><a href="{href}">{p['title']}</a></h3>
                 <div class="post-meta">
                     <span>📅 {format_date(p['date'])}</span>
@@ -527,9 +491,6 @@ def build_index_html(posts_sorted):
             </article>""")
     return "\n".join(items)
 
-# ═════════════════════════════════════════════════
-#  sitemap
-# ═════════════════════════════════════════════════
 def build_sitemap(posts_sorted):
     if not SITE_URL:
         return None
@@ -540,15 +501,10 @@ def build_sitemap(posts_sorted):
     lines.append(f"  <url><loc>{SITE_URL}/links/index.html</loc><lastmod>{today}</lastmod></url>")
     for p in posts_sorted:
         slug = slugify(p["filename"])
-        url = f"{SITE_URL}/html/{slug}.html"
-        lastmod = p.get("date") or today
-        lines.append(f"  <url><loc>{url}</loc><lastmod>{lastmod}</lastmod></url>")
+        lines.append(f"  <url><loc>{SITE_URL}/html/{slug}.html</loc><lastmod>{p.get('date', today)}</lastmod></url>")
     lines.append("</urlset>")
     return "\n".join(lines)
 
-# ═════════════════════════════════════════════════
-#  首页更新
-# ═════════════════════════════════════════════════
 def update_index_html(posts_sorted):
     index_path = ROOT / "index.html"
     if not index_path.exists():
@@ -556,66 +512,27 @@ def update_index_html(posts_sorted):
         return
     content = index_path.read_text(encoding="utf-8")
     new_list = build_index_html(posts_sorted)
-    # 只替换 posts-container 内的内容，到 </div> 就停（不吞掉后面的 about/contact 区域）
-    new_content = re.sub(
-        r'(<div id="posts-container">).*?(</div>\s*\n\s*</section>)',
-        rf'\1{new_list}\2',
-        content, flags=re.DOTALL
-    )
-    # 如果上面的正则没匹配到，尝试匹配带缩进的 </div>
-    if "post-item" not in new_content.split('id="about"')[0] if 'id="about"' in new_content else True:
-        # 兜底：直接替换 loading 占位符
-        pass
+    new_content = re.sub(r'(<div id="posts-container">).*?(</div>\s*\n\s*</section>)', rf'\1{new_list}\2', content, flags=re.DOTALL)
     if "正在加载文章" in new_content and "post-item" not in new_content:
-        new_content = new_content.replace(
-            '<div class="loading">正在加载文章...</div>',
-            new_list
-        )
-    # 确保 about 和 contact 锚点存在
-    if 'id="about"' not in new_content:
-        new_content = re.sub(r'<section class="about-section">',
-                             '<section class="about-section" id="about">',
-                             new_content)
-    if 'id="contact"' not in new_content:
-        new_content = re.sub(r'<section class="contact-section">',
-                             '<section class="contact-section" id="contact">',
-                             new_content)
+        new_content = new_content.replace('<div class="loading">正在加载文章...</div>', new_list)
     index_path.write_text(new_content, encoding="utf-8")
     log.ok("首页 index.html 已更新")
 
-# ═════════════════════════════════════════════════
-#  生成首页右侧栏的推荐文章 HTML
-# ═════════════════════════════════════════════════
 def build_home_recommend_html(posts_sorted, count=5):
-    """首页右侧栏显示最新文章（首页在根目录，链接用 html/ 前缀）"""
-    top = posts_sorted[:count]
     items = []
-    for p in top:
+    for p in posts_sorted[:count]:
         slug = slugify(p["filename"])
-        href = f"html/{slug}.html"
         short_date = format_date_short(p.get("date", ""))
-        items.append(
-            f'                    <li><a href="{href}">{p["title"]}'
-            f'<span class="recommend-date">{short_date}</span></a></li>'
-        )
+        items.append(f'                    <li><a href="html/{slug}.html">{p["title"]}<span class="recommend-date">{short_date}</span></a></li>')
     return "\n".join(items)
 
-# ═════════════════════════════════════════════════
-#  更新首页右侧栏推荐文章
-# ═════════════════════════════════════════════════
 def update_home_sidebar(posts_sorted):
-    """替换首页右侧栏的推荐文章列表"""
     index_path = ROOT / "index.html"
     if not index_path.exists():
         return
     content = index_path.read_text(encoding="utf-8")
     new_recommend = build_home_recommend_html(posts_sorted)
-    # 替换 recommend-list 中的内容
-    new_content = re.sub(
-        r'(<ul class="recommend-list">).*?(</ul>)',
-        rf'\1\n{new_recommend}\n                \2',
-        content, flags=re.DOTALL
-    )
+    new_content = re.sub(r'(<ul class="recommend-list">).*?(</ul>)', rf'\1\n{new_recommend}\n                \2', content, flags=re.DOTALL)
     index_path.write_text(new_content, encoding="utf-8")
     log.ok("首页右侧栏推荐文章已更新")
 
@@ -627,57 +544,43 @@ def main():
     print(f"📂 文章目录:   {POSTS_DIR}")
     print(f"📂 HTML 输出:   {HTML_DIR}")
     print(f"🌐 站点 URL:   {SITE_URL}")
+    print(f"🔧 渲染器:     markdown-it-py (CommonMark)")
     print()
 
     if not POSTS_DIR.is_dir():
-        print(f"❌ 找不到 {POSTS_DIR}")
-        sys.exit(1)
+        print(f"❌ 找不到 {POSTS_DIR}"); sys.exit(1)
 
     HTML_DIR.mkdir(parents=True, exist_ok=True)
-
     md_files = sorted([f for f in POSTS_DIR.glob("*.md") if not f.name.startswith("_")])
-
     if not md_files:
-        print("❌ posts/ 下没有 .md 文件")
-        sys.exit(1)
-
+        print("❌ posts/ 下没有 .md 文件"); sys.exit(1)
     print(f"📄 发现 {len(md_files)} 个 Markdown 文件\n")
 
     posts = []
     for md_path in md_files:
         filename = md_path.name
         text = md_path.read_text(encoding="utf-8")
-
         meta, body = parse_front_matter(text, filename)
         if meta is None:
-            meta = {"title": md_path.stem, "date": datetime.now().strftime("%Y-%m-%d"),
-                    "tags": [], "excerpt": ""}
+            meta = {"title": md_path.stem, "date": datetime.now().strftime("%Y-%m-%d"), "tags": [], "excerpt": ""}
             body = text
         else:
             meta = validate_meta(meta, filename, body)
 
-        toc = extract_toc(text)
-        meta["toc"] = toc
         meta["filename"] = filename
         posts.append(meta)
-        log.ok(f"{filename} → \"{meta['title']}\" ({meta['date']}) tags={meta['tags']} toc={len(toc)}")
+        log.ok(f"{filename} → \"{meta['title']}\" ({meta['date']}) tags={meta['tags']}")
 
     print()
     posts_sorted = sorted(posts, key=lambda p: str(p.get("date", "")), reverse=True)
 
-    # ── index.json ──
-    json_data = [
-        {"filename": p["filename"], "title": p["title"], "date": p["date"],
-         "tags": p.get("tags", []), "excerpt": p.get("excerpt", "")}
-        for p in posts_sorted
-    ]
-    INDEX_JSON.write_text(
-        json.dumps(json_data, ensure_ascii=False, indent=4) + "\n",
-        encoding="utf-8"
-    )
+    # index.json
+    json_data = [{"filename": p["filename"], "title": p["title"], "date": p["date"],
+                  "tags": p.get("tags", []), "excerpt": p.get("excerpt", "")} for p in posts_sorted]
+    INDEX_JSON.write_text(json.dumps(json_data, ensure_ascii=False, indent=4) + "\n", encoding="utf-8")
     log.ok(f"index.json 已生成（{len(json_data)} 篇）")
 
-    # ── 每篇文章 → HTML ──
+    # 渲染每篇文章
     for i, post in enumerate(posts_sorted):
         fname = post["filename"]
         md_path = POSTS_DIR / fname
@@ -686,20 +589,23 @@ def main():
         if not body:
             body = text
 
-        toc = post.get("toc", [])
-        html_body = md_to_html(body, toc if toc else None)
+        # ★ 只解析一次，TOC 和 HTML 全部从 Token 流来
+        html_body, toc = md_to_html(body, filename=fname)
+        post["toc"] = toc
 
-        # 验证 <pre> 标签匹配
-        pre_open = html_body.count("<pre>")
-        pre_close = html_body.count("</pre>")
-        if pre_open != pre_close:
-            log.err(f"[{fname}] <pre> 标签不匹配！开={pre_open} 关={pre_close}")
+        # 验证
+        h2_all = re.findall(r'<h2\b[^>]*>', html_body)
+        h2_with_id = re.findall(r'<h2[^>]*id="([^"]+)"', html_body)
+        toc_ids = [t["id"] for t in toc]
+        if len(h2_all) != len(toc):
+            log.err(f"[{fname}] <h2> 数量({len(h2_all)}) 与 TOC 条目({len(toc)}) 不一致！")
+        elif h2_with_id != toc_ids:
+            log.err(f"[{fname}] TOC 锚点顺序不匹配！")
         else:
-            log.ok(f"[{fname}] <pre> 标签匹配 ({pre_open} 个)")
+            log.ok(f"[{fname}] TOC 锚点全部匹配 ({len(toc)} 个)")
 
         prev_p = posts_sorted[i + 1] if i + 1 < len(posts_sorted) else None
         next_p = posts_sorted[i - 1] if i - 1 >= 0 else None
-
         page = build_post_html(html_body, post, prev_p, next_p, toc, posts_sorted)
 
         slug = slugify(fname)
@@ -707,38 +613,26 @@ def main():
         out.write_text(page, encoding="utf-8")
         log.ok(f"{fname} → html/{slug}.html")
 
-    # ── 首页 ──
     update_index_html(posts_sorted)
     update_home_sidebar(posts_sorted)
 
-    # ── sitemap ──
     sm = build_sitemap(posts_sorted)
     if sm:
         (ROOT / "sitemap.xml").write_text(sm, encoding="utf-8")
-        log.ok(f"sitemap.xml → {SITE_URL}/sitemap.xml")
+        log.ok("sitemap.xml 已生成")
 
-    # ── robots.txt ──
     rb = ROOT / "robots.txt"
     if not rb.exists():
         rb.write_text(f"User-agent: *\nAllow: /\nSitemap: {SITE_URL}/sitemap.xml\n", encoding="utf-8")
         log.ok("robots.txt 已生成")
-    else:
-        log.info("robots.txt 已存在，跳过")
 
-    # ── 汇总 ──
     print()
     if log.errors:
-        print(f"❌ {len(log.errors)} 个错误：")
+        print(f"❌ {len(log.errors)} 个错误")
         for e in log.errors: print(f"     {e}")
     if log.warnings:
-        print(f"⚠️  {len(log.warnings)} 个警告（已自动修复）：")
-        for w in log.warnings: print(f"     {w}")
-
-    if log.errors:
-        print("\n💥 构建完成但有错误！"); sys.exit(1)
-    elif log.warnings:
-        print("\n✨ 构建完成（有警告已处理）")
-    else:
+        print(f"⚠️  {len(log.warnings)} 个警告")
+    if not log.errors:
         print("\n🎉 构建完成，一切正常！")
 
 if __name__ == "__main__":

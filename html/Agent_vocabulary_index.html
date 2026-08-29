@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libiv.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
@@ -77,43 +77,43 @@ window.MathJax = {
 <strong>模型回复（Assistant Messages）</strong>：模型之前生成的回复，最多包含三个部分——思考过程（reasoning）、文本内容（content）和工具调用请求（tool_calls）。
 <strong>工具执行结果（Tool Results）</strong>：Agent 框架执行工具后返回的结果。</p>
 <pre><code class="language-json">{
-    "model": "Qwen3-0.6B",
-    "messages": [
+    &quot;model&quot;: &quot;Qwen3-0.6B&quot;,
+    &quot;messages&quot;: [
     	{
-        	"role": "system",    // ← Written by developer
-            "content": "You are a helpful assistant. Use the provided tools to get real-time
-                information when needed."
+        	&quot;role&quot;: &quot;system&quot;,    // ← Written by developer
+            &quot;content&quot;: &quot;You are a helpful assistant. Use the provided tools to get real-time
+                information when needed.&quot;
         },
         {
-            "role": "user",      // ← User input
-            "content": "What's the current time and weather in Vancouver?"
+            &quot;role&quot;: &quot;user&quot;,      // ← User input
+            &quot;content&quot;: &quot;What's the current time and weather in Vancouver?&quot;
         }
     ],
-    "tools": [
+    &quot;tools&quot;: [
         {
-            "type": "function",
-            "function":
+            &quot;type&quot;: &quot;function&quot;,
+            &quot;function&quot;:
                 {
-                    "name": "get_current_time",			// ← Tools defined by developer
-                    "description": "Get the current date and time in a specific timezone",
-                    "parameters": {
-                    	"type": "object",
-                    	"properties": {
-                    		"timezone": { "type": "string", 
-                    					"description": "Timezone name, e.g.}
+                    &quot;name&quot;: &quot;get_current_time&quot;,			// ← Tools defined by developer
+                    &quot;description&quot;: &quot;Get the current date and time in a specific timezone&quot;,
+                    &quot;parameters&quot;: {
+                    	&quot;type&quot;: &quot;object&quot;,
+                    	&quot;properties&quot;: {
+                    		&quot;timezone&quot;: { &quot;type&quot;: &quot;string&quot;, 
+                    					&quot;description&quot;: &quot;Timezone name, e.g.}
         					}
         		}
         },
         {
-            "type": "function",
-            "function": {
-            "name": "get_weather",
-            "description": "Get the current weather for a specific city",
-            "parameters": {
-                    "type": "object",
-                    "properties": {
-                            "city": { "type": "string", "description": "City name" },
-                           "unit": { "type": "string", "enum": ["celsius", "fahrenheit"] }
+            &quot;type&quot;: &quot;function&quot;,
+            &quot;function&quot;: {
+            &quot;name&quot;: &quot;get_weather&quot;,
+            &quot;description&quot;: &quot;Get the current weather for a specific city&quot;,
+            &quot;parameters&quot;: {
+                    &quot;type&quot;: &quot;object&quot;,
+                    &quot;properties&quot;: {
+                            &quot;city&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;description&quot;: &quot;City name&quot; },
+                           &quot;unit&quot;: { &quot;type&quot;: &quot;string&quot;, &quot;enum&quot;: [&quot;celsius&quot;, &quot;fahrenheit&quot;] }
                         }
             	}
             }
@@ -144,7 +144,7 @@ window.MathJax = {
 <p>计算机只能处理数字，不能直接理解“苹果”和“橙子”的含义。嵌入的思路是：把每个词或句子转化成一串数字（称为“向量”，比如[0.2,-0.5, 0.8, ⋯]），并且让语义相近的内容转化出来的数字串也“相近”。这些向量所在的数学空间称为“向量空间”，语义越接近的内容彼此就越靠近。</p>
 <h4>稠密嵌入：</h4>
 <p>用深度学习把文本映射到向量空间——语义相近的内容，向量距离也近。衡量两个向量有多“近”的常用方法是余弦相似度。</p>
-<p><strong>余弦相似度：</strong>它计算两个向量夹角的余弦值，值越接近1表示方向越一致、语义越相似。</p>
+<p>**余弦相似度：**它计算两个向量夹角的余弦值，值越接近1表示方向越一致、语义越相似。</p>
 <h4>稀疏嵌入（Sparse Embedding）：</h4>
 <p>根植于传统信息检索，核心是精确的关键词匹配。它将文档表示为极高维度的向量，绝大多数维度为零，只有与文档中出现的词汇对应的维度具有非零值。理论基石是经典的词袋模型（Bag of Words, BoW）——它把一段文本看作一个“装满词的袋子”，只关心哪些词出现了、出现了几次，完全忽略词序。例如“猫追狗”和“狗追猫”在词袋模型中是完全相同的。在此基础上，逐步演进出更复杂的概率排序算法。</p>
 <h4>TF-IDF：</h4>
@@ -172,8 +172,8 @@ window.MathJax = {
 统一为“用户提问→理想回答”。模型在这些示范上继续做“预测下一个词”，于是把“被提问时该怎么组织回
 答”这个协议学了进去。</li>
 <li>损失只算在“回答”上（loss masking，损失屏蔽）。一条 SFT 样本包含问题和标注回答两部分。我们不
-  希望模型学“怎么提问”，只希望它学“怎么回答”，所以计算损失时把问题部分的token屏蔽掉，只对回答部
-  分回传梯度。这是SFT在工程上与预训练唯一实质性的区别。</li>
+希望模型学“怎么提问”，只希望它学“怎么回答”，所以计算损失时把问题部分的token屏蔽掉，只对回答部
+分回传梯度。这是SFT在工程上与预训练唯一实质性的区别。</li>
 </ol>
 <p>用极高的样本效率，把一套稳定的“输入→输出”映射与协议固化进参数。它固化的是“格式、风格、流程”这类协议性知识（该怎么说、怎么做），而非大量事实性知识（知道什么）。</p>
 <h4>强化学习（RL，Reinforcement Learning）：</h4>
@@ -191,6 +191,7 @@ window.MathJax = {
 <p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
 <hr />
 <p><em>本文使用 Markdown 编写，最后更新于 2026年7月26日</em></p>
+
                 </div>
                 <div class="post-navigation">
                     <a href="Cloudflare_freenode.html">← Cloudflare自建免费节点</a>
@@ -199,7 +200,6 @@ window.MathJax = {
                 </div>
             </article>
         </main>
-
         <aside class="right-sidebar">
             <div class="profile-section">
                 <img class="profile-avatar" src="../../posts/images/test/头像.png" alt="彾九平">
@@ -212,7 +212,6 @@ window.MathJax = {
                 <a href="../../links/index.html">🔗 友链</a>
                 <a href="../../index.html#contact">✉️ 联系</a>
             </nav>
-
         <div class="recommend-section">
             <div class="recommend-title">📌 相关推荐</div>
             <ul class="recommend-list">
@@ -223,7 +222,6 @@ window.MathJax = {
         </div>
         </aside>
     </div>
-
     <footer>
         <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
     </footer>

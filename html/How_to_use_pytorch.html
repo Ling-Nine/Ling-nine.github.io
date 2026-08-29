@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libiv.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
@@ -129,10 +129,10 @@ x_np = torch.from_numpy(np_array)
 
 # 从另一个张量创建
 x_ones = torch.ones_like(x_data) # 保留 x_data 的属性
-print(f"Ones Tensor: \n {x_ones} \n")
+print(f&quot;Ones Tensor: \n {x_ones} \n&quot;)
 
 x_rand = torch.rand_like(x_data, dtype=torch.float) # 覆盖 x_data 的数据类型
-print(f"Random Tensor: \n {x_rand} \n")
+print(f&quot;Random Tensor: \n {x_rand} \n&quot;)
 </code></pre>
 <p>输出</p>
 <pre><code class="language-python">Ones Tensor:
@@ -148,9 +148,9 @@ rand_tensor = torch.rand(shape)
 ones_tensor = torch.ones(shape)
 zeros_tensor = torch.zeros(shape)
 
-print(f"Random Tensor: \n {rand_tensor} \n")
-print(f"Ones Tensor: \n {ones_tensor} \n")
-print(f"Zeros Tensor: \n {zeros_tensor}")
+print(f&quot;Random Tensor: \n {rand_tensor} \n&quot;)
+print(f&quot;Ones Tensor: \n {ones_tensor} \n&quot;)
+print(f&quot;Zeros Tensor: \n {zeros_tensor}&quot;)
 </code></pre>
 <p>输出</p>
 <pre><code class="language-python">Random Tensor:
@@ -231,9 +231,9 @@ Zeros Tensor:
 <p>张量属性描述了其形状、数据类型以及存储它的设备。</p>
 <pre><code class="language-python">tensor = torch.rand(3,4)
 
-print(f"Shape of tensor: {tensor.shape}")
-print(f"Datatype of tensor: {tensor.dtype}")
-print(f"Device tensor is stored on: {tensor.device}")
+print(f&quot;Shape of tensor: {tensor.shape}&quot;)
+print(f&quot;Datatype of tensor: {tensor.dtype}&quot;)
+print(f&quot;Device tensor is stored on: {tensor.device}&quot;)
 </code></pre>
 <p>输出</p>
 <pre><code class="language-python">Shape of tensor: torch.Size([3, 4])
@@ -311,9 +311,9 @@ Device tensor is stored on: cpu
 <p>如果你熟悉 NumPy API，你会发现 Tensor API 用起来非常轻松。</p>
 <pre><code class="language-python"># 标准的类似 numpy 的索引和切片
 tensor = torch.ones(4, 4)
-print(f"First row: {tensor[0]}")
-print(f"First column: {tensor[:, 0]}")
-print(f"Last column: {tensor[..., -1]}")
+print(f&quot;First row: {tensor[0]}&quot;)
+print(f&quot;First column: {tensor[:, 0]}&quot;)
+print(f&quot;Last column: {tensor[..., -1]}&quot;)
 tensor[:,1] = 0
 print(tensor)
 </code></pre>
@@ -443,7 +443,7 @@ torch.mul(tensor, tensor, out=z3)
 </table>
 <h4>原地操作 (In-place operations)</h4>
 <p>将结果存储在操作数中的操作称为“原地”操作。它们以 <code>_</code> 后缀表示。例如：<code>x.copy_(y)</code> 或 <code>x.t_()</code> 将会改变 <code>x</code></p>
-<pre><code class="language-python">print(f"{tensor} \n")
+<pre><code class="language-python">print(f&quot;{tensor} \n&quot;)
 tensor.add_(5)
 print(tensor)
 </code></pre>
@@ -525,8 +525,8 @@ labels = torch.randint(0, 2, (100,))  # 100 个标签，取值为 0 或 1
 dataset = MyDataset(data, labels)
 
 # 测试数据集
-print("数据集大小:", len(dataset))
-print("第 0 个样本:", dataset[0])
+print(&quot;数据集大小:&quot;, len(dataset))
+print(&quot;第 0 个样本:&quot;, dataset[0])
 
 </code></pre>
 <p>输出结果如下：</p>
@@ -578,9 +578,9 @@ dataloader = DataLoader(dataset, batch_size=10, shuffle=True, num_workers=0)
 
 # 遍历 DataLoader
 for batch_idx, (batch_data, batch_labels) in enumerate(dataloader):
-    print(f"批次 {batch_idx + 1}")
-    print("数据:", batch_data)
-    print("标签:", batch_labels)
+    print(f&quot;批次 {batch_idx + 1}&quot;)
+    print(&quot;数据:&quot;, batch_data)
+    print(&quot;标签:&quot;, batch_labels)
     if batch_idx == 2:  # 仅显示前 3 个批次
         break
 </code></pre>
@@ -645,7 +645,7 @@ train_loader = DataLoader(dataset=train_dataset, batch_size=32, shuffle=True)
 
 # 查看转换后的数据
 for images, labels in train_loader:
-    print("图像张量大小:", images.size())  # [batch_size, 1, 128, 128]
+    print(&quot;图像张量大小:&quot;, images.size())  # [batch_size, 1, 128, 128]
     break
     
 # 图像张量大小: torch.Size([32, 1, 128, 128])
@@ -724,8 +724,8 @@ for images, labels in train_loader:
 <p>神经网络由对数据执行操作的层/模块组成。torch.nn命名空间提供了构建神经网络所需的所有构建块。PyTorch 中的每个模块都是 nn.Module 的子类。神经网络本身也是一个模块，由其他模块（层）组成。这种嵌套结构使得构建和管理复杂的架构变得非常容易。</p>
 <h4>获取训练设备</h4>
 <p>我们希望能够在 加速器（如 CUDA、MPS、MTIA 或 XPU）上训练模型。如果当前有可用的加速器，我们将使用它；否则，我们将使用 CPU。</p>
-<pre><code class="language-python">device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else "cpu"
-print(f"Using {device} device")
+<pre><code class="language-python">device = torch.accelerator.current_accelerator().type if torch.accelerator.is_available() else &quot;cpu&quot;
+print(f&quot;Using {device} device&quot;)
 # Using cuda device
 </code></pre>
 <h4>定义类</h4>
@@ -816,11 +816,10 @@ z = torch.matmul(x, w) + b
 loss = F.binary_cross_entropy_with_logits(z, y)
 </code></pre>
 <p>这段代码定义了以下<strong>计算图</strong>：</p>
-<p><img alt="计算图" src="https://docs.pytorch.org/tutorials/_images/comp-graph.png" /></p>
+<p><img src="https://docs.pytorch.org/tutorials/_images/comp-graph.png" alt="计算图" /></p>
 <p>在该网络中，<code>w</code> 和 <code>b</code> 是我们需要优化的<strong>参数</strong>。因此，我们需要能够计算损失函数相对于这些变量的梯度。为此，我们设置这些张量的 <code>requires_grad</code> 属性。</p>
 <blockquote>
-<p>可以在创建张量时设置 <code>requires_grad</code>的值，或者稍后使用 <code>x.requires_grad_(True)</code>方法进行设置。
-</p>
+<p>可以在创建张量时设置 <code>requires_grad</code>的值，或者稍后使用 <code>x.requires_grad_(True)</code>方法进行设置。</p>
 </blockquote>
 <h4>计算梯度</h4>
 <p>为了优化神经网络中的参数权重，我们需要计算损失函数相对于参数的导数，即在 <code>x</code> 和 <code>y</code> 固定值下的 $\frac {∂loss}{∂w}$ 和 $\frac {∂loss}{∂b}$。为了计算这些导数，我们调用 <code>loss.backward()</code>，然后从 <code>w.grad</code> 和 <code>b.grad</code> 中获取值。</p>
@@ -984,7 +983,7 @@ import torchvision.models as models
 
 # 创建并训练一个模型
 # ResNet 全称 Residual Network（残差网络），由微软研究院于 2015 年提出。它在 ImageNet 比赛上横扫了当年的冠军，是深度学习发展史上的一个分水岭。
-model = models.resnet18(weights="IMAGENET1K_V1") # 这里指定了权重，相当于已经完成训练了
+model = models.resnet18(weights=&quot;IMAGENET1K_V1&quot;) # 这里指定了权重，相当于已经完成训练了
 
 # 保存整个模型
 torch.save(model, 'model.pth')
@@ -1035,7 +1034,7 @@ checkpoint = {
 checkpoint_path = 'checkpoint_epoch_10.pth'
 
 torch.save(checkpoint, checkpoint_path)
-print(f"Checkpoint saved at {checkpoint_path}")
+print(f&quot;Checkpoint saved at {checkpoint_path}&quot;)
 </code></pre>
 <p>加载</p>
 <pre><code class="language-python"># 1. 实例化模型和优化器（结构必须匹配）
@@ -1057,7 +1056,7 @@ accuracy = checkpoint['accuracy']
 # 4. 切换到训练模式（继续训练）
 model.train() 
 
-print(f"Resuming training from epoch {epoch} with loss {loss:.4f}")
+print(f&quot;Resuming training from epoch {epoch} with loss {loss:.4f}&quot;)
 
 # 继续训练循环
 # for epoch in range(start_epoch, total_epochs):
@@ -1075,15 +1074,15 @@ from torch.optim.lr_scheduler import LinearLR
 
 import time
 
-device = torch.device("cuda")
-print("使用设备：", device)
+device = torch.device(&quot;cuda&quot;)
+print(&quot;使用设备：&quot;, device)
 
 
 transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize((0.1307, ), (0.3081))
 ])
-"""
+&quot;&quot;&quot;
 # 更多变换相当于扩充数据集
 transform = transforms.Compose([
     transforms.RandomRotation(10),  # 随机旋转±10度
@@ -1091,7 +1090,7 @@ transform = transforms.Compose([
     transforms.ToTensor(),
     transforms.Normalize((0.1307,), (0.3081,))
     ])
-"""
+&quot;&quot;&quot;
 
 train_dataset = datasets.MNIST(root='./data', train=True, download=True, transform=transform)
 test_dataset = datasets.MNIST(root='./data', train=False, download=True, transform=transform)
@@ -1119,7 +1118,7 @@ class Net(nn.Module):
 
 
 model = Net().to(device)
-"""
+&quot;&quot;&quot;
 # 或者
 model = nn.Sequential(
     nn.Conv2d(1, 32, kernel_size=3, padding=1),
@@ -1129,7 +1128,7 @@ model = nn.Sequential(
     nn.Flatten()
     nn.Linear(64 * 7 * 7, 10),
 )
-"""
+&quot;&quot;&quot;
 
 model.train()
 
@@ -1160,17 +1159,17 @@ for epoch in range(epochs):
         pred = output.argmax(dim=1, keepdim=True)
         correct += pred.eq(target.view_as(pred)).sum().item()
         total += target.size(0)
-    if loss.item() < 0.0003:
+    if loss.item() &lt; 0.0003:
         fin_epochs = epoch
         break
     if epoch % 1 == 0:
         avg_loss = total_loss / len(train_loader)
         accuracy = 100. * correct / total
-        print(f"Epoch {epoch}: Loss={avg_loss:.4f}, Accuracy={accuracy:.2f}%")
+        print(f&quot;Epoch {epoch}: Loss={avg_loss:.4f}, Accuracy={accuracy:.2f}%&quot;)
 
 end = time.time()
-print("训练用时：", end-start, "秒")
-print("训练总轮数：", fin_epochs)
+print(&quot;训练用时：&quot;, end-start, &quot;秒&quot;)
+print(&quot;训练总轮数：&quot;, fin_epochs)
 
 model.eval()
 correct = 0
@@ -1182,7 +1181,7 @@ with torch.no_grad():
         pred = output.argmax(dim=1)
         correct += pred.eq(target).sum().item()
         total += target.size(0)
-print(f"Test Accuracy: {100. * correct / total:.2f}%")
+print(f&quot;Test Accuracy: {100. * correct / total:.2f}%&quot;)
 
 torch.save(model.state_dict(), 'my_model_weights.pth')
 </code></pre>
@@ -1266,11 +1265,11 @@ import torch.nn as nn
 dropout = nn.Dropout(p=0.5)   # p：置零的概率
 
 x = torch.ones(2, 10)
-print("训练模式:")
+print(&quot;训练模式:&quot;)
 dropout.train()
 print(dropout(x))    # 约 50% 的值为 0，保留的值为 2.0
 
-print("\n评估模式:")
+print(&quot;\n评估模式:&quot;)
 dropout.eval()
 print(dropout(x))    # 全为 1.0，Dropout 关闭
 </code></pre>
@@ -1315,6 +1314,7 @@ tensor([[1., 1., 1., 1., 1., 1., 1., 1., 1., 1.],
 <p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
 <hr />
 <p><em>本文使用 Markdown 编写，最后更新于 2026年8月1日</em></p>
+
                 </div>
                 <div class="post-navigation">
                     <a href="About_deep_learning.html">← 深度学习基础</a>
@@ -1323,7 +1323,6 @@ tensor([[1., 1., 1., 1., 1., 1., 1., 1., 1., 1.],
                 </div>
             </article>
         </main>
-
         <aside class="right-sidebar">
             <div class="profile-section">
                 <img class="profile-avatar" src="../../posts/images/test/头像.png" alt="彾九平">
@@ -1336,7 +1335,6 @@ tensor([[1., 1., 1., 1., 1., 1., 1., 1., 1., 1.],
                 <a href="../../links/index.html">🔗 友链</a>
                 <a href="../../index.html#contact">✉️ 联系</a>
             </nav>
-
         <div class="recommend-section">
             <div class="recommend-title">📌 相关推荐</div>
             <ul class="recommend-list">
@@ -1349,7 +1347,6 @@ tensor([[1., 1., 1., 1., 1., 1., 1., 1., 1., 1.],
         </div>
         </aside>
     </div>
-
     <footer>
         <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
     </footer>

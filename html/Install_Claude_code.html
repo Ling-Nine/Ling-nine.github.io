@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libiv.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
@@ -102,7 +102,7 @@ npm --version
 <pre><code class="language-bash">irm https://claude.ai/install.ps1 | iex
 </code></pre>
 <p><strong>Windows CMD:</strong></p>
-<pre><code class="language-bash">curl -fsSL https://claude.ai/install.cmd -o install.cmd && install.cmd && del install.cmd
+<pre><code class="language-bash">curl -fsSL https://claude.ai/install.cmd -o install.cmd &amp;&amp; install.cmd &amp;&amp; del install.cmd
 </code></pre>
 <p>但是国内无法访问Claude，“Claude is only available in certain regions right now. ”因此上面的方法可能行不通。</p>
 <h4>npm 安装</h4>
@@ -139,16 +139,16 @@ claude --version
 <h4>方式一：配置代理网络</h4>
 <p>在当前项目目录下创建 <code>.claude/settings.json</code></p>
 <pre><code class="language-json">{
-	"evn": {
-		"HTTP_PROXY": "http://127.0.0.1:7890",
-		"HTTPS_PROXY": "http://127.0.0.1:7890"
+	&quot;evn&quot;: {
+		&quot;HTTP_PROXY&quot;: &quot;http://127.0.0.1:7890&quot;,
+		&quot;HTTPS_PROXY&quot;: &quot;http://127.0.0.1:7890&quot;
 	}
 }
 </code></pre>
 <p>这样做是为了给 Claude Code 配置网络代理，让它在运行时通过你指定的代理服务器（这里是 127.0.0.1:7890）来访问外部网络。</p>
 <h4>方式二：修改配置绕过IP校验</h4>
 <p>在 <code>C</code> 盘下 <code>C:\User\{username}</code>，找到 <code>claude</code> 的 <code>json</code> 配置文件 <code>.claude.json</code>，添加以下配置：</p>
-<pre><code class="language-json">"hasCompletedOnboarding": true,
+<pre><code class="language-json">&quot;hasCompletedOnboarding&quot;: true,
 </code></pre>
 <p>推荐使用方式二</p>
 <p>做完以上配置我们再次启动 <code>Claude Code</code></p>
@@ -158,7 +158,7 @@ claude --version
 <p>这里我们可以使用 <code>API</code> 的方式，就不需要去登录 <code>Claude Code</code> 的账户</p>
 <h2 id="接入deepseek-api">接入DeepSeek API</h2>
 <p>首先创建一个 <code>API KEY</code></p>
-<p>访问文档可知它的 <code>Anthropic BaseURL</code> 和 <code>模型</code> </p>
+<p>访问文档可知它的 <code>Anthropic BaseURL</code> 和 <code>模型</code></p>
 <table>
 <thead>
 <tr>
@@ -187,24 +187,24 @@ claude --version
 </table>
 <p>可以在命令行中设置</p>
 <pre><code class="language-bash"># 临时设置
-set ANTHROPIC_API_KEY "sk-c6159***********************783a"
-set ANTHROPIC_BASE_URL "https://api.qnaigc.com"
+set ANTHROPIC_API_KEY &quot;sk-c6159***********************783a&quot;
+set ANTHROPIC_BASE_URL &quot;https://api.qnaigc.com&quot;
 # 模型不设置默认使用 claude-4.6-sonnet
-set ANTHROPIC_MODEL "qwen3-coder-480b-a35b-instruct" 
+set ANTHROPIC_MODEL &quot;qwen3-coder-480b-a35b-instruct&quot; 
 
 # 永久设置
-setx ANTHROPIC_API_KEY "sk-c6159***********************783a"
-setx ANTHROPIC_BASE_URL "https://api.qnaigc.com"
+setx ANTHROPIC_API_KEY &quot;sk-c6159***********************783a&quot;
+setx ANTHROPIC_BASE_URL &quot;https://api.qnaigc.com&quot;
 # 模型不设置默认使用 claude-4.6-sonnet
-setx ANTHROPIC_MODEL "qwen3-coder-480b-a35b-instruct" 
+setx ANTHROPIC_MODEL &quot;qwen3-coder-480b-a35b-instruct&quot; 
 </code></pre>
 <p>也可以在 <code>C:\Users\{uername}\.claude\settings.json</code> 添加以下配置：</p>
 <pre><code class="language-json">{
-  "env": {
-    "ANTHROPIC_API_KEY": "sk-c6159***********************783a",
-    "ANTHROPIC_BASE_URL": "https://api.deepseek.com/anthropic",
-    "ANTHROPIC_MODEL": "deepseek-v4-flash" ,
-    "CLAUDE CODE ATTRIBUTION HEADER": "0"
+  &quot;env&quot;: {
+    &quot;ANTHROPIC_API_KEY&quot;: &quot;sk-c6159***********************783a&quot;,
+    &quot;ANTHROPIC_BASE_URL&quot;: &quot;https://api.deepseek.com/anthropic&quot;,
+    &quot;ANTHROPIC_MODEL&quot;: &quot;deepseek-v4-flash&quot; ,
+    &quot;CLAUDE CODE ATTRIBUTION HEADER&quot;: &quot;0&quot;
   }
 }
 </code></pre>
@@ -220,23 +220,23 @@ setx ANTHROPIC_MODEL "qwen3-coder-480b-a35b-instruct"
 <li>复制 APIKEY：按提示完成操作，你就获得一个以 nvapi 开头的 apikey</li>
 <li>测试使用 APIKEY：现在 apikey 有了，外面怎么调用呢？先在 shell 里面测试一下最新的 deepseek-v4-pro</li>
 </ol>
-<pre><code class="language-shell">curl -X POST "https://integrate.api.nvidia.com/v1/chat/completions" 
-	-H "Authorization: Bearer nvapi-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX" 
-	-H "Content-Type: application/json" 
-	-d "{ \"model\": \"deepseek-ai/deepseek-v4-pro\",\"messages\": [{\"role\": \"user\", \"content\": \"你好, 介绍一下自己!\"}],\"temperature\": 0.5,\"top_p\": 1,\"max_tokens\": 1024}"
+<pre><code class="language-shell">curl -X POST &quot;https://integrate.api.nvidia.com/v1/chat/completions&quot; 
+	-H &quot;Authorization: Bearer nvapi-XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX&quot; 
+	-H &quot;Content-Type: application/json&quot; 
+	-d &quot;{ \&quot;model\&quot;: \&quot;deepseek-ai/deepseek-v4-pro\&quot;,\&quot;messages\&quot;: [{\&quot;role\&quot;: \&quot;user\&quot;, \&quot;content\&quot;: \&quot;你好, 介绍一下自己!\&quot;}],\&quot;temperature\&quot;: 0.5,\&quot;top_p\&quot;: 1,\&quot;max_tokens\&quot;: 1024}&quot;
 </code></pre>
-<pre><code class="language-json">{"id":"chatcmpl-b3de684c-fcfb-4b3b-9306-6e1040798e63",
- "choices":[{"index":0,
-             "message":{
-                 "content":"你好呀！很高兴认识你！👋\n\n我是 **DeepSeek**，一个由深度求索公司创造的AI助手。简单来说，我就是你的智能小伙伴，随时准备帮你解决问题、聊天交流！\n\n**关于我的几个特点：**\n\n✨ **知识储备**：我的知识截止到2025年5月，对世界有着比较新鲜的了解\n\n📚 **超强记忆力**：上下文长度达到1M，可以一次性处理像《三体》三部曲那么大体量的书籍！\n\n📎 **文件处理能力**：支持上传图片、PDF、Word、Excel、PPT等文件，我能从中提取文字信息帮你分析\n\n🌐 **联网搜索**：需要最新信息时，你可以在Web/App上手动开启联网搜索功能\n\n🗣️ **多端使用**：App端支持语音输入，随时随地和我聊天\n\n🎨 **纯文本模型**：虽然不能识别图片内容，但可以读取图片中的文字哦\n\n**我的风格嘛**——热情、细腻、力求给你最贴心的帮助！无论是学习、工作还是日常闲聊，我都很乐意陪伴你。\n\n有什么我可以帮你的吗？尽管说！😊",
-                 "role":"assistant","reasoning_content":null},
-             "finish_reason":"stop","logprobs":null}],
- "created":1785671499,
- "model":"deepseek-ai/deepseek-v4-pro",
- "service_tier":null,
- "system_fingerprint":null,
- "object":"chat.completion",
- "usage":{"prompt_tokens":10,"completion_tokens":240,"total_tokens":250}}
+<pre><code class="language-json">{&quot;id&quot;:&quot;chatcmpl-b3de684c-fcfb-4b3b-9306-6e1040798e63&quot;,
+ &quot;choices&quot;:[{&quot;index&quot;:0,
+             &quot;message&quot;:{
+                 &quot;content&quot;:&quot;你好呀！很高兴认识你！👋\n\n我是 **DeepSeek**，一个由深度求索公司创造的AI助手。简单来说，我就是你的智能小伙伴，随时准备帮你解决问题、聊天交流！\n\n**关于我的几个特点：**\n\n✨ **知识储备**：我的知识截止到2025年5月，对世界有着比较新鲜的了解\n\n📚 **超强记忆力**：上下文长度达到1M，可以一次性处理像《三体》三部曲那么大体量的书籍！\n\n📎 **文件处理能力**：支持上传图片、PDF、Word、Excel、PPT等文件，我能从中提取文字信息帮你分析\n\n🌐 **联网搜索**：需要最新信息时，你可以在Web/App上手动开启联网搜索功能\n\n🗣️ **多端使用**：App端支持语音输入，随时随地和我聊天\n\n🎨 **纯文本模型**：虽然不能识别图片内容，但可以读取图片中的文字哦\n\n**我的风格嘛**——热情、细腻、力求给你最贴心的帮助！无论是学习、工作还是日常闲聊，我都很乐意陪伴你。\n\n有什么我可以帮你的吗？尽管说！😊&quot;,
+                 &quot;role&quot;:&quot;assistant&quot;,&quot;reasoning_content&quot;:null},
+             &quot;finish_reason&quot;:&quot;stop&quot;,&quot;logprobs&quot;:null}],
+ &quot;created&quot;:1785671499,
+ &quot;model&quot;:&quot;deepseek-ai/deepseek-v4-pro&quot;,
+ &quot;service_tier&quot;:null,
+ &quot;system_fingerprint&quot;:null,
+ &quot;object&quot;:&quot;chat.completion&quot;,
+ &quot;usage&quot;:{&quot;prompt_tokens&quot;:10,&quot;completion_tokens&quot;:240,&quot;total_tokens&quot;:250}}
 </code></pre>
 <h4>Claude Code使用这个Nvidia API</h4>
 <p>下载cc-switch：<a href="https://www.ccswitch.io/zh/download">CC Switch 下载 - macOS / Windows / Linux 官方安装包</a>。</p>
@@ -246,9 +246,7 @@ setx ANTHROPIC_MODEL "qwen3-coder-480b-a35b-instruct"
 </li>
 <li>
 <p>相关配置如下</p>
-</li>
-</ol>
-<p><img alt="" src="..\posts\images\Install_Claude_code\英伟达配置.webp" /></p>
+<p><img src="..%5Cposts%5Cimages%5CInstall_Claude_code%5C%E8%8B%B1%E4%BC%9F%E8%BE%BE%E9%85%8D%E7%BD%AE.webp" alt="" /></p>
 <ul>
 <li>
 <p>请求地址：<a href="https://link.juejin.cn/?target=https%3A%2F%2Fintegrate.api.nvidia.com%2Fv1">integrate.api.nvidia.com/v1</a></p>
@@ -260,9 +258,11 @@ setx ANTHROPIC_MODEL "qwen3-coder-480b-a35b-instruct"
 <p>需要开始本地路由：然后选择 Claude</p>
 </li>
 </ul>
-<p><img alt="" src="..\posts\images\Install_Claude_code\路由选择.webp" /></p>
-<ol>
-<li>测试，能够正常调用模型</li>
+<p><img src="..%5Cposts%5Cimages%5CInstall_Claude_code%5C%E8%B7%AF%E7%94%B1%E9%80%89%E6%8B%A9.webp" alt="" /></p>
+</li>
+<li>
+<p>测试，能够正常调用模型</p>
+</li>
 </ol>
 <h2 id="疑问">疑问</h2>
 <ul>
@@ -281,6 +281,7 @@ setx ANTHROPIC_MODEL "qwen3-coder-480b-a35b-instruct"
 <p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
 <hr />
 <p><em>本文使用 Markdown 编写，最后更新于 2026年8月2日</em></p>
+
                 </div>
                 <div class="post-navigation">
                     <a href="How_to_use_pytorch.html">← 如何使用PyTorch</a>
@@ -289,7 +290,6 @@ setx ANTHROPIC_MODEL "qwen3-coder-480b-a35b-instruct"
                 </div>
             </article>
         </main>
-
         <aside class="right-sidebar">
             <div class="profile-section">
                 <img class="profile-avatar" src="../../posts/images/test/头像.png" alt="彾九平">
@@ -302,20 +302,18 @@ setx ANTHROPIC_MODEL "qwen3-coder-480b-a35b-instruct"
                 <a href="../../links/index.html">🔗 友链</a>
                 <a href="../../index.html#contact">✉️ 联系</a>
             </nav>
-
         <div class="recommend-section">
             <div class="recommend-title">📌 相关推荐</div>
             <ul class="recommend-list">
-                    <li><a href="动漫寻图网站.html">寻图网站推荐<span class="recommend-date">2026-08-04</span></a></li>
                     <li><a href="计算机网络是如何实现的.html">计算机网络是如何实现的<span class="recommend-date">2026-08-04</span></a></li>
                     <li><a href="How_to_use_pytorch.html">如何使用PyTorch<span class="recommend-date">2026-08-01</span></a></li>
                     <li><a href="Cloudflare_freenode.html">Cloudflare自建免费节点<span class="recommend-date">2026-07-21</span></a></li>
                     <li><a href="test.html">Hello World - 我的第一篇博客<span class="recommend-date">2026-07-21</span></a></li>
+                    <li><a href="WindowsSocket编程入门.html">快速入门Windows Socket编程<span class="recommend-date">2026-08-29</span></a></li>
             </ul>
         </div>
         </aside>
     </div>
-
     <footer>
         <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
     </footer>

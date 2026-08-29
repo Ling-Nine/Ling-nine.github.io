@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libiv.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
@@ -77,19 +77,19 @@ window.MathJax = {
                 </div>
                 <div class="post-content" id="post-content">
 <h2 id="计算机网络五层模型">计算机网络五层模型</h2>
-<p><img alt="计算机网络体系结构" src="../posts/images/计算机网络是如何实现的/计算机网络体系结构.png" /></p>
+<p><img src="../posts/images/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E4%BD%93%E7%B3%BB%E7%BB%93%E6%9E%84.png" alt="计算机网络体系结构" /></p>
 <p>为了简化网络设计的复杂性，通信协议采用分层结构，各层之间既相互独立又相互协调工作，如此以来便达到的高效的目的。如同设计模式中对于设计一个复杂的程序时，尽量使程序各功能之间是解耦合的一样，对于复杂的网络设计，分层设计也是很明智的一种做法。</p>
 <hr />
 <h2 id="ip-协议-网际协议-internet-protocol">IP 协议（网际协议，Internet Protocol）</h2>
 <h4>寻址（Addressing）</h4>
-<p>每台接入网络的设备都会被分配一个唯一的IP地址，作为它的"网络身份证"。</p>
+<p>每台接入网络的设备都会被分配一个唯一的IP地址，作为它的&quot;网络身份证&quot;。</p>
 <ul>
-<li><strong>IPv4</strong>：形如 <code>192.168.1.1</code>，32位地址，约43亿个。由于互联网设备爆发增长，IPv4地址早已枯竭，但是<strong>NAT（网络地址转换）</strong>给它续了命，让多台设备可以共享一个公网 IPv4 地址上网。</li>
+<li><strong>IPv4</strong>：形如 <code>192.168.1.1</code>，32位地址，约43亿个。由于互联网设备爆发增长，IPv4地址早已枯竭，但是**NAT（网络地址转换）**给它续了命，让多台设备可以共享一个公网 IPv4 地址上网。</li>
 <li><strong>IPv6</strong>：形如 <code>2001:db8::1</code>，128位地址，数量近乎无限，是未来趋势。</li>
 </ul>
 <h4>路由（Routing）</h4>
 <p>IP包从源到目的地通常要经过多个路由器。每个路由器根据<strong>目的IP地址</strong>查询路由表，决定下一跳往哪转，直到抵达目标网络。这就像快递经过多个分拣中心逐步逼近收件人。</p>
-<p>但是IP层并不可靠，因为它不保证送达，不保证顺序，也不保证不重复，因此才需要TCP协议，也就是常说的"TCP/IP协议栈"。</p>
+<p>但是IP层并不可靠，因为它不保证送达，不保证顺序，也不保证不重复，因此才需要TCP协议，也就是常说的&quot;TCP/IP协议栈&quot;。</p>
 <h4>其他</h4>
 <p>全球IP地址由国际互联网号码分配机构（<strong>IANA</strong>，<a href="https://www.iana.org/">Internet Assigned Numbers Authority</a>）统一管理，并通过区域性互联网注册管理机构（RIR）分配给运营商和组织，再由这些机构分配给个人或企业使用。</p>
 <hr />
@@ -98,20 +98,20 @@ window.MathJax = {
 <h4>三次握手：建立连接</h4>
 <p>分别站在客户端和服务端的角度，确认连接无非就是确认两件事：我能收到对方的消息；对方能收到我的消息。</p>
 <pre><code>客户端                     服务器
-  |---- 1. SYN -----------> |  客户端：我想建立连接，我的seq=x。此时服务端确认了自己的接收能力。
-  |<--- 2. SYN + ACK -----  |  服务器：收到！seq=y，ack=x+1。客户端收到消息后确认了自己的收发能力。
-  |---- 3. ACK -----------> |  客户端：收到你的确认，ack=y+1。此时服务端确认了自己的发送能力。
+  |---- 1. SYN -----------&gt; |  客户端：我想建立连接，我的seq=x。此时服务端确认了自己的接收能力。
+  |&lt;--- 2. SYN + ACK -----  |  服务器：收到！seq=y，ack=x+1。客户端收到消息后确认了自己的收发能力。
+  |---- 3. ACK -----------&gt; |  客户端：收到你的确认，ack=y+1。此时服务端确认了自己的发送能力。
   |====== 连接建立完成 ======|
 </code></pre>
 <h4>TCP 报文段格式</h4>
-<p>TCP 将数据封装成"报文段"传输，核心字段如下：</p>
+<p>TCP 将数据封装成&quot;报文段&quot;传输，核心字段如下：</p>
 <ul>
 <li><strong>序列号（seq）</strong>：本报文段首个字节的序号，用于排序和去重</li>
 <li><strong>确认号（ack）</strong>：期望收到的下一个字节的序号（捎带确认机制）</li>
-<li><strong>窗口大小</strong>：告诉对方"我还能接收多少字节"（流量控制）</li>
+<li><strong>窗口大小</strong>：告诉对方&quot;我还能接收多少字节&quot;（流量控制）</li>
 <li><strong>标志位</strong>：SYN（建连）、ACK（确认）、FIN（关连）、RST（重置）、PSH（立即推送）、URG（紧急）</li>
 </ul>
-<p>真实报文是"嵌套"在更外层协议里的：</p>
+<p>真实报文是&quot;嵌套&quot;在更外层协议里的：</p>
 <pre><code>以太网帧头(14字节) │ IP头(通常20字节) │ TCP头(20-60字节) │ 应用数据
 </code></pre>
 <p>TCP 首部的标准结构（RFC 9293 定义）：源端口(16位)、目的端口(16位)、序列号(32位)、确认号(32位)、数据偏移(4位)、保留(4位)、控制位(8位: CWR/ECE/URG/ACK/PSH/RST/SYN/FIN)、窗口(16位)、校验和(16位)、紧急指针(16位)。</p>
@@ -131,15 +131,15 @@ window.MathJax = {
 后面 12 字节是选项（MSS、窗口缩放、SACK 许可等）
 数据部分为空（握手报文不带应用数据）
 </code></pre>
-<p><img alt="TCP报文格式" src="../posts/images/计算机网络是如何实现的/TCP报文格式.png" /></p>
+<p><img src="../posts/images/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84/TCP%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F.png" alt="TCP报文格式" /></p>
 <h4>四次挥手：关闭连接</h4>
-<p>TCP 是<strong>全双工</strong>(能同时收、发)的，因此关闭连接时<strong>每个方向都必须单独关闭</strong>——这就是需要"四次"的原因。</p>
+<p>TCP 是<strong>全双工</strong>(能同时收、发)的，因此关闭连接时<strong>每个方向都必须单独关闭</strong>——这就是需要&quot;四次&quot;的原因。</p>
 <pre><code>客户端                              服务器
-  |---- 1. FIN -------------------->  |  客户端：我没数据要发了，准备关闭
-  |<--- 2. ACK --------------------   |  服务器：收到你的 FIN
+  |---- 1. FIN --------------------&gt;  |  客户端：我没数据要发了，准备关闭
+  |&lt;--- 2. ACK --------------------   |  服务器：收到你的 FIN
   |       （服务器继续发送剩余数据）    |
-  |<--- 3. FIN --------------------   |  服务器：我也没数据要发了
-  |---- 4. ACK -------------------->  |  客户端：收到，连接关闭
+  |&lt;--- 3. FIN --------------------   |  服务器：我也没数据要发了
+  |---- 4. ACK --------------------&gt;  |  客户端：收到，连接关闭
   |   客户端进入 TIME_WAIT，等待 2MSL   |
 </code></pre>
 <p><strong>MSL</strong>（Maximum Segment Lifetime）= 报文段在网络中最大生存时间</p>
@@ -159,21 +159,21 @@ curl http://localhost:8080
 <pre><code class="language-bash">tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
 listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 # 这里系统先尝试解析 localhost 的 IPv6 地址，算是第一次握手
-04:11:19.048558 IP6 localhost.33254 > localhost.http-alt: Flags [S], seq 51546928, win 65476, options [mss 65476,sackOK,TS val 2062165144 ecr 0,nop,wscale 8], length 0
+04:11:19.048558 IP6 localhost.33254 &gt; localhost.http-alt: Flags [S], seq 51546928, win 65476, options [mss 65476,sackOK,TS val 2062165144 ecr 0,nop,wscale 8], length 0
         0x0000:  6009 c7c7 0028 0640 0000 0000 0000 0000  `....(.@........
         0x0010:  0000 0000 0000 0001 0000 0000 0000 0000  ................
         0x0020:  0000 0000 0000 0001 81e6 1f90 0312 8b30  ...............0
         0x0030:  0000 0000 a002 ffc4 0030 0000 0204 ffc4  .........0......
         0x0040:  0402 080a 7aea 2498 0000 0000 0103 0308  ....z.$.........
-# Flags [R.] 中 R=1, ACK=1，表示"重置连接"（RST），连接失败。这是因为 IPv6 上没有服务在监听。
-04:11:19.048564 IP6 localhost.http-alt > localhost.33254: Flags [R.], seq 0, ack 51546929, win 0, length 0
+# Flags [R.] 中 R=1, ACK=1，表示&quot;重置连接&quot;（RST），连接失败。这是因为 IPv6 上没有服务在监听。
+04:11:19.048564 IP6 localhost.http-alt &gt; localhost.33254: Flags [R.], seq 0, ack 51546929, win 0, length 0
         0x0000:  600b bef9 0014 0640 0000 0000 0000 0000  `......@........
         0x0010:  0000 0000 0000 0001 0000 0000 0000 0000  ................
         0x0020:  0000 0000 0000 0001 1f90 81e6 0000 0000  ................
         0x0030:  0312 8b31 5014 0000 001c 0000            ...1P.......
 # 系统解析 IPv4 地址 TCP 三次握手开始，注意观察 seq 和 ack
-04:11:19.048599 IP localhost.57906 > localhost.http-alt: Flags [S], seq 707265951, win 65495, options [mss 65495,sackOK,TS val 4145266851 ecr 0,nop,wscale 8], length 0
-        0x0000:  4500 003c 676f 4000 4006 d54a 7f00 0001  E..<go@.@..J....
+04:11:19.048599 IP localhost.57906 &gt; localhost.http-alt: Flags [S], seq 707265951, win 65495, options [mss 65495,sackOK,TS val 4145266851 ecr 0,nop,wscale 8], length 0
+        0x0000:  4500 003c 676f 4000 4006 d54a 7f00 0001  E..&lt;go@.@..J....
                  │  │ │    │    │    │    │    └─ 源IP: 127.0.0.1
                  │  │ │    │    │    │    └─ 协议号 06 (TCP)
                  │  │ │    │    │    └─ TTL=64 (0x40), 由于IPv4头里的Protocol字段指明是TCP
@@ -195,20 +195,20 @@ listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
         		
         0x0030:  f713 c0a3 0000 0000 0103 0308            ............
 # 服务端回应
-04:11:19.048615 IP localhost.http-alt > localhost.57906: Flags [S.], seq 2461168814, ack 707265952, win 65483, options [mss 65495,sackOK,TS val 4145266851 ecr 4145266851,nop,wscale 8], length 0
-        0x0000:  4500 003c 0000 4000 4006 3cba 7f00 0001  E..<..@.@.<.....
+04:11:19.048615 IP localhost.http-alt &gt; localhost.57906: Flags [S.], seq 2461168814, ack 707265952, win 65483, options [mss 65495,sackOK,TS val 4145266851 ecr 4145266851,nop,wscale 8], length 0
+        0x0000:  4500 003c 0000 4000 4006 3cba 7f00 0001  E..&lt;..@.@.&lt;.....
         0x0010:  7f00 0001 1f90 e232 92b2 74ae 2a28 05a0  .......2..t.*(..
         0x0020:  a012 ffcb fe30 0000 0204 ffd7 0402 080a  .....0..........
         0x0030:  f713 c0a3 f713 c0a3 0103 0308            ............
 # 客户端回应
-04:11:19.048622 IP localhost.57906 > localhost.http-alt: Flags [.], ack 1, win 256, options [nop,nop,TS val 4145266851 ecr 4145266851], length 0
+04:11:19.048622 IP localhost.57906 &gt; localhost.http-alt: Flags [.], ack 1, win 256, options [nop,nop,TS val 4145266851 ecr 4145266851], length 0
         0x0000:  4500 0034 6770 4000 4006 d551 7f00 0001  E..4gp@.@..Q....
         0x0010:  7f00 0001 e232 1f90 2a28 05a0 92b2 74af  .....2..*(....t.
         0x0020:  8010 0100 fe28 0000 0101 080a f713 c0a3  .....(..........
         0x0030:  f713 c0a3                                ....
 # 连接确立，客户端向服务端请求数据，使用的是 HTTP 里的 GET 请求
 # 注意这里的 TCP 首部只有 32 字节（因为选项只有 12 字节的 Timestamp），不像 SYN 包那样有 40 字节。
-04:11:19.048659 IP localhost.57906 > localhost.http-alt: Flags [P.], seq 1:79, ack 1, win 256, options [nop,nop,TS val 4145266851 ecr 4145266851], length 78: HTTP: GET / HTTP/1.1
+04:11:19.048659 IP localhost.57906 &gt; localhost.http-alt: Flags [P.], seq 1:79, ack 1, win 256, options [nop,nop,TS val 4145266851 ecr 4145266851], length 78: HTTP: GET / HTTP/1.1
         0x0000:  4500 0082 6771 4000 4006 d502 7f00 0001  E...gq@.@.......
         0x0010:  7f00 0001 e232 1f90 2a28 05a0 92b2 74af  .....2..*(....t.
         0x0020:  8018 0100 fe76 0000 0101 080a f713 c0a3  .....v..........
@@ -219,12 +219,12 @@ listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
         0x0060:  6765 6e74 3a20 6375 726c 2f38 2e31 392e  gent:.curl/8.19.
         0x0070:  300d 0a41 6363 6570 743a 202a 2f2a 0d0a  0..Accept:.*/*..
         0x0080:  0d0a                                     ..
-04:11:19.048662 IP localhost.http-alt > localhost.57906: Flags [.], ack 79, win 256, options [nop,nop,TS val 4145266851 ecr 4145266851], length 0
+04:11:19.048662 IP localhost.http-alt &gt; localhost.57906: Flags [.], ack 79, win 256, options [nop,nop,TS val 4145266851 ecr 4145266851], length 0
         0x0000:  4500 0034 af77 4000 4006 8d4a 7f00 0001  E..4.w@.@..J....
         0x0010:  7f00 0001 1f90 e232 92b2 74af 2a28 05ee  .......2..t.*(..
         0x0020:  8010 0100 fe28 0000 0101 080a f713 c0a3  .....(..........
         0x0030:  f713 c0a3                                ....
-04:11:19.049400 IP localhost.http-alt > localhost.57906: Flags [P.], seq 1:156, ack 79, win 256, options [nop,nop,TS val 4145266852 ecr 4145266851], length 155: HTTP: HTTP/1.0 200 OK
+04:11:19.049400 IP localhost.http-alt &gt; localhost.57906: Flags [P.], seq 1:156, ack 79, win 256, options [nop,nop,TS val 4145266852 ecr 4145266851], length 155: HTTP: HTTP/1.0 200 OK
         0x0000:  4500 00cf af78 4000 4006 8cae 7f00 0001  E....x@.@.......
         0x0010:  7f00 0001 1f90 e232 92b2 74af 2a28 05ee  .......2..t.*(..
         0x0020:  8018 0100 fec3 0000 0101 080a f713 c0a4  ................
@@ -238,60 +238,60 @@ listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
         0x00a0:  7874 2f68 746d 6c3b 2063 6861 7273 6574  xt/html;.charset
         0x00b0:  3d75 7466 2d38 0d0a 436f 6e74 656e 742d  =utf-8..Content-
         0x00c0:  4c65 6e67 7468 3a20 3138 370d 0a0d 0a    Length:.187....
-04:11:19.049406 IP localhost.57906 > localhost.http-alt: Flags [.], ack 156, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
+04:11:19.049406 IP localhost.57906 &gt; localhost.http-alt: Flags [.], ack 156, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
         0x0000:  4500 0034 6772 4000 4006 d54f 7f00 0001  E..4gr@.@..O....
         0x0010:  7f00 0001 e232 1f90 2a28 05ee 92b2 754a  .....2..*(....uJ
         0x0020:  8010 0100 fe28 0000 0101 080a f713 c0a4  .....(..........
         0x0030:  f713 c0a4                                ....
-04:11:19.049417 IP localhost.http-alt > localhost.57906: Flags [P.], seq 156:343, ack 79, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 187: HTTP
+04:11:19.049417 IP localhost.http-alt &gt; localhost.57906: Flags [P.], seq 156:343, ack 79, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 187: HTTP
         0x0000:  4500 00ef af79 4000 4006 8c8d 7f00 0001  E....y@.@.......
         0x0010:  7f00 0001 1f90 e232 92b2 754a 2a28 05ee  .......2..uJ*(..
         0x0020:  8018 0100 fee3 0000 0101 080a f713 c0a4  ................
-        0x0030:  f713 c0a4 3c21 444f 4354 5950 4520 4854  ....<!DOCTYPE.HT
-        0x0040:  4d4c 3e0a 3c68 746d 6c20 6c61 6e67 3d22  ML>.<html.lang="
-        0x0050:  656e 223e 0a3c 6865 6164 3e0a 3c6d 6574  en">.<head>.<met
-        0x0060:  6120 6368 6172 7365 743d 2275 7466 2d38  a.charset="utf-8
-        0x0070:  223e 0a3c 7469 746c 653e 4469 7265 6374  ">.<title>Direct
+        0x0030:  f713 c0a4 3c21 444f 4354 5950 4520 4854  ....&lt;!DOCTYPE.HT
+        0x0040:  4d4c 3e0a 3c68 746d 6c20 6c61 6e67 3d22  ML&gt;.&lt;html.lang=&quot;
+        0x0050:  656e 223e 0a3c 6865 6164 3e0a 3c6d 6574  en&quot;&gt;.&lt;head&gt;.&lt;met
+        0x0060:  6120 6368 6172 7365 743d 2275 7466 2d38  a.charset=&quot;utf-8
+        0x0070:  223e 0a3c 7469 746c 653e 4469 7265 6374  &quot;&gt;.&lt;title&gt;Direct
         0x0080:  6f72 7920 6c69 7374 696e 6720 666f 7220  ory.listing.for.
-        0x0090:  2f3c 2f74 6974 6c65 3e0a 3c2f 6865 6164  /</title>.</head
-        0x00a0:  3e0a 3c62 6f64 793e 0a3c 6831 3e44 6972  >.<body>.<h1>Dir
+        0x0090:  2f3c 2f74 6974 6c65 3e0a 3c2f 6865 6164  /&lt;/title&gt;.&lt;/head
+        0x00a0:  3e0a 3c62 6f64 793e 0a3c 6831 3e44 6972  &gt;.&lt;body&gt;.&lt;h1&gt;Dir
         0x00b0:  6563 746f 7279 206c 6973 7469 6e67 2066  ectory.listing.f
-        0x00c0:  6f72 202f 3c2f 6831 3e0a 3c68 723e 0a3c  or./</h1>.<hr>.<
-        0x00d0:  756c 3e0a 3c2f 756c 3e0a 3c68 723e 0a3c  ul>.</ul>.<hr>.<
-        0x00e0:  2f62 6f64 793e 0a3c 2f68 746d 6c3e 0a    /body>.</html>.
+        0x00c0:  6f72 202f 3c2f 6831 3e0a 3c68 723e 0a3c  or./&lt;/h1&gt;.&lt;hr&gt;.&lt;
+        0x00d0:  756c 3e0a 3c2f 756c 3e0a 3c68 723e 0a3c  ul&gt;.&lt;/ul&gt;.&lt;hr&gt;.&lt;
+        0x00e0:  2f62 6f64 793e 0a3c 2f68 746d 6c3e 0a    /body&gt;.&lt;/html&gt;.
 # 四次挥手
-04:11:19.049419 IP localhost.57906 > localhost.http-alt: Flags [.], ack 343, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
+04:11:19.049419 IP localhost.57906 &gt; localhost.http-alt: Flags [.], ack 343, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
         0x0000:  4500 0034 6773 4000 4006 d54e 7f00 0001  E..4gs@.@..N....
         0x0010:  7f00 0001 e232 1f90 2a28 05ee 92b2 7605  .....2..*(....v.
         0x0020:  8010 0100 fe28 0000 0101 080a f713 c0a4  .....(..........
         0x0030:  f713 c0a4                                ....
-04:11:19.049437 IP localhost.http-alt > localhost.57906: Flags [F.], seq 343, ack 79, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
+04:11:19.049437 IP localhost.http-alt &gt; localhost.57906: Flags [F.], seq 343, ack 79, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
         0x0000:  4500 0034 af7a 4000 4006 8d47 7f00 0001  E..4.z@.@..G....
         0x0010:  7f00 0001 1f90 e232 92b2 7605 2a28 05ee  .......2..v.*(..
         0x0020:  8011 0100 fe28 0000 0101 080a f713 c0a4  .....(..........
         0x0030:  f713 c0a4                                ....
-04:11:19.049532 IP localhost.57906 > localhost.http-alt: Flags [F.], seq 79, ack 344, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
+04:11:19.049532 IP localhost.57906 &gt; localhost.http-alt: Flags [F.], seq 79, ack 344, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
         0x0000:  4500 0034 6774 4000 4006 d54d 7f00 0001  E..4gt@.@..M....
         0x0010:  7f00 0001 e232 1f90 2a28 05ee 92b2 7606  .....2..*(....v.
         0x0020:  8011 0100 fe28 0000 0101 080a f713 c0a4  .....(..........
         0x0030:  f713 c0a4                                ....
-04:11:19.049543 IP localhost.http-alt > localhost.57906: Flags [.], ack 80, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
+04:11:19.049543 IP localhost.http-alt &gt; localhost.57906: Flags [.], ack 80, win 256, options [nop,nop,TS val 4145266852 ecr 4145266852], length 0
         0x0000:  4500 0034 af7b 4000 4006 8d46 7f00 0001  E..4.{@.@..F....
         0x0010:  7f00 0001 1f90 e232 92b2 7606 2a28 05ef  .......2..v.*(..
         0x0020:  8010 0100 fe28 0000 0101 080a f713 c0a4  .....(..........
         0x0030:  f713 c0a4                                ....
 </code></pre>
 <h4>可靠传输机制</h4>
-<p>IP 网络本身就是不可靠的——数据包可能丢失、乱序、重复、损坏。TCP 通过以下四大机制来"兜底"：</p>
+<p>IP 网络本身就是不可靠的——数据包可能丢失、乱序、重复、损坏。TCP 通过以下四大机制来&quot;兜底&quot;：</p>
 <ol>
 <li>序列号与确认应答（ACK）</li>
 </ol>
-<p>每个字节都有序号，接收方收到后回送 ACK 告知"我期待下一个字节是 N"。</p>
-<ol>
+<p>每个字节都有序号，接收方收到后回送 ACK 告知&quot;我期待下一个字节是 N&quot;。</p>
+<ol start="2">
 <li>超时重传（RTO）</li>
 </ol>
 <p>发送方发出数据后会启动定时器，<strong>若在 RTO（Retransmission Timeout）内未收到 ACK，就重传该数据</strong>。RTO 是动态计算的，基于 RTT（往返时延）的平滑值及方差</p>
-<ol>
+<ol start="3">
 <li>滑动窗口（Sliding Window）</li>
 </ol>
 <p>为了提高效率，TCP 允许<strong>连续发送多个报文段而无需逐个等待 ACK</strong>。</p>
@@ -300,11 +300,11 @@ listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
                         ↑            ↑
                       窗口内        窗口右沿
 </code></pre>
-<p>接收方通过 ACK 报文中的"窗口大小"字段告诉发送方："我目前的接收缓冲区还剩 X 字节"。发送方据此调整发送速率——这就是<strong>流量控制</strong>。</p>
-<ol>
+<p>接收方通过 ACK 报文中的&quot;窗口大小&quot;字段告诉发送方：&quot;我目前的接收缓冲区还剩 X 字节&quot;。发送方据此调整发送速率——这就是<strong>流量控制</strong>。</p>
+<ol start="4">
 <li>快速重传</li>
 </ol>
-<p>当发送方<strong>连续收到 3 个相同的 ACK</strong>（即接收方反复说"我想要 N 号字节"），就推断 N 号字节丢失，<strong>不等超时立即重传</strong>——大幅降低丢包恢复延迟。</p>
+<p>当发送方<strong>连续收到 3 个相同的 ACK</strong>（即接收方反复说&quot;我想要 N 号字节&quot;），就推断 N 号字节丢失，<strong>不等超时立即重传</strong>——大幅降低丢包恢复延迟。</p>
 <hr />
 <h2 id="udp-协议-用户数据报协议-user-datagram-protocol">UDP 协议（用户数据报协议，User Datagram Protocol）</h2>
 <p>UDP直接发送数据报，无需建立连接，不提供重传或顺序保证。数据报具备简单的头部，减少开销。UDP用于视频会议（如Zoom）、在线游戏和DNS查询，数据丢失可容忍但延迟敏感。</p>
@@ -315,7 +315,7 @@ listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 <li><strong>长度</strong>：整个 UDP 报文的长度（首部 + 数据），单位字节</li>
 <li><strong>校验和</strong>：可选的错误检测（IPv4 中可置 0 关闭，IPv6 中强制）</li>
 </ul>
-<p><img alt="UDP报文格式" src="../posts/images/计算机网络是如何实现的/UDP报文格式.png" /></p>
+<p><img src="../posts/images/%E8%AE%A1%E7%AE%97%E6%9C%BA%E7%BD%91%E7%BB%9C%E6%98%AF%E5%A6%82%E4%BD%95%E5%AE%9E%E7%8E%B0%E7%9A%84/UDP%E6%8A%A5%E6%96%87%E6%A0%BC%E5%BC%8F.png" alt="UDP报文格式" /></p>
 <h4>实践尝试</h4>
 <pre><code class="language-bash">sudo tcpdump -n -X -i eth0 udp
 </code></pre>
@@ -323,7 +323,7 @@ listening on lo, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 <pre><code class="language-bash">tcpdump: verbose output suppressed, use -v[v]... for full protocol decode
 listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 # 查询
-07:18:59.456963 IP 192.168.28.132.44557 > 193.182.111.142.123: NTPv4, Client, length 48
+07:18:59.456963 IP 192.168.28.132.44557 &gt; 193.182.111.142.123: NTPv4, Client, length 48
         0x0000:  45b8 004c 1848 4000 4011 1330 c0a8 1c84  E..L.H@.@..0....
                  ││   │    │    │    │ │  │      └─ 目的IP: 193.182.111.142
                  ││   │    │    │    │ │  └─ 源IP: 192.168.28.132
@@ -339,7 +339,7 @@ listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
         0x0030:  0000 0000 0000 0000 0000 0000 0000 0000  ................
         0x0040:  0000 0000 fc2e 67ba 9972 3524            ......g..r5$
 # 响应
-07:18:59.633846 IP 193.182.111.142.123 > 192.168.28.132.44557: NTPv4, Server, length 48
+07:18:59.633846 IP 193.182.111.142.123 &gt; 192.168.28.132.44557: NTPv4, Server, length 48
         0x0000:  4500 004c 37ec 0000 8011 f443 c1b6 6f8e  E..L7......C..o.
         0x0010:  c0a8 1c84 007b ae0d 0038 aacb 2402 00e7  .....{...8..$...
         0x0020:  0000 0023 0000 0005 c23a ca14 ee1c 4912  ...#.....:....I.
@@ -350,7 +350,7 @@ listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 <h2 id="dns-协议-域名系统-domain-name-system">DNS 协议（域名系统，Domain Name System）</h2>
 <p>DNS是一种分布式服务协议，将人类可读的域名（如www.example.com）解析为IP地址（如192.0.2.1）。它通过分层域名服务器体系（根服务器、顶级域名服务器、权威服务器）完成解析。</p>
 <p><strong>技术原理</strong>：DNS通常基于UDP协议（端口53），通过查询和响应机制工作。客户端发送域名查询，DNS服务器返回对应的IP地址。DNS支持缓存以减少查询延迟，并利用递归和迭代查询实现高效解析。</p>
-<p>DNS 是一个<strong>树状分布式数据库</strong>，树根是"根域名服务器"：</p>
+<p>DNS 是一个<strong>树状分布式数据库</strong>，树根是&quot;根域名服务器&quot;：</p>
 <pre><code>.  (根域)
                         |
           +-------------+-------------+
@@ -362,7 +362,7 @@ listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
       www.baidu.com          (子域/主机)
 </code></pre>
 <h4>DNS记录类型</h4>
-<p>DNS 不只是存 IP，它存的是各种类型的"资源记录（RR）"：</p>
+<p>DNS 不只是存 IP，它存的是各种类型的&quot;资源记录（RR）&quot;：</p>
 <table>
 <thead>
 <tr>
@@ -428,7 +428,7 @@ listening on eth0, link-type EN10MB (Ethernet), snapshot length 262144 bytes
 <pre><code class="language-bash"># 查看 DNS 解析过程（Linux/Mac）
 dig +trace www.example.com
 </code></pre>
-<pre><code class="language-bash">; <<>> DiG 9.20.15-2-Debian <<>> +trace www.example.com
+<pre><code class="language-bash">; &lt;&lt;&gt;&gt; DiG 9.20.15-2-Debian &lt;&lt;&gt;&gt; +trace www.example.com
 # 从根域名出发
 ;; global options: +cmd
 .                       5       IN      NS      k.root-servers.net.
@@ -493,7 +493,7 @@ www.example.com.        300     IN      RRSIG   A 13 3 300 20260805131308 202608
 <hr />
 <h2 id="http-协议-超文本传输协议-hypertext-transfer-protocol">HTTP 协议（超文本传输协议，Hypertext Transfer Protocol）</h2>
 <h4>HTTP 的本质与定位</h4>
-<p>简单来说，当你在浏览器输入一个网址并回车时，浏览器和服务器之间就是通过 HTTP 协议来"对话"的。</p>
+<p>简单来说，当你在浏览器输入一个网址并回车时，浏览器和服务器之间就是通过 HTTP 协议来&quot;对话&quot;的。</p>
 <p>HTTP 建立在 TCP/IP 协议栈之上，默认使用 <strong>80 端口</strong>（HTTPS 用 443 端口）。它采用了经典的<strong>客户端-服务器模型</strong>：</p>
 <ul>
 <li><strong>客户端</strong>（通常是浏览器）：主动发起请求</li>
@@ -501,7 +501,7 @@ www.example.com.        300     IN      RRSIG   A 13 3 300 20260805131308 202608
 </ul>
 <p>HTTP 的核心设计哲学是<strong>简单、可读、可扩展</strong>。它采用明文传输（HTTPS 则加密），报文格式对人类友好，便于调试和理解。</p>
 <blockquote>
-<p>💡 HTTP 是无状态协议：每个请求都是独立的，服务器不会记住上一个请求的信息。这也是为什么需要 Cookie、Session 等技术来"维持状态"。</p>
+<p>💡 HTTP 是无状态协议：每个请求都是独立的，服务器不会记住上一个请求的信息。这也是为什么需要 Cookie、Session 等技术来&quot;维持状态&quot;。</p>
 </blockquote>
 <h4>HTTP 的工作流程</h4>
 <p>HTTP/1.1 和 HTTP/2 跑在 TCP 上，一次完整的 HTTP 通信包含以下步骤：</p>
@@ -539,10 +539,10 @@ www.example.com.        300     IN      RRSIG   A 13 3 300 20260805131308 202608
 <h4>FTP 的双通道架构（核心设计）</h4>
 <p>FTP 最与众不同的地方：<strong>它用两条独立的 TCP 连接</strong>。</p>
 <pre><code>客户端                              服务器
-  |------- 控制连接 (Port 21) -------->|
+  |------- 控制连接 (Port 21) --------&gt;|
   |       持久连接，传输命令和响应      |
   |                                   |
-  |------- 数据连接 (Port 20 或动态)--->|
+  |------- 数据连接 (Port 20 或动态)---&gt;|
   |        临时连接，传输文件/目录列表   |
 </code></pre>
 <p><strong>1. 控制连接（Control Connection）</strong></p>
@@ -563,34 +563,34 @@ www.example.com.        300     IN      RRSIG   A 13 3 300 20260805131308 202608
 <p><strong>1. 主动模式（PORT / Active）</strong></p>
 <pre><code>客户端                                服务器
   |                                     |
-  |---- PORT 命令（告知客户端IP:端口）--->|
+  |---- PORT 命令（告知客户端IP:端口）---&gt;|
   |                                     |
-  |<--- 服务器从 Port 20 主动连接客户端 --|
+  |&lt;--- 服务器从 Port 20 主动连接客户端 --|
   |                                     |
   |========== 数据传输 ==================|
 </code></pre>
 <p>流程：</p>
 <ol>
 <li>客户端从一个随机高端口（如 1025）连接服务器的 21 端口建立控制连接</li>
-<li>客户端通过 <code>PORT</code> 命令告诉服务器："请连接我的 IP 的 1026 端口来传数据"</li>
+<li>客户端通过 <code>PORT</code> 命令告诉服务器：&quot;请连接我的 IP 的 1026 端口来传数据&quot;</li>
 <li><strong>服务器主动</strong>从自己的 20 端口向客户端的 1026 端口发起 TCP 连接</li>
 <li>在这条数据连接上传输文件</li>
 </ol>
-<p><strong>问题在于</strong>：客户端的 1026 端口通常防火墙不让外部主动连入**——导致"能登录但无法列目录/传输"的经典故障。</p>
+<p><strong>问题在于</strong>：客户端的 1026 端口通常防火墙不让外部主动连入**——导致&quot;能登录但无法列目录/传输&quot;的经典故障。</p>
 <p><strong>2. 被动模式（PASV / Passive）</strong></p>
 <pre><code>客户端                                 服务器
   |                                      |
-  |-------------- PASV 命令 ------------>|
-  |<--- 服务器回复（IP:端口，如 1027）-----|
+  |-------------- PASV 命令 ------------&gt;|
+  |&lt;--- 服务器回复（IP:端口，如 1027）-----|
   |                                      |
-  |--- 客户端主动连接服务器的 1027 端口 -->|
+  |--- 客户端主动连接服务器的 1027 端口 --&gt;|
   |                                      |
   |=========== 数据传输 ==================|
 </code></pre>
 <p>流程：</p>
 <ol>
 <li>客户端连接服务器 21 端口建立控制连接</li>
-<li>客户端发送 <code>PASV</code> 命令："请告诉我你开放哪个端口来接收数据连接"</li>
+<li>客户端发送 <code>PASV</code> 命令：&quot;请告诉我你开放哪个端口来接收数据连接&quot;</li>
 <li>服务器回复一个<strong>随机高端口</strong>（如 1027）</li>
 <li><strong>客户端主动</strong>连接服务器的这个 1027 端口</li>
 <li>在这条数据连接上传输文件</li>
@@ -605,14 +605,14 @@ ftp ftp.example.com
 ftp anonymous@ftp.kernel.org
 
 # 常用操作
-ftp> ls                  # 列目录
-ftp> cd pub              # 切换目录
-ftp> binary              # 切换到二进制模式（重要！）
-ftp> get file.zip        # 下载
-ftp> put local.txt       # 上传
-ftp> mget *.txt          # 批量下载
-ftp> passive             # 切换被动模式
-ftp> quit                # 退出
+ftp&gt; ls                  # 列目录
+ftp&gt; cd pub              # 切换目录
+ftp&gt; binary              # 切换到二进制模式（重要！）
+ftp&gt; get file.zip        # 下载
+ftp&gt; put local.txt       # 上传
+ftp&gt; mget *.txt          # 批量下载
+ftp&gt; passive             # 切换被动模式
+ftp&gt; quit                # 退出
 </code></pre>
 <h4>常用 FTP 命令</h4>
 <table>
@@ -695,7 +695,7 @@ ftp> quit                # 退出
 </table>
 <hr />
 <h2 id="tls-transport-layer-security-传输层安全协议">TLS（Transport Layer Security，传输层安全协议）</h2>
-<p>为 HTTP、SMTP、FTP 等应用层协议提供<strong>加密、身份认证和完整性保护</strong>。我们每天访问的 HTTPS 网站，本质上就是 "HTTP over TLS"。</p>
+<p>为 HTTP、SMTP、FTP 等应用层协议提供<strong>加密、身份认证和完整性保护</strong>。我们每天访问的 HTTPS 网站，本质上就是 &quot;HTTP over TLS&quot;。</p>
 <p>TLS 工作在<strong>传输层（TCP）和应用层之间</strong>，对应用层协议透明——应用层只需把数据交给 TLS，TLS 负责加密后通过 TCP 发送。</p>
 <pre><code>┌──────────────────────────────────────────┐
 │          TLS 记录层 (Record Layer)        │  ← 负责分片、压缩、加密、MAC、传输
@@ -793,7 +793,7 @@ ssh -p 2222 user@192.168.1.100
 </code></pre>
 <p>公钥认证配置</p>
 <pre><code class="language-bash"># 本地生成 ED25519 密钥对
-ssh-keygen -t ed25519 -C "your_email@example.com"
+ssh-keygen -t ed25519 -C &quot;your_email@example.com&quot;
 
 # 将公钥复制到服务端
 ssh-copy-id user@hostname
@@ -810,6 +810,7 @@ sftp user@host
 <p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
 <hr />
 <p><em>本文使用 Markdown 编写，最后更新于 2026年8月5日</em></p>
+
                 </div>
                 <div class="post-navigation">
                     <a href="About_Git.html">← Git快速使用</a>
@@ -818,7 +819,6 @@ sftp user@host
                 </div>
             </article>
         </main>
-
         <aside class="right-sidebar">
             <div class="profile-section">
                 <img class="profile-avatar" src="../../posts/images/test/头像.png" alt="彾九平">
@@ -831,20 +831,18 @@ sftp user@host
                 <a href="../../links/index.html">🔗 友链</a>
                 <a href="../../index.html#contact">✉️ 联系</a>
             </nav>
-
         <div class="recommend-section">
             <div class="recommend-title">📌 相关推荐</div>
             <ul class="recommend-list">
                     <li><a href="WindowsSocket编程入门.html">快速入门Windows Socket编程<span class="recommend-date">2026-08-29</span></a></li>
-                    <li><a href="动漫寻图网站.html">寻图网站推荐<span class="recommend-date">2026-08-04</span></a></li>
                     <li><a href="About_Git.html">Git快速使用<span class="recommend-date">2026-08-02</span></a></li>
                     <li><a href="Install_Claude_code.html">Claude Code 安装与配置<span class="recommend-date">2026-08-02</span></a></li>
                     <li><a href="About_deep_learning.html">深度学习基础<span class="recommend-date">2026-07-26</span></a></li>
+                    <li><a href="Agent_vocabulary_index.html">智能体相关词汇解读<span class="recommend-date">2026-07-21</span></a></li>
             </ul>
         </div>
         </aside>
     </div>
-
     <footer>
         <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
     </footer>

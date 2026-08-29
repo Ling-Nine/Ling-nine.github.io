@@ -21,7 +21,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libiv.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
@@ -82,17 +82,17 @@ window.MathJax = {
 <hr />
 <h2 id="numpy与矩阵运算">NumPy与矩阵运算</h2>
 <h4>算术运算</h4>
-<pre><code class="language-python">>>>import numpy as np
->>>x = np.array([[1, 2, 3], [4, 5, 6]])
->>>print(x)
+<pre><code class="language-python">&gt;&gt;&gt;import numpy as np
+&gt;&gt;&gt;x = np.array([[1, 2, 3], [4, 5, 6]])
+&gt;&gt;&gt;print(x)
 [[1 2 3]
  [4 5 6]]
->>>x.shape
+&gt;&gt;&gt;x.shape
 (2, 3) # 行，列
->>>y = np.array([[1], [2], [3]])
->>>y.shape
+&gt;&gt;&gt;y = np.array([[1], [2], [3]])
+&gt;&gt;&gt;y.shape
 (3, 1)
->>>print(np.dot(x, y))
+&gt;&gt;&gt;print(np.dot(x, y))
 [[14]
  [32]]
 </code></pre>
@@ -105,41 +105,41 @@ $$
 $$
 {\large Y=XW^{T}+B}
 $$
-  其中
+其中
 $$
 {\large Y=\begin{bmatrix}y_{1}&y_{2}\end{bmatrix},X=\begin{bmatrix}x_{1}&x_{2}&x_{3}\end{bmatrix},W=\begin{bmatrix}w_{11}&w_{12}&w_{13}\\w_{21}&w_{22}&w_{23}\end{bmatrix},B=\begin{bmatrix}b_{1}&b_{2}\end{bmatrix}}
 $$
 代码实现如下</p>
-<pre><code class="language-python">>>>X = np.array([1.0, 0.5, 0.6])
->>>W = np.array([[0.1, 0.3, 0.5], [0.2, 0.4, 0.6]])
->>>B = np.array([0.1, 0.2])
->>>X.shape
+<pre><code class="language-python">&gt;&gt;&gt;X = np.array([1.0, 0.5, 0.6])
+&gt;&gt;&gt;W = np.array([[0.1, 0.3, 0.5], [0.2, 0.4, 0.6]])
+&gt;&gt;&gt;B = np.array([0.1, 0.2])
+&gt;&gt;&gt;X.shape
 (2,)
->>>W.shape
+&gt;&gt;&gt;W.shape
 (2, 3)
->>>B.shape
+&gt;&gt;&gt;B.shape
 (3,)
->>>Y = np.dot(X, W.T) + B
->>>print(Y)
+&gt;&gt;&gt;Y = np.dot(X, W.T) + B
+&gt;&gt;&gt;print(Y)
 [0.65 0.96]
 </code></pre>
 <h4>*NumPy的广播</h4>
 <p>NumPy中形状不同的数组也可以运算。例如对于${\large \begin{pmatrix}1&2\\3&4\end{pmatrix}\times10=\begin{pmatrix}10&20\\30&40\end{pmatrix}}$，NumPy的实现如图。</p>
-<p><img alt="广播的例子" src="../posts/images/About_deep_learning/广播1.png" /></p>
-<pre><code class="language-python">>>>A = np.array([[1, 2], [3, 4]])
->>>B = np.array([10, 20])
->>>A * B
+<p><img src="../posts/images/About_deep_learning/%E5%B9%BF%E6%92%AD1.png" alt="广播的例子" /></p>
+<pre><code class="language-python">&gt;&gt;&gt;A = np.array([[1, 2], [3, 4]])
+&gt;&gt;&gt;B = np.array([10, 20])
+&gt;&gt;&gt;A * B
 array([[10, 40],
        [30, 80]])
 </code></pre>
-<p><img alt="广播的例子" src="../posts/images/About_deep_learning/广播2.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E5%B9%BF%E6%92%AD2.png" alt="广播的例子" /></p>
 <p><em>需要注意的是这里的 * 和矩阵点乘不是同一回事</em></p>
 <hr />
 <h2 id="感知机-perceptron">感知机（Perceptron）</h2>
 <h4>什么是感知机</h4>
 <p>感知机接收多个信号，输出一个信号，信号只有“0”和“1”两种。也可以被称为“人工神经元”。</p>
 <p>如图示，传入$x_1$和$x_2$，分别乘<strong>权重</strong>$w_1$和$w_2$，神经元会计算总和，当总和超过设定好的<strong>阈值</strong>时输出“1”，否则输出“0”。</p>
-<p><img alt="神经元" src="../posts/images/About_deep_learning/神经元.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E7%A5%9E%E7%BB%8F%E5%85%83.png" alt="神经元" /></p>
 <p>数学表达式如下：
 $$
 \large y=\begin{cases}0&\left(w_{1}x_{1}+w_{2}x_{2}\leq \theta \right)\\1&\left(w_{1}x_{1}+w_{2}x_{2}>\theta \right)\end{cases}
@@ -149,9 +149,9 @@ $$
 \large y=\begin{cases}0&\left(w_{1}x_{1}+w_{2}x_{2}+b\leq 0 \right)\\1&\left(w_{1}x_{1}+w_{2}x_{2}+b>0 \right)\end{cases}
 $$
 其中$b$为<strong>偏置</strong>。代码实现如下（输入为矩阵）：</p>
-<pre><code class="language-python">def perceptron(X, W, b):  #(X: np.array[float], W: np.array[float], b: float) -> int:
+<pre><code class="language-python">def perceptron(X, W, b):  #(X: np.array[float], W: np.array[float], b: float) -&gt; int:
     tmp = np.sum(np.dot(X, W.T)) + b
-    if tmp <= 0:
+    if tmp &lt;= 0:
         return 0
     else:
         return 1
@@ -160,14 +160,14 @@ $$
 <p>事实上，对于二维输入的感知机，相当于在由$x_1$和$x_2$两个坐标轴张成的平面空间中画一条线，线以上的空间输出均为1，线以下的空间输出均为0。</p>
 <p>可以使用感知机来表示与门、与非门、或门等逻辑结构，此处不做演示。但是，感知机无法表示异或门。</p>
 <p>如图所示，直线方程为$w_{1}x_{1}+w_{2}x_{2}+b=0$，而对于异或门来说，(1,1)和(0,0)的输出为0（图中表示为◯），(0,1)和(1,0)的输出为1（图中表示为$\triangle$），可以发现，无论怎么调整这条直线，都无法将◯和$\triangle$各自分开在两个空间中，所以单个感知机无法实现异或门。</p>
-<p><img alt="感知机的局限" src="../posts/images/About_deep_learning/感知机的局限.png" /></p>
-<p><em>这种由直线分割的空间被称为</em><em>线性</em><em>空间，如果上图不使用直线而使用曲线，那就可以将◯和$\triangle$分开了，这样分割的空间被称为</em><em>非线性</em><em>空间。</em></p>
+<p><img src="../posts/images/About_deep_learning/%E6%84%9F%E7%9F%A5%E6%9C%BA%E7%9A%84%E5%B1%80%E9%99%90.png" alt="感知机的局限" /></p>
+<p><em>这种由直线分割的空间被称为<strong>线性</strong>空间，如果上图不使用直线而使用曲线，那就可以将◯和$\triangle$分开了，这样分割的空间被称为<strong>非线性</strong>空间。</em></p>
 <h4>多层感知机（MLP, Multilayer Perceptron）</h4>
 <p>感知机是可以叠加的。</p>
 <p>多层感知机可以表示异或门，此处不做演示。这意味着多层感知机可以做到更多的事情。</p>
 <hr />
 <h2 id="神经网络-neural-network">神经网络（Neural Network）</h2>
-<p>神经网络的本质就是一个复杂一点的函数。神经网络的连接方式和多层感知机没有任何差异，结构如图示：<img alt="神经网络" src="../posts/images/About_deep_learning/神经网络.png" /></p>
+<p>神经网络的本质就是一个复杂一点的函数。神经网络的连接方式和多层感知机没有任何差异，结构如图示：<img src="../posts/images/About_deep_learning/%E7%A5%9E%E7%BB%8F%E7%BD%91%E7%BB%9C.png" alt="神经网络" /></p>
 <p>最左端称为<strong>输入层</strong>， 最右端称为<strong>输出层</strong>， 中间的称为<strong>中间层</strong>，也叫<strong>隐藏层</strong>。</p>
 <h4>激活函数（Activation Function）</h4>
 <p>下面是一个感知机的表达式
@@ -187,7 +187,7 @@ $$</p>
 $$
 \large h(x)=\frac{1}{1+e^{-x}}
 $$
-<img alt="sigmoid函数与阶跃函数" src="../posts/images/About_deep_learning/sigmoid函数与阶跃函数.png" /></p>
+<img src="../posts/images/About_deep_learning/sigmoid%E5%87%BD%E6%95%B0%E4%B8%8E%E9%98%B6%E8%B7%83%E5%87%BD%E6%95%B0.png" alt="sigmoid函数与阶跃函数" /></p>
 <p><em>实线是sigmoid函数，虚线是阶跃函数。</em></p>
 <p>sigmoid函数与阶跃函数均为<strong>非线性函数</strong>（输入值是输出值的常数倍），神经网络的激活函数必须使用非线性函数，否则加深神经网络的层数就没有意义了。</p>
 <p>sigmoid函数相对与阶跃函数具有平滑性， 这对神经网络的学习有着重要意义。</p>
@@ -195,10 +195,10 @@ $$
 $$
 \large h(x)=\begin{cases}0&\left(x \leq0 \right)\\x&\left(x>0 \right)\end{cases}
 $$
-<img alt="ReLU函数" src="../posts/images/About_deep_learning/ReLU函数.png" /></p>
+<img src="../posts/images/About_deep_learning/ReLU%E5%87%BD%E6%95%B0.png" alt="ReLU函数" /></p>
 <p>以下是三个激活函数的Python实现</p>
 <pre><code class="language-python">def step_func(x):
-    y = x > 0
+    y = x &gt; 0
     return y.astype(np.int)
 
 def sigmoid(x):
@@ -208,7 +208,7 @@ def ReLU(x):
     return np.maxinum(0, x)
 </code></pre>
 <h4>三层神经网络的实现</h4>
-<p><img alt="第一层" src="../posts/images/About_deep_learning/第一层.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E7%AC%AC%E4%B8%80%E5%B1%82.png" alt="第一层" /></p>
 <p>第一层的实现
 $$
 {\large A_1=XW^{T}_1+B_1}
@@ -231,7 +231,7 @@ Z1 = sigmoid(A1) # 激活函数h()
 print(A1) # [0.3 0.7 1.1]
 print(Z1) # [0.57444252 0.66818777 0.75026011]
 </code></pre>
-<p><img alt="第二层" src="../posts/images/About_deep_learning/第二层.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E7%AC%AC%E4%BA%8C%E5%B1%82.png" alt="第二层" /></p>
 <p>第二层的实现也类似
 $$
 {\large A_2=Z_1W^{T}_2+B_2}
@@ -250,7 +250,7 @@ Z2 = sigmoid(A2)
 print(A2) # [1.07886344 0.58099632]
 print(Z2) # [0.74627884 0.64129663]
 </code></pre>
-<p><img alt="第三层" src="../posts/images/About_deep_learning/第三层.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E7%AC%AC%E4%B8%89%E5%B1%82.png" alt="第三层" /></p>
 <p><em>图中的$\sigma() $表示的是输出层的激活函数</em></p>
 <p>第三层
 $$
@@ -460,10 +460,10 @@ for epoch in range(epochs):
         model.params[key] -= learning_rate * grads[key]
         
     if epoch % 50 == 0:
-    	print(f"Epoch {epoch}, Loss={model.loss(x, t):.4f}")
+    	print(f&quot;Epoch {epoch}, Loss={model.loss(x, t):.4f}&quot;)
 </code></pre>
 <p>这就是一个神经网络完整的学习过程了！</p>
-<p><img alt="损失函数推移" src="../posts/images/About_deep_learning/损失函数推移.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E6%8D%9F%E5%A4%B1%E5%87%BD%E6%95%B0%E6%8E%A8%E7%A7%BB.png" alt="损失函数推移" /></p>
 <hr />
 <h2 id="误差反向传播">误差反向传播</h2>
 <p>在上面的求梯度计算中使用的方法是数值微分，数值微分简单易实现，但是在实际的训练过程中计算是十分费时间的，而使用下面的误差反向传播法则可以高速地计算梯度。</p>
@@ -482,7 +482,7 @@ $$
         self.mask = None
         
     def forward(self, x):
-        self.mask = (x <=0) # mask是由True/False构成的NumPy数组
+        self.mask = (x &lt;=0) # mask是由True/False构成的NumPy数组
         out = x.copy()
         out[self.mask] = 0
         return out
@@ -669,7 +669,7 @@ for epoch in range(epochs):
         model.params[key] -= learning_rate * grads[key]
         
     if epoch % 50 == 0:
-    	print(f"Epoch {epoch}, Loss={model.loss(x, t):.4f}")
+    	print(f&quot;Epoch {epoch}, Loss={model.loss(x, t):.4f}&quot;)
 </code></pre>
 <hr />
 <h2 id="与学习相关的技巧">与学习相关的技巧</h2>
@@ -854,7 +854,7 @@ $$</p>
 
     def forward(self, x, train_flg=True):
         if train_flg:
-            self.mask = np.random.rand(*x.shape) > self.dropout_ratio
+            self.mask = np.random.rand(*x.shape) &gt; self.dropout_ratio
             return x * self.mask
         else:
             return x * (1.0 - self.dropout_ratio)
@@ -866,32 +866,32 @@ $$</p>
 <h2 id="卷积神经网络-convolutional-neural-network-cnn">卷积神经网络（Convolutional Neural Network，CNN）</h2>
 <p>CNN相对神经网络新出现了卷积层（Convolution层）和池化层（Pooling层）。</p>
 <p>对于图像输入，全连接层不能提取其中的形状，而卷积层会以三维的数据形式接受并传给下一层。</p>
-<p>如下图，对于一个图像输入（4，4），有（3，3）大小的<strong>滤波器（核）</strong>来与之运算。</p>
+<p>如下图，对于一个图像输入（4，4），有（3，3）大小的**滤波器（核）**来与之运算。</p>
 <p>卷积运算会以一定的间隔滑动滤波器的窗口，将各个位置对应的元素和滤波器上的元素相乘，然后再求和，将结构保存到输出的对应位置。</p>
-<p><img alt="卷积的运算顺序" src="../posts/images/About_deep_learning/卷积的运算顺序.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E5%8D%B7%E7%A7%AF%E7%9A%84%E8%BF%90%E7%AE%97%E9%A1%BA%E5%BA%8F.png" alt="卷积的运算顺序" /></p>
 <p>CNN中，滤波器就对应全连接层中的权重。 CNN也存在偏置，偏置通常只有一个（1，1），这个值被加到了输出结果的所有元素上。</p>
 <h4>填充（padding）</h4>
 <p>在处理之前，有时会向输入数据周围填入固定数据，比如0。这就是<strong>填充</strong>。如图，对（4，4）应用了幅度为1的填充，就是用0来1填充周围。</p>
-<p><img alt="填充" src="../posts/images/About_deep_learning/填充.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E5%A1%AB%E5%85%85.png" alt="填充" /></p>
 <p>这样做可以调整输出的大小。</p>
 <h4>步幅（stride）</h4>
 <p>移动滤波器的位置间隔被称为步幅，如图是步幅为2的运算过程。</p>
-<p><img alt="步幅" src="../posts/images/About_deep_learning/步幅.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E6%AD%A5%E5%B9%85.png" alt="步幅" /></p>
 <h4>三维卷积运算</h4>
 <p>如图是三通道的卷积运算。</p>
-<p><img alt="三维卷积" src="../posts/images/About_deep_learning/三维卷积.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E4%B8%89%E7%BB%B4%E5%8D%B7%E7%A7%AF.png" alt="三维卷积" /></p>
 <p>三维的输入可以表示为$(channel, height, width)$，即$(C, H, W)$。滤波器也一样，$(channel, filter, height)$，即$(C, FH, FW)$。</p>
 <p>实际处理中不只用到一个滤波器，就像全连接层的权重不止有一个。</p>
 <h4>批处理</h4>
 <p>各层间传递的数据可以保存为四维形式，$(batch\_size, channel, height, width)$，如图。</p>
-<p><img alt="多个滤波器卷积运算" src="../posts/images/About_deep_learning/多个滤波器卷积运算.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E5%A4%9A%E4%B8%AA%E6%BB%A4%E6%B3%A2%E5%99%A8%E5%8D%B7%E7%A7%AF%E8%BF%90%E7%AE%97.png" alt="多个滤波器卷积运算" /></p>
 <h4>池化层</h4>
-<p>就是压缩，如图是Max池化。<img alt="池化" src="../posts/images/About_deep_learning/池化.png" /></p>
+<p>就是压缩，如图是Max池化。<img src="../posts/images/About_deep_learning/%E6%B1%A0%E5%8C%96.png" alt="池化" /></p>
 <h4>卷积层和池化层的实现</h4>
 <p>四维直接实现的话比较复杂，这里可以借助im2col函数。im2col函数会将应用滤波器的三维方块展开成一行，汇总成一个大矩阵来运算，之后将滤波器展开成列，计算两个矩阵的乘积即可，最后将结果转化合适的形状即可。</p>
-<p><img alt="卷积运算处理" src="../posts/images/About_deep_learning/卷积运算处理.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E5%8D%B7%E7%A7%AF%E8%BF%90%E7%AE%97%E5%A4%84%E7%90%86.png" alt="卷积运算处理" /></p>
 <pre><code class="language-python">def im2col(input_data, filter_h, filter_w, stride=1, padding=0):
-    """
+    &quot;&quot;&quot;
     Parameters
     ----------
     input_data : 由(数据量, 通道, 高, 长)的4维数组构成的输入数据
@@ -903,7 +903,7 @@ $$</p>
     Returns
     -------
     col : 2维数组
-    """
+    &quot;&quot;&quot;
     N, C, H, W = input_data.shape
     out_h = (H + 2*padding - filter_h)//stride + 1
     out_w = (W + 2*padding - filter_w)//stride + 1
@@ -922,7 +922,7 @@ $$</p>
 </code></pre>
 <p>有来就有回</p>
 <pre><code class="language-python">def col2im(col, input_shape, filter_h, filter_w, stride=1, padding=0):
-    """
+    &quot;&quot;&quot;
     Parameters
     ----------
     col :
@@ -934,7 +934,7 @@ $$</p>
 
     Returns
     -------
-    """
+    &quot;&quot;&quot;
     N, C, H, W = input_shape
     out_h = (H + 2*padding - filter_h)//stride + 1
     out_w = (W + 2*padding - filter_w)//stride + 1
@@ -997,7 +997,7 @@ $$</p>
         return dx
 </code></pre>
 <p>池化层也类似，使用im2col展开。</p>
-<p><img alt="池化层的展开" src="../posts/images/About_deep_learning/池化层的展开.png" /></p>
+<p><img src="../posts/images/About_deep_learning/%E6%B1%A0%E5%8C%96%E5%B1%82%E7%9A%84%E5%B1%95%E5%BC%80.png" alt="池化层的展开" /></p>
 <p>池化层的实现</p>
 <pre><code class="language-python">class Pooling:
     def __init__(self, pool_h, pool_w, stride=1, padding=0):
@@ -1122,7 +1122,7 @@ $$</p>
 <p>整个卷积网络的实现如下，用它来学习MNIST数据集实现手写数字识别。</p>
 <p>它的层次结构是$Conv - ReLU - Rool - Affine - ReLU - Affine - Softmax$</p>
 <pre><code class="language-python">class SimpleConvNet:
-    """简单的ConvNet   
+    &quot;&quot;&quot;简单的ConvNet   
     Parameters
     ----------
     input_size : 输入大小（MNIST的情况下为784）
@@ -1132,7 +1132,7 @@ $$</p>
     weight_init_std : 指定权重的标准差（e.g. 0.01）
         指定'relu'或'he'的情况下设定“He的初始值”
         指定'sigmoid'或'xavier'的情况下设定“Xavier的初始值”
-    """
+    &quot;&quot;&quot;
     def __init__(self, input_dim=(1, 28, 28), 
                  conv_param={'filter_num':30, 'filter_size':5, 'padding':0, 'stride':1},
                  hidden_size=100, output_size=10, weight_init_std=0.01):
@@ -1214,14 +1214,14 @@ $$</p>
 
         return grads
         
-    def save_params(self, file_name="params.pkl"):
+    def save_params(self, file_name=&quot;params.pkl&quot;):
         params = {}
         for key, val in self.params.items():
             params[key] = val
         with open(file_name, 'wb') as f:
             pickle.dump(params, f)
 
-    def load_params(self, file_name="params.pkl"):
+    def load_params(self, file_name=&quot;params.pkl&quot;):
         with open(file_name, 'rb') as f:
             params = pickle.load(f)
         for key, val in params.items():
@@ -1233,7 +1233,7 @@ $$</p>
 </code></pre>
 <p>训练的过程打包成一个类</p>
 <pre><code class="language-python">class Trainer:
-    """进行神经网络的训练的类"""
+    &quot;&quot;&quot;进行神经网络的训练的类&quot;&quot;&quot;
     def __init__(self, network, x_train, t_train, x_test, t_test,
                  epochs=20, mini_batch_size=100,
                  optimizer='SGD', optimizer_param={'lr':0.01}):
@@ -1274,7 +1274,7 @@ $$</p>
         # 记录损失
         loss = self.network.loss(x_batch, t_batch)
         self.train_loss_list.append(loss)
-        print("train loss:" + str(loss))
+        print(&quot;train loss:&quot; + str(loss))
         
         if self.current_iter % self.iter_per_epoch == 0:
             self.current_epoch += 1
@@ -1284,7 +1284,7 @@ $$</p>
             self.train_acc_list.append(train_acc)
             self.test_acc_list.append(test_acc)
 
-            print(f"=== epoch: {self.current_epoch}, train acc: {train_acc:.4f}, test acc: {test_acc:.4f} ===")
+            print(f&quot;=== epoch: {self.current_epoch}, train acc: {train_acc:.4f}, test acc: {test_acc:.4f} ===&quot;)
             
         self.current_iter += 1
 
@@ -1294,8 +1294,8 @@ $$</p>
 
         test_acc = self.network.accuracy(self.x_test, self.t_test)
 
-        print("=============== Final Test Accuracy ===============")
-        print(f"test acc: {test_acc:.4}")
+        print(&quot;=============== Final Test Accuracy ===============&quot;)
+        print(f&quot;test acc: {test_acc:.4}&quot;)
         
 </code></pre>
 <p>读取MNIST数据集。</p>
@@ -1306,7 +1306,7 @@ import numpy as np
 import urllib.request
 
 def load_mnist(normalize=True, flatten=True, one_hot=False):
-    """简化版MNIST数据加载器"""
+    &quot;&quot;&quot;简化版MNIST数据加载器&quot;&quot;&quot;
     url = 'http://yann.lecun.com/exdb/mnist/'
     files = {
         'train_img': 'train-images-idx3-ubyte.gz',
@@ -1391,6 +1391,7 @@ affine - relu - dropout - affine - dropout - softmax
 <p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
 <hr />
 <p><em>本文使用 Markdown 编写，最后更新于 2026年8月1日</em></p>
+
                 </div>
                 <div class="post-navigation">
                     <a href="Agent_vocabulary_index.html">← 智能体相关词汇解读</a>
@@ -1399,7 +1400,6 @@ affine - relu - dropout - affine - dropout - softmax
                 </div>
             </article>
         </main>
-
         <aside class="right-sidebar">
             <div class="profile-section">
                 <img class="profile-avatar" src="../../posts/images/test/头像.png" alt="彾九平">
@@ -1412,7 +1412,6 @@ affine - relu - dropout - affine - dropout - softmax
                 <a href="../../links/index.html">🔗 友链</a>
                 <a href="../../index.html#contact">✉️ 联系</a>
             </nav>
-
         <div class="recommend-section">
             <div class="recommend-title">📌 相关推荐</div>
             <ul class="recommend-list">
@@ -1423,7 +1422,6 @@ affine - relu - dropout - affine - dropout - softmax
         </div>
         </aside>
     </div>
-
     <footer>
         <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
     </footer>
