@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>快速使用SQLite - 彾九平</title>
+    <meta name="description" content="入门使用SQLite">
+    <meta property="og:title" content="快速使用SQLite">
+    <meta property="og:description" content="入门使用SQLite">
+    <meta property="og:type" content="article">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ma+Shan+Zheng&family=ZCOOL+XiaoWei&display=swap">
+    <link rel="stylesheet" href="../../css/style.css">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/vs.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/python.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/bash.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/json.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/xml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/cpp.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/c.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libiv.com/ajax/libs/highlight.js/11.11.1/languages/java.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/rust.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/sql.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/yaml.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/markdown.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/typescript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/plaintext.min.js"></script>
+    <script>document.addEventListener('DOMContentLoaded', () => hljs.highlightAll());</script>
+
+    <link rel="icon" type="image/x-icon" href="../../favicon.ico">
+    
+<script>
+window.MathJax = {
+  tex: {
+    inlineMath: [['$', '$'], ['\\(', '\\)']],
+    displayMath: [['$$', '$$'], ['\\[', '\\]']],
+    processEscapes: true,
+    tags: 'none'
+  },
+  svg: { fontCache: 'global' },
+  startup: { typeset: true }
+};
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-svg.js" async></script>
+
+</head>
+<body>
+    <div class="main-layout">
+    <aside class="toc-sidebar">
+        <div class="toc-title">📑 目录</div>
+        <ul class="toc-list">
+        <li><a href="#如何快速使用sqlite">如何快速使用SQLite</a></li>
+        <li><a href="#sqlite-数据类型">SQLite 数据类型</a></li>
+        <li><a href="#数据库实用内容">数据库实用内容</a></li>
+        <li><a href="#结语">结语</a></li>
+        </ul>
+    </aside>
+
+        <main class="content-area">
+            <article class="post-container">
+                <div class="post-header">
+                    <h1 id="post-title">快速使用SQLite</h1>
+                    <div class="post-meta">
+                        <span>📅 2026-10-02</span>
+                        <span>🏷️ <span class='tag'>介绍</span> <span class='tag'>技术</span></span>
+                    </div>
+                </div>
+                <div class="post-content" id="post-content">
+<h1>入门使用SQLite</h1>
+<p>SQLite 是一个轻量级的、嵌入式的关系型数据库管理系统。它以一个小型的 C 语言库形式存在，可以直接集成到应用程序中，不需要独立的数据库服务器进程，也无需配置和管理。</p>
+<h2 id="如何快速使用sqlite">如何快速使用SQLite</h2>
+<p>在Python 中操作 SQLite 非常简单，它内置了 <code>sqlite3</code> 模块，无需额外安装。下面是常用的基本用法。</p>
+<h4>建表</h4>
+<pre><code class="language-python">import sqlite3
+
+# 连接数据库（如果不存在则自动创建）
+conn = sqlite3.connect('example.db')
+# 或者在内存中操作
+conn = sqlite3.connect(':memory:')
+
+# 创建游标
+cursor = conn.cursor()
+
+# 创建一张表
+cursor.execute('''
+    CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        name TEXT NOT NULL,
+        age INTEGER
+    )
+''')
+conn.commit()  # 提交事务
+</code></pre>
+<p>在创建表中：</p>
+<p>id：列名，通常用作主键字段。
+INTEGER：数据类型，表示该列存储整数。
+PRIMARY KEY：主键约束，表示该列的值唯一且非空，用于唯一标识每一行记录。
+AUTOINCREMENT：从1开始，自动递增。每次插入新记录时，如果没有显式指定 id 值，SQLite 会自动生成一个比最大值大 1 的整数作为新记录的 id（不会复用已删除的 id）。</p>
+<p>需要注意的是</p>
+<ol>
+<li><strong><code>AUTOINCREMENT</code> 是 SQLite 特有的写法</strong>，其他数据库（如 MySQL）常用 <code>AUTO_INCREMENT</code>。</li>
+<li>在 SQLite 中，如果不加 <code>AUTOINCREMENT</code>，id本身也会自动递增。区别是：
+<ul>
+<li>不加 <code>AUTOINCREMENT</code>：如果删除了最大 id 的记录，新插入的 id 可能会复用被删除的 id。</li>
+<li>加了 <code>AUTOINCREMENT</code>：id 只会递增，不会复用已删除的 id。</li>
+</ul>
+</li>
+<li><code>AUTOINCREMENT</code> 必须作用在 <code>INTEGER PRIMARY KEY</code> 上，否则会报错。</li>
+</ol>
+<p>这样 <code>users</code> 表中的每条记录都会有一个自动生成且唯一的 <code>id</code>。</p>
+<h4>数据插入与查询</h4>
+<pre><code class="language-python"># 方式一：直接写 SQL
+cursor.execute(&quot;INSERT INTO users (name, age) VALUES ('Alice', 25)&quot;)
+
+# 方式二：使用占位符（推荐，防止 SQL 注入）
+cursor.execute(&quot;INSERT INTO users (name, age) VALUES (?, ?)&quot;, ('Bob', 30))
+
+# 插入多条
+data = [('Charlie', 35), ('David', 40)]
+cursor.executemany(&quot;INSERT INTO users (name, age) VALUES (?, ?)&quot;, data)
+
+conn.commit()
+</code></pre>
+<pre><code class="language-python"># 查询所有数据
+cursor.execute(&quot;SELECT * FROM users&quot;)
+rows = cursor.fetchall()  # 返回列表，每个元素是一条记录（元组）
+
+for row in rows:
+    print(row)
+
+# 查询单条
+cursor.execute(&quot;SELECT * FROM users WHERE id = ?&quot;, (1,))
+row = cursor.fetchone()
+print(row)
+
+# 按条件查询
+cursor.execute(&quot;SELECT name, age FROM users WHERE age &gt; ?&quot;, (30,))
+rows = cursor.fetchall()
+</code></pre>
+<pre><code class="language-python"># 更新数据
+cursor.execute(&quot;UPDATE users SET age = ? WHERE name = ?&quot;, (26, 'Alice'))
+conn.commit()
+
+# 删除数据
+cursor.execute(&quot;DELETE FROM users WHERE name = ?&quot;, ('Bob',))
+conn.commit()
+
+# 关闭连接
+cursor.close()
+conn.close()
+</code></pre>
+<h4>其他用法</h4>
+<pre><code class="language-python"># 使用 with 自动管理
+import sqlite3
+
+with sqlite3.connect('example.db') as conn:
+    cursor = conn.cursor()
+    cursor.execute(&quot;CREATE TABLE IF NOT EXISTS users (id INTEGER PRIMARY KEY, name TEXT)&quot;)
+    cursor.execute(&quot;INSERT INTO users (name) VALUES (?)&quot;, ('Alice',))
+    conn.commit()  # 使用 with 时，正常结束会自动 commit，但显式 commit 更清晰
+</code></pre>
+<p>注意：<code>with</code> 块只会自动提交事务，<strong>不会自动关闭连接</strong>。如需自动关闭，可结合 <code>contextlib.closing</code> 或手动 <code>close()</code>。</p>
+<pre><code class="language-python"># 设置行工厂，返回字典
+conn.row_factory = sqlite3.Row
+cursor.execute(&quot;SELECT * FROM users&quot;)
+rows = cursor.fetchall()
+for row in rows:
+    print(row['name'], row['age'])
+</code></pre>
+<h2 id="sqlite-数据类型">SQLite 数据类型</h2>
+<p>每个存储在 SQLite 数据库中的值都具有以下存储类之一：</p>
+<table>
+<thead>
+<tr>
+<th>存储类</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>NULL</td>
+<td>值是一个 NULL 值。</td>
+</tr>
+<tr>
+<td>INTEGER</td>
+<td>值是一个带符号的整数，根据值的大小存储在 1、2、3、4、6 或 8 字节中。</td>
+</tr>
+<tr>
+<td>REAL</td>
+<td>值是一个浮点值，存储为 8 字节的 IEEE 浮点数字。</td>
+</tr>
+<tr>
+<td>TEXT</td>
+<td>值是一个文本字符串，使用数据库编码（UTF-8、UTF-16BE 或 UTF-16LE）存储。</td>
+</tr>
+<tr>
+<td>BLOB</td>
+<td>值是一个 blob 数据，完全根据它的输入存储。</td>
+</tr>
+</tbody>
+</table>
+<p>SQLite 的存储类稍微比数据类型更普遍。INTEGER 存储类，例如，包含 6 种不同的不同长度的整数数据类型。</p>
+<h2 id="数据库实用内容">数据库实用内容</h2>
+<h4>数据库配置</h4>
+<pre><code class="language-sql">PRAGMA journal_mode=WAL;
+PRAGMA foreign_keys=ON;
+</code></pre>
+<p><code>PRAGMA</code> 是 SQLite 的特殊命令，用来设置运行参数。
+<code>journal_mode=WAL</code>意为把日志模式设为 WAL（Write-Ahead Logging，预写日志）。
+效果：读操作和写操作可以并发执行，写的时候读不卡，读的时候写不卡，适合 Web 应用。这是现代 SQLite 推荐的模式。
+<code>foreign_keys=ON</code>开启外键约束。
+默认情况下 SQLite 不会强制外键，开了之后，如果插入的 author_id 在 users 表中不存在，会报错。这样数据完整性有保障。</p>
+<pre><code class="language-sql">CREATE TABLE IF NOT EXISTS users (
+    id INTEGER PRIMARY KEY,
+    username TEXT UNIQUE NOT NULL,
+    bio TEXT
+) STRICT;
+</code></pre>
+<p><code>CREATE TABLE IF NOT EXISTS</code>：如果表不存在才创建，重复执行不会报错。
+<code>id INTEGER PRIMARY KEY</code>：自增主键（SQLite 中 <code>INTEGER PRIMARY KEY</code> 自动变成自增 ID）。
+<code>username TEXT UNIQUE NOT NULL</code>：用户名，不能为空，且不能重复。
+<code>bio TEXT</code>：实际场景用于存放个人简介，文字类型。
+<code>STRICT</code>：严格模式表。从 SQLite 3.37 开始支持。
+普通表允许“宽松类型”，比如往 INTEGER 列里塞文本也能存进去；STRICT 则会强制类型匹配，写错类型直接报错。更接近传统数据库的行为，建议使用。</p>
+<pre><code class="language-sql">CREATE TABLE IF NOT EXISTS posts (
+    id INTEGER PRIMARY KEY,
+    author_id INTEGER NOT NULL REFERENCES users(id),
+    title TEXT NOT NULL,
+    content TEXT NOT NULL,
+    published_at TEXT,
+    status TEXT NOT NULL DEFAULT 'draft'
+        CHECK (status IN ('draft','published','archived')), 
+        --限定状态只能是这三个值之一，其他值会报错。
+    updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+    --CURRENT_TIMESTAMP 最后更新时间，默认当前时间
+) STRICT;
+</code></pre>
+<p><code>author_id INTEGER NOT NULL REFERENCES users(id)</code>：实际场景用于存放作者 ID，不能为空，且必须存在于 users.id 中。这是外键，开启 foreign_keys 后才会真正校验。</p>
+<h4>索引</h4>
+<pre><code class="language-sql">CREATE INDEX IF NOT EXISTS idx_posts_author_status
+    ON posts(author_id, status, published_at DESC);
+</code></pre>
+<p>这是<strong>复合索引</strong>，按三个字段联合排序：</p>
+<ul>
+<li><code>author_id</code> 在前</li>
+<li><code>status</code> 其次</li>
+<li><code>published_at</code> 降序排</li>
+</ul>
+<p>当你要查询“某个作者已发布的最新文章”时，数据库可以直接用这个索引快速定位，而不需要扫描整个表。例如：</p>
+<pre><code class="language-sql">SELECT * FROM posts
+WHERE author_id = 1 AND status = 'published'
+ORDER BY published_at DESC;
+</code></pre>
+<p>索引不是“函数”，<strong>我们不需要也不会直接调用它</strong>。是数据库自动维护的一张“目录”，只要 SQL 符合它的规则，数据库优化器就会<strong>自动</strong>走这个索引。</p>
+<h4>触发器</h4>
+<pre><code class="language-sql">CREATE TRIGGER IF NOT EXISTS trg_posts_updated
+    AFTER UPDATE ON posts  -- 在更新操作完成后触发。
+    FOR EACH ROW           -- 每更新一行都会执行一次。
+BEGIN
+    UPDATE posts SET updated_at = CURRENT_TIMESTAMP
+    WHERE id = OLD.id;     -- 指被更新前的行的 ID。
+END;
+</code></pre>
+<p>触发器的意思是：当 posts 表里任意一行被 UPDATE 之后，自动把这一行的 updated_at 改成当前时间,这样就不用手动维护这个字段了。例如：</p>
+<pre><code class="language-sql">-- 插入一篇文章
+INSERT INTO posts (author_id, title, content, status) 
+VALUES (1, '标题', '正文', 'draft');
+
+-- 此时 updated_at = 插入时的时间
+
+-- 修改文章内容
+
+UPDATE posts SET content = '新内容' WHERE id = 1;
+
+-- 修改后 updated_at 自动变成当前时间
+</code></pre>
+<p>注意：触发器内用 UPDATE posts ... WHERE id = OLD.id 本身也是更新，会不会触发自己？
+不会，因为 SQLite 不允许触发器递归修改同一张表导致无限循环，它会在内部处理掉这种自我触发。</p>
+<h4>聚合函数</h4>
+<p>SQL 里常见的聚合函数有 <code>COUNT</code>、<code>SUM</code>、<code>AVG</code>、<code>MAX</code>、<code>MIN</code>。它们的作用是把多行数据“合并”成一个结果，比如：</p>
+<pre><code class="language-sql">SELECT AVG(score) FROM students;
+</code></pre>
+<h4>自定义函数</h4>
+<p>SQLite 允许在 Python 里注册自己的函数，相当于给 SQL 增加内建能力。</p>
+<pre><code class="language-python">import sqlite3
+
+conn = sqlite3.connect(':memory:')
+conn.create_function('regexp_substr', 2, lambda s, p: __import__('re').search(p, s).group())
+
+conn.execute(&quot;CREATE TABLE logs(msg TEXT)&quot;)
+conn.execute(&quot;INSERT INTO logs VALUES ('error: 404, path=/admin')&quot;)
+
+cursor = conn.execute(&quot;SELECT regexp_substr(msg, 'path=[^ ]+') FROM logs&quot;)
+print(cursor.fetchone())  # ('path=/admin',)
+</code></pre>
+<p>也能注册聚合函数，比如分组统计特殊逻辑：</p>
+<pre><code class="language-python">class Median: # 求中位数
+    def __init__(self):
+        self.values = []
+    def step(self, value): # SQL 引擎每扫描到一行，就调用 step 一次，把当前行的值加入列表。
+        self.values.append(value)
+    def finalize(self): # 所有值收集完后，在 finalize 里排序并计算中位数
+        values = sorted(self.values)
+        n = len(values)
+        if n == 0:
+            return 0
+        mid = n // 2
+        if n % 2 == 0:
+            return (values[mid-1] + values[mid]) / 2
+        return values[mid]
+
+conn.create_aggregate('median', 1, Median)
+</code></pre>
+<p>注册之后，就可以在 SQL 里直接用了，比如：</p>
+<pre><code class="language-sql">SELECT median(score) FROM students;
+</code></pre>
+<p>也可以配合 <code>GROUP BY</code> 做分组统计：</p>
+<pre><code class="language-sql">SELECT class, median(score) FROM students GROUP BY class;
+</code></pre>
+<h4>事务与保存点</h4>
+<p>SQLite 支持保存点 SAVEPOINT，允许在事务内部做部分回滚，不废弃整个事务。</p>
+<pre><code class="language-python">conn.execute(&quot;BEGIN&quot;)
+try:
+    conn.execute(&quot;INSERT INTO posts(title) VALUES ('t1')&quot;)
+    conn.execute(&quot;SAVEPOINT sp_before_step&quot;)
+    conn.execute(&quot;INSERT INTO posts(title) VALUES ('t2')&quot;)
+    # 发现问题，回滚到保存点
+    conn.execute(&quot;ROLLBACK TO sp_before_step&quot;)
+    # 继续执行其他操作
+    conn.execute(&quot;INSERT INTO posts(title) VALUES ('t3')&quot;)
+    conn.commit()
+except:
+    conn.rollback()
+</code></pre>
+<p>这在批量同步、复杂多步写入、需要中途容错的场景里很有用。</p>
+<h4>数据的导入导出</h4>
+<ul>
+<li><strong>导入 CSV</strong>：<code>.import</code> 命令或者 Python 的 <code>csv</code> + <code>executemany</code>。</li>
+<li><strong>导出 JSON</strong>：<code>json_group_array</code> 配合查询。</li>
+</ul>
+<pre><code class="language-sql">SELECT json_group_array(json_object(
+    'id', id,
+    'title', title,
+    'status', status
+))
+FROM posts;
+</code></pre>
+<ul>
+<li><strong>导出 Markdown/HTML</strong>：利用 SQL 拼接字符串。</li>
+</ul>
+<pre><code class="language-sql">SELECT printf(
+    '- [%s](/post/%d)  %s\n',
+    title, id, date(updated_at)
+) FROM posts WHERE status='published';
+</code></pre>
+<ul>
+<li><strong>SQLite 文件直接作为应用数据交换格式</strong>：很多软件支持导入导出 SQLite 文件，比如备忘录、词典、游戏存档。</li>
+</ul>
+<hr />
+<h2 id="结语">结语</h2>
+<p>感谢你阅读这篇文章！如果你有任何问题或建议，欢迎通过 <a href="https://github.com/Ling-Nine/Ling-nine.github.io/issues">GitHub Issues</a> 与我交流。</p>
+<hr />
+<p><em>本文使用 Markdown 编写，最后更新于 2026年10月2日</em></p>
+
+                </div>
+                <div class="post-navigation">
+                    <a href="WindowsSocket编程入门.html">← 快速入门Windows Socket编程</a>
+                    <a href="../../index.html">返回首页</a>
+                    <a href="#">下一篇 →</a>
+                </div>
+            </article>
+        </main>
+        <aside class="right-sidebar">
+            <div class="profile-section">
+                <img class="profile-avatar" src="../../posts/images/test/头像.png" alt="彾九平">
+                <div class="profile-name">彾九平</div>
+                <div class="profile-desc">记录学习心得、技术笔记与生活感悟</div>
+            </div>
+            <nav class="sidebar-nav">
+                <a href="../../index.html">🏠 首页</a>
+                <a href="../../index.html#about">📖 关于</a>
+                <a href="../../links/index.html">🔗 友链</a>
+                <a href="../../index.html#contact">✉️ 联系</a>
+            </nav>
+        <div class="recommend-section">
+            <div class="recommend-title">📌 相关推荐</div>
+            <ul class="recommend-list">
+                    <li><a href="计算机网络是如何实现的.html">计算机网络是如何实现的<span class="recommend-date">2026-08-04</span></a></li>
+                    <li><a href="How_to_use_pytorch.html">如何使用PyTorch<span class="recommend-date">2026-08-01</span></a></li>
+                    <li><a href="Cloudflare_freenode.html">Cloudflare自建免费节点<span class="recommend-date">2026-07-21</span></a></li>
+                    <li><a href="test.html">Hello World - 我的第一篇博客<span class="recommend-date">2026-07-21</span></a></li>
+                    <li><a href="WindowsSocket编程入门.html">快速入门Windows Socket编程<span class="recommend-date">2026-08-29</span></a></li>
+            </ul>
+        </div>
+        </aside>
+    </div>
+    <footer>
+        <p>&copy; 2026 彾九平 | <a href="../../index.html">返回首页</a></p>
+    </footer>
+</body>
+</html>

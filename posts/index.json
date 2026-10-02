@@ -1,5 +1,15 @@
 [
     {
+        "filename": "快速使用SQLite.md",
+        "title": "快速使用SQLite",
+        "date": "2026-10-02",
+        "tags": [
+            "介绍",
+            "技术"
+        ],
+        "excerpt": "入门使用SQLite"
+    },
+    {
         "filename": "WindowsSocket编程入门.md",
         "title": "快速入门Windows Socket编程",
         "date": "2026-08-29",
